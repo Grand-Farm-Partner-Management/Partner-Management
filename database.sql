@@ -9,6 +9,8 @@
     "password" VARCHAR (1000) NOT NULL
 );*/
 
+--Database Name: "workflow-management"
+
 CREATE TABLE "user" (
 	"id" SERIAL PRIMARY KEY,
 	"email" varchar not null,
