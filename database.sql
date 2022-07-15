@@ -45,6 +45,7 @@ CREATE TABLE "project" (
 
 CREATE TABLE "tasks" (
 	"id" SERIAL PRIMARY KEY,
+    "project_id" int references project,
 	"title" varchar(255),
 	"description" varchar,
 	"parent_task" int, -- self referencing 
