@@ -53,4 +53,41 @@ router.post('/', (req, res,) => {
 
 });
 
+router.delete('/:id', (req, res) =>{
+    const query1 = `delete from company_project where project.id = $1`; // delete project from company_project join table
+    const query2 = `delete from project_employee where project.id = $1`;// delete project from project_employee join table
+    const query3 = `delete from tasks where project.id = $1`; // delete project tasks from tasks table
+    const query4 = `delete from project where project.id = $1`; // delete the project from the project table
+    
+    pool.query(query1, [req.params.id])
+    .then((response) => res.sendStatus(200))
+    .catch(error => {
+        console.log(`Error deleting run`, error);
+        res.sendStatus(500);
+    });
+    
+    pool.query(query2, [req.params.id])
+    .then((response) => res.sendStatus(200))
+    .catch(error => {
+        console.log(`Error deleting run`, error);
+        res.sendStatus(500);
+    });
+    
+    pool.query(query3, [req.params.id])
+    .then((response) => res.sendStatus(200))
+    .catch(error => {
+        console.log(`Error deleting run`, error);
+        res.sendStatus(500);
+    });
+    
+    pool.query(query4, [req.params.id])
+    .then((response) => res.sendStatus(200))
+    .catch(error => {
+        console.log(`Error deleting run`, error);
+        res.sendStatus(500);
+    });
+    
+    
+})
+
 module.exports = router;
