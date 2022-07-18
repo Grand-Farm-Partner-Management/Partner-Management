@@ -3,7 +3,7 @@ require("dotenv").config();
 var cron = require('node-cron');
 const pool = require("../modules/pool");
 const router = require("./project.router");
-// calculate the deadline with the current date in days 
+// calculate the gideadline with the current date in days 
 const currentDate = new Date();
 console.log(startDate);
 const msInDay = 24 * 60 * 60 * 1000;
