@@ -6,7 +6,21 @@ const {
 } = require('../modules/authentication-middleware');
 const router = express.Router();
 
+router.get('/', (req, res) => {
+    const query = `select project.id, project.title, project.description, project.due_time, project.progression, project.completed, project.completed_time from project
+    join project_employee on project.id = project_employee.project_id
+    join "user" on project_employee.employee_id = "user".id
+    where "user".id = $1;`
 
+    pool.query(query, [req.user.id])
+    .then (result => {
+        res.send(result.rows);
+    })
+    .catch((error) => {
+        console.log('Error making SELECT for runs:', error);
+        res.sendStatus(500);
+    });
+})
 
 //Post route for project 
 // "id" SERIAL PRIMARY KEY,
