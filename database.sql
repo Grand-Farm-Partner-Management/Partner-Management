@@ -80,3 +80,24 @@ join project on tasks.project_id = project.id
 join project_employee on project.id = project_employee.project_id
 join "user" on project_employee.employee_id = "user".id
 where "user".id = 1;
+
+-- get task and project info for a user to email using as (does both of the next 2 in one)
+select tasks.id as "tid", tasks.title as taskTitle, tasks.due_time as taskDue, tasks.completed_by, tasks.completed_time as taskCompletedTime, tasks.parent_task,
+project.id as "pid", project.title as projecttitle, project.due_time as projectdue, project.completed_time as projectcompletedtime from tasks 
+join project on tasks.project_id = project.id
+join project_employee on project.id = project_employee.project_id
+join "user" on project_employee.employee_id = "user".id
+where "user".id = 1;
+
+ -- get projects for specific user
+select project.id, project.title, project.due_time, project.completed_time from project
+join project_employee on project.id = project_employee.project_id
+join "user" on project_employee.employee_id = "user".id
+where "user".id = 1;
+
+--get tasks for specific user
+select tasks.id, tasks.title, tasks.due_time, tasks.completed_by, tasks.completed_time, tasks.parent_task from tasks 
+join project on tasks.project_id = project.id
+join project_employee on project.id = project_employee.project_id
+join "user" on project_employee.employee_id = "user".id
+where "user".id = 1;
