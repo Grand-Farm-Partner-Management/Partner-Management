@@ -11,11 +11,11 @@ function LoginForm() {
   const login = (event) => {
     event.preventDefault();
 
-    if (username && password) {
+    if (email && password) {
       dispatch({
         type: 'LOGIN',
         payload: {
-          username: username,
+          username: email,
           password: password,
         },
       });

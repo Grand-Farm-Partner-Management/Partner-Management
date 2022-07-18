@@ -16,7 +16,10 @@ function RegisterForm() {
     dispatch({
       type: 'REGISTER',
       payload: {
-        username: username,
+        firstName: firstName,
+        lastName: lastName,
+        linkedIn: linkedIn,
+        username: email,
         password: password,
       },
     });
