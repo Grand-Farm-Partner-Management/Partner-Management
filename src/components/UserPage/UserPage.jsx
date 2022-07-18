@@ -1,7 +1,8 @@
 import React from 'react';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import GrandFarm from '../../../src/images/GrandFarm_Logo.png'
+import { Button } from 'reactstrap';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
@@ -9,9 +10,9 @@ function UserPage() {
   console.log(user)
   return (
     <div className="wrapper">
-      <img className = 'GrandFarm' src={GrandFarm}/>
+      <img className='GrandFarm' src={GrandFarm} />
       <h2>Welcome, {user.first_name}!</h2>
-      <button>View Projects</button>
+      <Button color="primary">View Projects</Button>
     </div>
   );
 }
