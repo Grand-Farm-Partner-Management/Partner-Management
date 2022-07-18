@@ -4,8 +4,42 @@ body,
   height: 100%;
 }
 
+/* FONTS */
+
+@font-face {
+  font-family: heavy;
+  src: url('../../fonts/Gotham-Bold.otf');
+}
+
+@font-face {
+  font-family: normal;
+  src: url('../../fonts/GothamBook.ttf');
+}
+
+@font-face {
+  font-family: light;
+  src: url('../../fonts/Gotham-Light.otf');
+}
+
+/* COLOR PALLETTE  */
+:root {
+  /* TRY TO USE GROUPS TOGETHER */
+  /* GROUP A */
+  --green: rgb(175, 204, 54);
+  --cream: rgb(244, 241, 223);
+  --teal: rgb(112, 190, 163);
+  /* GROUP B */
+  --yellow: rgb(247, 221, 77);
+  --navy: rgb(36, 76, 98);
+  --green: rgb(175, 204, 54);
+  /* GROUP C */
+  --grey: rgb(66, 77, 87);
+  --green: rgb(175, 204, 54);
+  --navy: rgb(36, 76, 98);
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: normal;
   margin: 0px;
 }
 
@@ -109,4 +143,17 @@ Form Treatment
 input {
   margin: 5px;
   margin-bottom: 10px;
+}
+
+/* USER PAGE */
+
+.GrandFarm {
+  width: 30em;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
