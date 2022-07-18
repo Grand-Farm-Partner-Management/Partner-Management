@@ -4,6 +4,23 @@ body,
   height: 100%;
 }
 
+/* FONTS */
+
+@font-face {
+  font-family: heavy;
+  src: url('../../fonts/Gotham-Bold.otf');
+}
+
+@font-face {
+  font-family: normal;
+  src: url('../../fonts/GothamBook.ttf');
+}
+
+@font-face {
+  font-family: light;
+  src: url('../../fonts/Gotham-Light.otf');
+}
+
 /* COLOR PALLETTE  */
 :root {
   /* TRY TO USE GROUPS TOGETHER */
@@ -22,7 +39,7 @@ body,
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: normal;
   margin: 0px;
 }
 
