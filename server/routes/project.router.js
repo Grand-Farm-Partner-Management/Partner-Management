@@ -68,6 +68,9 @@ router.post('/', (req, res,) => {
         })
 });
 
+router.put('/:id', (req, res) => {
+    const query = `update projects set ` //unfinished
+})
 /**
  * GET route for showing all projects for your company
  */
@@ -88,6 +91,7 @@ router.get('/:id', (req, res) => {
         });
 });
 
+//delete project... needs 4 statements for each table it is in.
 router.delete('/:id', (req, res) =>{
     const query1 = `delete from company_project where project.id = $1`; // delete project from company_project join table
     const query2 = `delete from project_employee where project.id = $1`;// delete project from project_employee join table
@@ -121,8 +125,6 @@ router.delete('/:id', (req, res) =>{
         console.log(`Error deleting run`, error);
         res.sendStatus(500);
     });
-    
-    
 })
 
 module.exports = router;
