@@ -4,6 +4,23 @@ body,
   height: 100%;
 }
 
+/* COLOR PALLETTE  */
+:root {
+  /* TRY TO USE GROUPS TOGETHER */
+  /* GROUP A */
+  --green: rgb(175, 204, 54);
+  --cream: rgb(244, 241, 223);
+  --teal: rgb(112, 190, 163);
+  /* GROUP B */
+  --yellow: rgb(247, 221, 77);
+  --navy: rgb(36, 76, 98);
+  --green: rgb(175, 204, 54);
+  /* GROUP C */
+  --grey: rgb(66, 77, 87);
+  --green: rgb(175, 204, 54);
+  --navy: rgb(36, 76, 98);
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
@@ -109,4 +126,17 @@ Form Treatment
 input {
   margin: 5px;
   margin-bottom: 10px;
+}
+
+/* USER PAGE */
+
+.GrandFarm {
+  width: 30em;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
