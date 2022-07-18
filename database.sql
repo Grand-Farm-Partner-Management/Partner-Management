@@ -65,3 +65,18 @@ CREATE TABLE "company_project" (
 	"company_id" int references company,
 	"project_id" int references project
 );
+
+--these 2 get mostly the same information, the second one bypasses the company, 
+--maybe if someone is working on a project outside their company 
+select * from tasks -- get everything on the way to for a user
+join project on tasks.project_id = project.id
+join company_project on project.id = company_project.project_id
+join company on company_project.company_id = company.id
+join "user" on company.id = "user".company_id
+where "user".id = 1;
+
+select * from tasks -- get everything on the way to tasks for a user, NO COMPANY INFO
+join project on tasks.project_id = project.id
+join project_employee on project.id = project_employee.project_id
+join "user" on project_employee.employee_id = "user".id
+where "user".id = 1;
