@@ -144,3 +144,21 @@ input {
   display: flex;
   flex-direction: row;
 }
+
+.companyName {
+  font-size: 3em;
+  margin: 1em;
+}
+
+.links {
+  padding: 1em 3em 1em 3em;
+  font-size: 2em;
+  text-align: center;
+  border: 1px solid black;
+  width: 50vw;
+  background-color: white;
+}
+
+.links:hover {
+  cursor: pointer;
+}

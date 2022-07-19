@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
 import { useSelector } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Collapse, Button, CardBody, Card } from 'reactstrap';
 
 function Nav() {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
+
   const user = useSelector((store) => store.user);
 
   return (
@@ -32,13 +39,13 @@ function Nav() {
               Company
             </Link>
 
-            <LogOutButton className="navLink" />
           </>
         )}
 
         <Link className="navLink" to="/about">
           Account
         </Link>
+        <LogOutButton className="navLink" />
       </div>
     </div>
   );
