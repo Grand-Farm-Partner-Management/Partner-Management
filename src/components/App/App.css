@@ -97,6 +97,10 @@ input {
   width: 30em;
 }
 
+.welcome {
+  margin-bottom: .8em;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;

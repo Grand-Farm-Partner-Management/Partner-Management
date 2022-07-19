@@ -4,7 +4,6 @@
   align-items: flex-start;
   flex-direction: column;
   overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.712);
 }
 
 .nav a {
@@ -22,9 +21,10 @@
 
   /* these last two make the logout button in
   the nav bar look like another link */
+  background-color: rgba(255, 255, 255, 0.712);
   border: none;
   cursor: pointer;
-  outline: 0;
+  background-color: none;
 }
 
 .navLink:hover {
