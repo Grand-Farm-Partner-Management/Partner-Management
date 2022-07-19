@@ -207,3 +207,20 @@ input {
   align-self: flex-start;
   opacity: 60%;
 }
+
+.project-description {
+  opacity: 60%;
+}
+
+.title-and-date {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-and-date h6 {
+  opacity: 60%;
+}
+
+.nothingYet {
+  margin-top: 5em;
+}
