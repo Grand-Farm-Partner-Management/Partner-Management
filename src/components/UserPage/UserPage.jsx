@@ -11,7 +11,7 @@ function UserPage() {
   return (
     <div className="wrapper">
       <img className='GrandFarm' src={GrandFarm} />
-      <h2>Welcome, {user.first_name}!</h2>
+      <h2 className='welcome'>Welcome, {user.first_name}!</h2>
       <Button color="primary">View Projects</Button>
     </div>
   );

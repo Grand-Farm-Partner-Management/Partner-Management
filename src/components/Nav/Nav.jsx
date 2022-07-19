@@ -1,46 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
 import { useSelector } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Collapse, Button, CardBody, Card } from 'reactstrap';
+import menuIcon from '../../images/menu_icon.svg'
 
-function Nav() {
+function Nav(args) {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
+
   const user = useSelector((store) => store.user);
 
   return (
-    <div className="nav">
-      <Link to="/home">
-        <h2 className="nav-title">Prime Solo Project</h2>
-      </Link>
-      <div>
-        {/* If no user is logged in, show these links */}
-        {!user.id && (
-          // If there's no user, show login/registration links
-          <Link className="navLink" to="/login">
-            Login / Register
-          </Link>
-        )}
+    <>
+      <img src={menuIcon} onClick={toggle} className = 'menuIcon'/>
+      <Collapse className = 'h' isOpen={isOpen} {...args}>
+        <div className="nav">
+          <div>
+            {/* If no user is logged in, show these links */}
+            {!user.id && (
+              // If there's no user, show login/registration links
+              <Link className="navLink" to="/login">
+                Login / Register
+              </Link>
+            )}
 
-        {/* If a user is logged in, show these links */}
-        {user.id && (
-          <>
-            <Link className="navLink" to="/user">
-              Home
+            {/* If a user is logged in, show these links */}
+            {user.id && (
+              <>
+                <Link onClick={toggle} className="navLink" to="/user">
+                  Home
+                </Link>
+
+                <Link onClick={toggle} className="navLink" to="/company">
+                  Company
+                </Link>
+
+              </>
+            )}
+
+            <Link onClick={toggle} className="navLink" to="/about">
+              Account
             </Link>
-
-            <Link className="navLink" to="/company">
-              Company
-            </Link>
-
             <LogOutButton className="navLink" />
-          </>
-        )}
-
-        <Link className="navLink" to="/about">
-          Account
-        </Link>
-      </div>
-    </div>
+          </div>
+        </div>
+      </Collapse>
+    </>
   );
 }
 

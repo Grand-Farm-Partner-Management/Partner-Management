@@ -45,8 +45,8 @@ router.get('/', (req, res) => {
 router.get('/members/:id', (req, res) => {
   const queryText = `SELECT first_name, last_name, company_id, company_name FROM "company"
   JOIN "user" ON "company".id = "user".company_id
-  WHERE "user".company_id = 5;`
-  pool.query(queryText)
+  WHERE "user".company_id = $1;`
+  pool.query(queryText, [req.params.id])
     .then(result => {
       res.send(result.rows);
     })
