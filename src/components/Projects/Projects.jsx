@@ -52,8 +52,8 @@ function Projects(args) {
                                 <h4>{project.title}</h4>
                                 <h6>{project.description}</h6>
                                 <Progress animated
-                                    value={project.progress}>
-                                    {project.progress}%
+                                    value={project.progression}>
+                                    {project.progression}%
                                 </Progress>
                             </div>
                         )
