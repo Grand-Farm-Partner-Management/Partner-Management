@@ -192,6 +192,10 @@ input {
   border: 1px solid black;
 }
 
+.project :hover {
+  cursor: pointer;
+}
+
 .projectHeading {
   display: flex;
   width: 70vw;
@@ -202,4 +206,21 @@ input {
 .project_company_name {
   align-self: flex-start;
   opacity: 60%;
+}
+
+.project-description {
+  opacity: 60%;
+}
+
+.title-and-date {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-and-date h6 {
+  opacity: 60%;
+}
+
+.nothingYet {
+  margin-top: 5em;
 }
