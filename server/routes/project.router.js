@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
     join "user" on project_employee.employee_id = "user".id;`
     //--where "user".id = $1;`
 
+<<<<<<< HEAD
     pool.query(query//, [req.user.id])
     ).then (result => {
         res.send(result.rows);
@@ -20,6 +21,16 @@ router.get('/', (req, res) => {
         console.log('Error making SELECT for runs:', error);
         res.sendStatus(500);
     });
+=======
+    pool.query(query, [req.user.id])
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch((error) => {
+            console.log('Error making SELECT for runs:', error);
+            res.sendStatus(500);
+        });
+>>>>>>> 026e291992052e0672dcc8b5d258dad6251bde2a
 })
 
 //Post route for project 
@@ -33,39 +44,39 @@ router.get('/', (req, res) => {
 /**
  * POST route for creating a project
  */
-router.post('/', (req, res,) => {
+router.post('/:id', (req, res,) => {
 
     const title = req.body.title;
     const description = req.body.description;
     // Progression
     const due_time = req.body.due_time;
     // Completed
+    const company_id = req.params.id;
 
     const queryText = `INSERT INTO "project" ("title", "description", "progression", "due_time", "completed")
       VALUES ($1, $2, $3, $4, $5) RETURNING id`;
 
     const queryText2 = `insert into company_project ("company_id", "project_id")
     values ($1, $2);`;
-    
+
     pool.query(queryText, [title, description, 0, due_time, false])
         .then(result => {
             const createProjectId = result.rows[0].id
             console.log("new project id:", createProjectId);
+            pool.query(queryText2, [company_id, createProjectId])
+                .then(result => {
+                    res.sendStatus(201);
+                }).catch(err => {
+                    console.log(err);
+                    res.sendStatus(500)
+                })
             res.sendStatus(201);
         }).catch(err => {
             console.log(err);
             res.sendStatus(500)
         })
 
-    pool.query(queryText2, [])
-        .then(result => {
-            const createProjectId = result.rows[0].id
-            console.log("new project id:", createProjectId);
-            res.sendStatus(201);
-        }).catch(err => {
-            console.log(err);
-            res.sendStatus(500)
-        })
+
 });
 
 router.put('/:id', (req, res) => {
@@ -77,7 +88,7 @@ router.put('/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const companyId = req.params.id;
-    const queryText = `select project.title, project.description, project.progression from project
+    const queryText = `select project.title, project.description, project.progression, project.due_time from project
     join company_project on project.id = company_project.project_id
     join company on company_project.company_id = company.id
     where company.id = $1;`
@@ -97,7 +108,7 @@ router.delete('/:id/delete', (req, res) =>{
     const query2 = `delete from project_employee where project_id = $1`;// delete project from project_employee join table
     const query3 = `delete from tasks where project_id = $1`; // delete project tasks from tasks table
     const query4 = `delete from project where project.id = $1`; // delete the project from the project table
-    
+
     pool.query(query1, [req.params.id])
     .then((response) => res.sendStatus(200))
     .catch(error => {
