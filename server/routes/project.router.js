@@ -53,12 +53,9 @@ router.post('/:id', (req, res,) => {
             console.log("new project id:", createProjectId);
             pool.query(queryText2, [company_id, createProjectId])
                 .then(result => {
-                    res.sendStatus(201);
                 }).catch(err => {
                     console.log(err);
-                    res.sendStatus(500)
                 })
-            res.sendStatus(201);
         }).catch(err => {
             console.log(err);
             res.sendStatus(500)
