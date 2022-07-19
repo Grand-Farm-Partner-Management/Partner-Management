@@ -12,16 +12,6 @@ router.get('/', (req, res) => {
     join "user" on project_employee.employee_id = "user".id;`
     //--where "user".id = $1;`
 
-<<<<<<< HEAD
-    pool.query(query//, [req.user.id])
-    ).then (result => {
-        res.send(result.rows);
-    })
-    .catch((error) => {
-        console.log('Error making SELECT for runs:', error);
-        res.sendStatus(500);
-    });
-=======
     pool.query(query, [req.user.id])
         .then(result => {
             res.send(result.rows);
@@ -30,17 +20,8 @@ router.get('/', (req, res) => {
             console.log('Error making SELECT for runs:', error);
             res.sendStatus(500);
         });
->>>>>>> 026e291992052e0672dcc8b5d258dad6251bde2a
 })
 
-//Post route for project 
-// "id" SERIAL PRIMARY KEY,
-// 	"title" varchar,
-// 	"description" varchar,
-// 	"progression" int,
-// 	"due_time" timestamp,
-// 	"completed" boolean default false,
-// 	"completed_time" timestamp 
 /**
  * POST route for creating a project
  */
