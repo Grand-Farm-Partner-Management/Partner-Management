@@ -192,6 +192,10 @@ input {
   border: 1px solid black;
 }
 
+.project :hover {
+  cursor: pointer;
+}
+
 .projectHeading {
   display: flex;
   width: 70vw;
