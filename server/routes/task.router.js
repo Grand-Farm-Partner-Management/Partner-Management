@@ -48,6 +48,8 @@ router.get('/', (req, res) => {
 
   router.put('/:id', (req, res) => {
     const queryText = `UPDATE tasks SET "complete" = Not "complete" WHERE "id" = $1;`;
+
+    // Test
   
     pool.query(queryText, [req.params.id])
       .then(result => {
