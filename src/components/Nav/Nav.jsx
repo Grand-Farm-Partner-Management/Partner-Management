@@ -40,13 +40,17 @@ function Nav(args) {
                   Company
                 </Link>
 
+                <Link onClick={toggle} className="navLink" to="/projects">
+                  Projects
+                </Link>
+
               </>
             )}
 
             <Link onClick={toggle} className="navLink" to="/about">
               Account
             </Link>
-            <LogOutButton className="navLink" />
+            <LogOutButton className="navLogOut" />
           </div>
         </div>
       </Collapse>
