@@ -79,7 +79,39 @@ router.get('/:id', (req, res) => {
         });
 });
 
-//delete project... needs 4 statements for each table it is in.?
+//update project info--- 
+router.put('/:id/update', (req,res) =>{ 
+    //if (req.body.completed === false){  }
+    const body = req.body;
+    const query = `update project set 
+    "title" = $1,
+    "description" = $2,
+    "due_time" = $3
+    where project.id = $4`;
+    pool.query(query, [body.title, body.description, body.due_time, req.params.id])
+    .then(response => res.sendStatus(200))
+        .catch(error => {
+            console.log(`Error updating projects`, error);
+            res.sendStatus(500);
+        });
+});
+
+//update progress 
+router.put('/:id/progress', (req,res) =>{ 
+    //if (req.body.completed === false){  }
+    const body = req.body;
+    const query = `update project set
+    "progression" = $1
+    where project.id = $2`;
+    pool.query(query, [body.progress, req.params.id])
+    .then(response => res.sendStatus(200))
+        .catch(error => {
+            console.log(`Error updating projects`, error);
+            res.sendStatus(500);
+        });
+});
+
+//delete project
 router.delete('/:id/delete', (req, res) =>{
     const query1 = `delete from company_project where project_id = $1`; // delete project from company_project join table
     const query2 = `delete from project_employee where project_id = $1`;// delete project from project_employee join table
@@ -114,5 +146,7 @@ router.delete('/:id/delete', (req, res) =>{
         res.sendStatus(500);
     });
 })
+
+
 
 module.exports = router;
