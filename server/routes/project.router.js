@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
             console.log('Error making SELECT for runs:', error);
             res.sendStatus(500);
         });
-})
+})//
 
 router.get('/projectDetails/:id', (req, res) => {
     const projectId = req.params.id;
@@ -66,7 +66,7 @@ router.post('/:id', (req, res,) => {
             console.log(err);
             res.sendStatus(500)
         })
-});
+});//
 
 //assigns a user/employee to a project
 router.post('/:id/assign', (req, res) => {
@@ -77,11 +77,9 @@ router.post('/:id/assign', (req, res) => {
         }).catch(err => {
             console.log(err);
     })
-});
+});//
 
-router.put('/:id', (req, res) => {
-    const query = `update projects set ` //unfinished
-})
+
 /**
  * GET route for showing all projects for your company
  */
@@ -117,7 +115,7 @@ router.put('/:id/update', (req,res) =>{
             console.log(`Error updating projects`, error);
             res.sendStatus(500);
         });
-});
+});//
 
 //update progress ---
 router.put('/:id/progress', (req,res) =>{ 

@@ -27,10 +27,8 @@ function* fetchCompany(action){
 function* postCompany(action){
     console.log('in post company saga');
     try{
-        axios.post('api/company', action.payload);
-        const response = yield axios.get('/api/company')
-        console.log('response in fetch company is:', response);
-        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+        yield axios.post('api/company', action.payload);
+        yield put({ type: 'FETCH_COMPANY'})
     }catch{
         console.log('error in post company saga.');
     }
@@ -40,7 +38,7 @@ function* postCompany(action){
 function* fetchCompanyUser(action){
     console.log('in fetch company users');
     try{
-        const response = yield axios.get('/api/company/members/:id')
+        const response = yield axios.get(`/api/company/members/${action.payload.id}`)
         console.log('response in fetch company users is:', response);
         yield put({type: 'SET_COMPANY_USER', payload: response.data});//reducer needs to be made
     }catch{
@@ -52,10 +50,8 @@ function* fetchCompanyUser(action){
 function* renameCompany(action){
     console.log('in update company saga');
     try{
-        axios.put('api/company/:id', action.payload);
-        const response = yield axios.get('/api/company')
-        console.log('response in update company is:', response);
-        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+        yield axios.put(`api/company/${action.payload.id}`, action.payload);
+        yield put({ type: 'FETCH_COMPANY'})
     }catch{
         console.log('error in rename company saga.');
     }
@@ -64,10 +60,8 @@ function* renameCompany(action){
 function* updateLevelCompany(action){
     console.log('in update company partner level saga');
     try{
-        axios.put('api/company/partnerLevel/:id', action.payload);
-        const response = yield axios.get('/api/company')
-        console.log('response in update company is:', response);
-        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+        yield axios.put(`api/company/partnerLevel/${action.payload.id}`, action.payload);
+        yield put({ type: 'FETCH_COMPANY'})
     }catch{
         console.log('error in rename company saga.');
     }
@@ -77,10 +71,8 @@ function* updateLevelCompany(action){
 function* logoCompany(action){
     console.log('in logo company saga');
     try{
-        axios.put('api/company/:id', action.payload);
-        const response = yield axios.get('/api/company')
-        console.log('response in update company is:', response);
-        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+        yield axios.put(`api/company/${action.payload.id}`, action.payload);
+        yield put({ type: 'FETCH_COMPANY'})
     }catch{
         console.log('error in rename company saga.');
     }
@@ -90,10 +82,8 @@ function* logoCompany(action){
 function* deleteCompany(action){
     console.log('in delete company saga');
     try{
-        axios.put('api/company/:id', action.payload);
-        const response = yield axios.get('/api/company')
-        console.log('response in update company is:', response);
-        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+        yield axios.put(`api/company/${action.payload.id}`, action.payload);
+        yield put({ type: 'FETCH_COMPANY'})
     }catch{
         console.log('error in rename company saga.');
     }
