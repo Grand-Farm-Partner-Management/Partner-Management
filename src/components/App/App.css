@@ -95,6 +95,7 @@ input {
 
 .GrandFarm {
   width: 30em;
+  margin-top: 2em;
 }
 
 .welcome {
@@ -223,4 +224,87 @@ input {
 
 .nothingYet {
   margin-top: 5em;
+}
+
+/* TASK */
+
+.task-flex {
+  display: flex;
+  /* width: 90vw; */
+  justify-content:center;
+  align-items: center;
+}
+
+.task-wrapper {
+  margin: 3em;
+  margin-top: 3em;
+  width: 70vw;
+}
+
+.project-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.taskHub {
+  border: 1px solid black;
+  border-bottom: 0;
+}
+
+.task {
+  border-bottom: 1px solid black;
+  padding: 1em;
+}
+
+.sort-tabs {
+  background-color: var(--grey);
+  width: 70vw;
+  color: white;
+  margin-top: 2em;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  border-bottom: 0;
+}
+
+.tab {
+  padding: 1em 2em 1em 2em;
+}
+
+.title-and-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dots {
+  height: 1em;
+  margin: .5em;
+}
+
+.dots:hover {
+  cursor: pointer;
+}
+
+.no-tasks {
+  display: flex;
+  justify-content: center;
+  margin: 1em;
+}
+
+.dot-and-task {
+  display: flex;
+  align-items: center;
+}
+
+/* RESPONSIVENESS */
+
+@media screen and (max-width: 900px) {
+  .sort-tabs {
+    flex-direction: column;
+  }
+  .tab {
+    border-top: 1px solid white;
+  }
 }

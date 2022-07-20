@@ -21,6 +21,20 @@ router.get('/', (req, res) => {
         });
 })
 
+router.get('/projectDetails/:id', (req, res) => {
+    const projectId = req.params.id;
+    const query = `SELECT * FROM "project"
+    WHERE "id" = $1;`
+    pool.query(query, [projectId])
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch((error) => {
+            console.log('Error making SELECT for project details:', error);
+            res.sendStatus(500);
+        });
+})
+
 /**
  * POST route for creating a project
  */
@@ -74,7 +88,7 @@ router.put('/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const companyId = req.params.id;
-    const queryText = `select project.title, project.description, project.progression, project.due_time from project
+    const queryText = `select project.id, project.title, project.description, project.progression, project.due_time from project
     join company_project on project.id = company_project.project_id
     join company on company_project.company_id = company.id
     where company.id = $1;`

@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Projects(args) {
 
@@ -15,6 +16,7 @@ function Projects(args) {
     const projects = useSelector((store) => store.projects);
     const members = useSelector((store) => store.members);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     // State and function for modal
     const [modal, setModal] = useState(false);
@@ -24,6 +26,7 @@ function Projects(args) {
     const [projectTitle, setProjectTitle] = useState('');
     const [projectDescription, setProjectDescription] = useState('');
     const [projectDueDate, setProjectDueDate] = useState('');
+    const [date, setDate] = useState(new Date());
 
     const fetchProjects = async () => {
         await axios.get(`/api/project/${user.company_id}`)
@@ -46,14 +49,23 @@ function Projects(args) {
                 await fetchProjects();
             })
     }
-    function getFormattedDate(date){
+
+    function getFormattedDate(date) {
         if (date === null) {
             return
         }
         let t = date.indexOf('T');
         let newDate = date.slice(0, t)
         return newDate;
-      }
+    }
+
+    const projectTasks = (project) => {
+        dispatch({
+            type: 'PROJECT_ID',
+            payload: project.id
+        })
+        history.push(`/tasks/${project.id}`);
+    }
 
     useEffect(() => {
         fetchProjects();
@@ -75,14 +87,16 @@ function Projects(args) {
                             <label htmlFor='project-description'>Project Description:</label>
                             <input onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
                             <br />
-                            <label htmlFor='project-due-date'>Project due-date: </label>
-                            <br/>
+                            <label htmlFor='project-due-date'>Project Due-Date: </label>
+                            <br />
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     id='project-due-date'
-                                    value={projectDueDate}
+                                    value={date}
                                     onChange={(newDate) => {
                                         setProjectDueDate(newDate);
+                                        setDate(newDate);
+                                        console.log(newDate);
                                     }}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
@@ -98,17 +112,17 @@ function Projects(args) {
                     </Modal>
                 </div>
                 <h4 className='project_company_name'>{members.length > 1 ? members[0].company_name : ''}</h4>
-                {projects.length < 1 ? <h1 className='nothingYet'>Nothing yet</h1>:''}
+                {projects.length < 1 ? <h1 className='nothingYet'>Nothing yet</h1> : ''}
                 {
                     projects.map((project) => {
                         return (
-                            <div className='project'>
+                            <div  onClick={() => projectTasks(project)} className='project'>
                                 <div className="title-and-date">
                                     <h4>{project.title}</h4>
                                     <h6>{getFormattedDate(project.due_time)}</h6>
                                 </div>
                                 <h6 className='project-description'>{project.description}</h6>
-                                <Progress animated
+                                <Progress
                                     value={project.progression}>
                                     {project.progression}%
                                 </Progress>

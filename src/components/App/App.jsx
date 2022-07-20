@@ -20,6 +20,7 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import Company from '../Company/Company';
 import Projects from '../Projects/Projects';
+import Task from '../Task/Task';
 
 import './App.css';
 
@@ -74,7 +75,11 @@ function App() {
             exact
             path="/projects"
           >
-            <Projects/>
+            <Projects />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/tasks/:projectId">
+            <Task />
           </ProtectedRoute>
 
           <Route
