@@ -5,6 +5,10 @@ function* companySaga() {
     yield takeLatest('FETCH_COMPANY', fetchCompany);
     yield takeLatest('ADD_COMPANY', postCompany);
     yield takeLatest('FETCH_COMPANY_USERS', fetchCompanyUser);
+    yield takeLatest('RENAME_COMPANY', renameCompany);
+    yield takeLatest('UPDATE_LEVEL_COMPANY', updateLevelCompany);
+    yield takeLatest('LOGO_COMPANY', logoCompany);
+    yield takeLatest('DELETE_COMPANY', deleteCompany)
 }
 
 // fetches the companies
@@ -41,6 +45,57 @@ function* fetchCompanyUser(action){
         yield put({type: 'SET_COMPANY_USER', payload: response.data});//reducer needs to be made
     }catch{
         console.log('error in fetch company users saga.');
+    }
+}
+
+// updates company name
+function* renameCompany(action){
+    console.log('in update company saga');
+    try{
+        axios.put('api/company/:id', action.payload);
+        const response = yield axios.get('/api/company')
+        console.log('response in update company is:', response);
+        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+    }catch{
+        console.log('error in rename company saga.');
+    }
+}
+// change partnership level
+function* updateLevelCompany(action){
+    console.log('in update company partner level saga');
+    try{
+        axios.put('api/company/partnerLevel/:id', action.payload);
+        const response = yield axios.get('/api/company')
+        console.log('response in update company is:', response);
+        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+    }catch{
+        console.log('error in rename company saga.');
+    }
+}
+
+//update company for logo
+function* logoCompany(action){
+    console.log('in logo company saga');
+    try{
+        axios.put('api/company/:id', action.payload);
+        const response = yield axios.get('/api/company')
+        console.log('response in update company is:', response);
+        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+    }catch{
+        console.log('error in rename company saga.');
+    }
+}
+
+//delete a company
+function* deleteCompany(action){
+    console.log('in delete company saga');
+    try{
+        axios.put('api/company/:id', action.payload);
+        const response = yield axios.get('/api/company')
+        console.log('response in update company is:', response);
+        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
+    }catch{
+        console.log('error in rename company saga.');
     }
 }
 
