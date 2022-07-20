@@ -52,8 +52,17 @@ router.post('/:id', (req, res,) => {
             console.log(err);
             res.sendStatus(500)
         })
+});
 
-
+//assigns a user/employee to a project
+router.post('/:id/assign', (req, res) => {
+    const query = `insert into project_employee ("project_id", "employee_id")
+    values ($1,$2);`
+    pool.query(query, [req.params.id, req.user.id])
+        .then(result => {
+        }).catch(err => {
+            console.log(err);
+    })
 });
 
 router.put('/:id', (req, res) => {
