@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
  * GET route for showing all companies
  */
 router.get('/', (req, res) => {
-  const queryText = `SELECT * FROM "company";`
+  const queryText = `SELECT * FROM "company" ORDER BY partner_level ASC;`
   pool.query(queryText)
     .then(result => {
       res.send(result.rows);
