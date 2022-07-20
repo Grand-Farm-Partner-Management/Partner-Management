@@ -102,7 +102,7 @@ router.get('/:id', (req, res) => {
         });
 });
 
-//update project info--- 
+//update project info--
 router.put('/:id/update', (req,res) =>{ 
     //if (req.body.completed === false){  }
     const body = req.body;
@@ -119,7 +119,7 @@ router.put('/:id/update', (req,res) =>{
         });
 });
 
-//update progress 
+//update progress ---
 router.put('/:id/progress', (req,res) =>{ 
     //if (req.body.completed === false){  }
     const body = req.body;
@@ -145,28 +145,21 @@ router.delete('/:id/delete', (req, res) =>{
     .then((response) => res.sendStatus(200))
     .catch(error => {
         console.log(`Error deleting company_project table`, error);
-        res.sendStatus(500);
     });
     
     pool.query(query2, [req.params.id])
-    .then((response) => res.sendStatus(200))
     .catch(error => {
         console.log(`Error deleting project_employee table`, error);
-        res.sendStatus(500);
     });
     
     pool.query(query3, [req.params.id])
-    .then((response) => res.sendStatus(200))
     .catch(error => {
         console.log(`Error deleting tasks table`, error);
-        res.sendStatus(500);
     });
     
     pool.query(query4, [req.params.id])
-    .then((response) => res.sendStatus(200))
     .catch(error => {
         console.log(`Error deleting project table`, error);
-        res.sendStatus(500);
     });
 })
 

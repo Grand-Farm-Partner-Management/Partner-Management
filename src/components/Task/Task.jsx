@@ -59,11 +59,9 @@ function Task({ direction, ...args }) {
             })
     }
 
-    const deleteProject = () => {
-        axios.delete(`/api/project/${projectId}`)
-        .then(res => {
-            console.log(res)
-        })
+    const deleteProject = async () => {
+        await axios.delete(`/api/project/${projectId}/delete`)
+        history.push('/projects')
     }
 
     const createTask = async (body) => {
@@ -120,10 +118,10 @@ function Task({ direction, ...args }) {
                                 <ModalHeader toggle={toggle2}>Edit Project</ModalHeader>
                                 <ModalBody>
                                     <label htmlFor='project-title'>Project Title:</label>
-                                    <input value = {currentProject.title} onChange={(e) => setProjectTitle(e.target.value)} id='project-title' />
+                                    <input value={currentProject.title} onChange={(e) => setProjectTitle(e.target.value)} id='project-title' />
                                     <br />
                                     <label htmlFor='project-description'>Project Description:</label>
-                                    <input value = {currentProject.description} onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
+                                    <input value={currentProject.description} onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
                                     <br />
                                     <label htmlFor='project-due-date'>Project Due-Date: </label>
                                     <br />
