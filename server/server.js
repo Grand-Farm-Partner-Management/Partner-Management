@@ -6,6 +6,8 @@ const app = express();
 
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./strategies/user.strategy');
+const  cron = require('node-cron');
+
 
 
 // Route includes
@@ -13,6 +15,7 @@ const userRouter = require('./routes/user.router');
 const projectRouter = require('./routes/project.router');
 const companyRouter = require('./routes/company.router');
 const taskRouter = require('./routes/task.router');
+const sendReminderEmails = require('./email');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -34,8 +37,13 @@ app.use('/api/task', taskRouter);
 // Serve static files
 app.use(express.static('build'));
 
+cron.schedule('* * * * *', () => {
+  sendReminderEmails();  
+});
+
 // App Set //
 const PORT = process.env.PORT || 5000;
+
 
 /** Listen * */
 app.listen(PORT, () => {
