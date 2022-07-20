@@ -149,6 +149,8 @@ function sendReminderEmails() {
 
 }
 
+
+
 // result.rows is an array: loop over it
 // build a body for the email in a new variable
 // console log the to: address and the email body
@@ -157,7 +159,7 @@ function sendReminderEmails() {
 
 // quick check to see if we are running this from the command line. if we are, run the function 
 // for testing purposes and kill the pool when done
-if (require.main === module) {
+ if (require.main === module) {
     sendReminderEmails(); // we want to remove this when we export to server.js, but keep for testing right now
     pool.end(); // kill the pool when we're done with it
 
