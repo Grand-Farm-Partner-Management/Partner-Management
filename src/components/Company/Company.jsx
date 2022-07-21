@@ -25,6 +25,7 @@ function Company(args) {
 
     useEffect(() => {
         fetchMembers();
+        console.log(members)
     }, [])
 
     return (

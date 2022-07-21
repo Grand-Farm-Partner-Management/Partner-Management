@@ -6,7 +6,7 @@ const app = express();
 
 const sessionMiddleware = require('./modules/session-middleware');
 const passport = require('./strategies/user.strategy');
-const  cron = require('node-cron');
+const cron = require('node-cron');
 
 
 
@@ -37,8 +37,8 @@ app.use('/api/task', taskRouter);
 // Serve static files
 app.use(express.static('build'));
 
-cron.schedule('* * * * *', () => {
-  sendReminderEmails();  
+cron.schedule('0 9 * * *', () => {
+  sendReminderEmails();
 });
 
 // App Set //
