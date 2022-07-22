@@ -87,7 +87,7 @@ function AboutPage(args) {
       </Modal>
       <div className="profile-photo">
         <img className='blank' src={Blank}></img>
-        <button>Change Profile Picture</button>
+        <Button className='change-pfp'>Change Profile Picture</Button>
       </div>
     </div>
   );
