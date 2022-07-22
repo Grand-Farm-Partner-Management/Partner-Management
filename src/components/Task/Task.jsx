@@ -11,7 +11,8 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
+// Swal
+import swal from 'sweetalert';
 
 function Task({ direction, ...args }) {
     const dispatch = useDispatch();
@@ -37,11 +38,13 @@ function Task({ direction, ...args }) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
 
-    // State for creating a new project
+    // State for editing a project
     const [projectTitle, setProjectTitle] = useState('');
     const [projectDescription, setProjectDescription] = useState('');
     const [projectDueDate, setProjectDueDate] = useState('');
     const [date, setDate] = useState(new Date());
+
+    // Fetching tasks
 
     const fetchTasks = () => {
         axios.get(`/api/task/projectTasks/${projectId}`)
@@ -50,6 +53,8 @@ function Task({ direction, ...args }) {
                 console.log(res.data)
             })
     }
+
+    // Fetching project details
 
     const fetchProjectDetails = () => {
         axios.get(`/api/project/projectDetails/${projectId}`)
@@ -62,6 +67,11 @@ function Task({ direction, ...args }) {
     const deleteProject = async () => {
         await axios.delete(`/api/project/${projectId}/delete`)
         history.push('/projects')
+    }
+
+    const editProject = async (body) => {
+        await axios.put(`/api/project/${projectId}/update`, body)
+        toggle2();
     }
 
     const createTask = async (body) => {
@@ -118,17 +128,17 @@ function Task({ direction, ...args }) {
                                 <ModalHeader toggle={toggle2}>Edit Project</ModalHeader>
                                 <ModalBody>
                                     <label htmlFor='project-title'>Project Title:</label>
-                                    <input value={currentProject.title} onChange={(e) => setProjectTitle(e.target.value)} id='project-title' />
+                                    <input defaultValue = {currentProject.title} onChange={(e) => setProjectTitle(e.target.value)} id='project-title' />
                                     <br />
                                     <label htmlFor='project-description'>Project Description:</label>
-                                    <input value={currentProject.description} onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
+                                    <input defaultValue = {currentProject.description} onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
                                     <br />
                                     <label htmlFor='project-due-date'>Project Due-Date: </label>
                                     <br />
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <DatePicker
                                             id='project-due-date'
-                                            value={currentProject.due_time}
+                                            value={date}
                                             onChange={(newDate) => {
                                                 setProjectDueDate(newDate);
                                                 setDate(newDate);
@@ -139,16 +149,35 @@ function Task({ direction, ...args }) {
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button onClick={() => {
+                                        editProject({title: projectTitle, description: projectDescription, due_time: projectDueDate});
                                         toggle2();
                                     }
-                                    }>Create</Button>
+                                    }>Confirm</Button>
                                 </ModalFooter>
                             </Modal>
 
-
                             <DropdownItem onClick={() => console.log('add')}>Add Members</DropdownItem>
                             <DropdownItem divider />
-                            <DropdownItem onClick={() => deleteProject()} style={{
+                            <DropdownItem onClick={() => {
+                                swal({
+                                    title: `Are you sure you want to delete ${currentProject.title}?`,
+                                    text: "Once deleted, you will not be able to recover this project.",
+                                    icon: "warning",
+                                    buttons: true,
+                                    dangerMode: true,
+                                })
+                                    .then((willDelete) => {
+                                        if (willDelete) {
+                                            swal(`${currentProject.title} has been deleted!`, {
+                                                icon: "success",
+                                            });
+                                            deleteProject();
+                                        } else {
+                                            swal("Process cancelled.");
+                                        }
+                                    });
+                            }
+                            } style={{
                                 color: 'red'
                             }}>Delete Project</DropdownItem>
                         </DropdownMenu>
