@@ -75,6 +75,7 @@ function Task({ direction, ...args }) {
 
     const editProject = async (body) => {
         await axios.put(`/api/project/${projectId}/update`, body)
+        fetchProjectDetails();
         toggle2();
     }
 
