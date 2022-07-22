@@ -13,13 +13,10 @@ router.post('/', (req, res,) => {
   const title = req.body.title;
   const description = req.body.description;
   const due_time = req.body.due_time;
-  const completed_by = req.body.completed_by;
-  const completed_time = req.body.completed_time;
-  const parent_task = req.body.parent_task;
 
   const queryText = `INSERT INTO "tasks" ("title", "description", "due_time", "completed_by", "completed_time", "parent_task")
-      VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;
-  pool.query(queryText, [title, description, due_time, completed_by, completed_time, parent_task])
+      VALUES ($1, $2, $3 ) RETURNING id`;
+  pool.query(queryText, [title, description, due_time])
     .then(result => {
       const createProjectId = result.rows[0].id
       console.log("new task id:", createProjectId);

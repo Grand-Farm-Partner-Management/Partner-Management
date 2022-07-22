@@ -159,7 +159,7 @@ input {
 
 .companyName {
   font-size: 3em;
-  margin: 1em;
+  margin: 1em .3em 1em 1em;
 }
 
 .links {
@@ -173,6 +173,12 @@ input {
 
 .links:hover {
   cursor: pointer;
+}
+
+.company-name-and-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* PROJECTS */

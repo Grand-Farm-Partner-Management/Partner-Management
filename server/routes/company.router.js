@@ -6,18 +6,27 @@ const router = express.Router();
  * POST route for creating a company
  */
 
-router.post('/', (req, res) => {
+router.post('/:id', (req, res) => {
   const companyName = req.body.companyName;
-
-  const queryText = `INSERT INTO "company" (company_name)
+  const userId = req.params.id
+  const query1 = `INSERT INTO "company" (company_name)
     VALUES ($1) RETURNING id`;
-  pool
-    .query(queryText, [companyName])
-    .then(() => res.sendStatus(201))
-    .catch((err) => {
-      console.log('User registration failed: ', err);
-      res.sendStatus(500);
-    });
+  const query2 = `UPDATE "user" SET company_id = 5
+  WHERE "user".id = 6;`
+    pool
+      .query(queryText, [companyName])
+      .then((result) => {
+        const createCompanyId = result.rows[0].id
+        pool.query(queryText2, [userId, createProjectId])
+          .then(result => {
+          }).catch(err => {
+            console.log(err);
+          })
+      })
+      .catch((err) => {
+        console.log('User registration failed: ', err);
+        res.sendStatus(500);
+      });
 });
 
 // ** ---
