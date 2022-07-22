@@ -39,6 +39,10 @@ function Task({ direction, ...args }) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
 
+    // State for edit drop down
+    const [dropdown2Open, setDropdown2Open] = useState(false);
+    const toggleDropdown2 = () => setDropdown2Open(prevState => !prevState);
+
     // State for editing a project
     const [projectTitle, setProjectTitle] = useState('');
     const [projectDescription, setProjectDescription] = useState('');
@@ -252,7 +256,41 @@ function Task({ direction, ...args }) {
                                     <Input type="checkbox" />
                                     <Label check>
                                         <div className='title-and-dots'>
-                                            <img className='dots' src={Dots} />
+                                            <Dropdown isOpen={dropdown2Open} toggle={toggleDropdown2} direction={direction}>
+                                                <DropdownToggle style={{
+                                                    backgroundColor: 'transparent',
+                                                    border: 'none'
+                                                }}>
+                                                    <img className='dots' src={Dots} />
+                                                </DropdownToggle>
+                                                <DropdownMenu {...args}>
+                                                    <DropdownItem header>Project Settings</DropdownItem>
+                                                    <DropdownItem onClick={() => console.log('add')}>Add Members</DropdownItem>
+                                                    <DropdownItem divider />
+                                                    <DropdownItem onClick={() => {
+                                                        swal({
+                                                            title: `Are you sure you want to delete ${currentProject.title}?`,
+                                                            text: "Once deleted, you will not be able to recover this project.",
+                                                            icon: "warning",
+                                                            buttons: true,
+                                                            dangerMode: true,
+                                                        })
+                                                            .then((willDelete) => {
+                                                                if (willDelete) {
+                                                                    swal(`${currentProject.title} has been deleted!`, {
+                                                                        icon: "success",
+                                                                    });
+                                                                    deleteProject();
+                                                                } else {
+                                                                    swal("Process cancelled.");
+                                                                }
+                                                            });
+                                                    }
+                                                    } style={{
+                                                        color: 'red'
+                                                    }}>Delete Project</DropdownItem>
+                                                </DropdownMenu>
+                                            </Dropdown>
                                             <h4>{task.title}</h4>
                                         </div>
                                     </Label>

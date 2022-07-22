@@ -43,6 +43,27 @@ router.post('/login', userStrategy.authenticate('local'), (req, res) => {
   res.sendStatus(200);
 });
 
+// Update user infor
+router.put('/update/:id', (req, res) => {
+  const userId = req.params.id
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const linkedIn = req.body.linkedIn;
+  const phoneNumber = req.body.phoneNumber;
+  const title = req.body.jobTitle;
+
+  const queryText = `UPDATE "user" SET "first_name" = $1, "last_name" = $2, "email" = $3, "linkedin" = $4, "phone_number" = $5, "title" = $6
+  WHERE id = $7;`
+  pool
+    .query(queryText, [firstName, lastName, email, linkedIn, phoneNumber, title, userId])
+    .then(() => res.sendStatus(201))
+    .catch((err) => {
+      console.log('User registration failed: ', err);
+      res.sendStatus(500);
+    });
+});
+
 // clear all server session information about this user
 router.post('/logout', (req, res) => {
   // Use passport's built-in method to log out the user
