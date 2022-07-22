@@ -112,7 +112,17 @@ input {
 /* ACCOUNT PAGE */
 
 .blank {
-  width: 30em;
+  width: 20em;
+}
+
+.details-and-dots {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3em;
+}
+
+.pencil {
+  height: 2.5em;
 }
 
 .profile-photo {
@@ -140,7 +150,7 @@ input {
 
 .account-wrapper h1 {
   font-size: 3em;
-  margin-bottom: 3em;
+  margin-right: .3em;
 }
 
 /* COMPANY */

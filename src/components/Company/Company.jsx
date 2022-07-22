@@ -61,9 +61,9 @@ function Company(args) {
                 {
                     members.map((member) => {
                         return (
-                            <dov className='member'>
+                            <div className='member'>
                                 <h4>{member.first_name} {member.last_name}</h4>
-                            </dov>
+                            </div>
                         )
                     })
                 }
