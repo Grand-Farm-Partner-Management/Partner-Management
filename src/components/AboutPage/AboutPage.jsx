@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Blank from '../../images/Blank.png'
 import { useSelector, useDispatch } from 'react-redux';
 import Dots from '../../images/pencil_icon.svg'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import axios from 'axios';
+
 
 function AboutPage(args) {
 
@@ -28,19 +29,23 @@ function AboutPage(args) {
   }
 
   const fetchUser = async () => {
-    axios.get(`/api/user/`)
-    .then((res) => {
-      console.log('res data', res.data)
-      dispatch({ type: `SET_USER`, payload: res.data });
-    })
+    await axios.get(`/api/user/`)
+      .then((res) => {
+        dispatch({ type: `SET_USER`, payload: res.data });
+        console.log('res data', res.data)
+      })
   }
+
+  useEffect(() => {
+    console.log('hello')
+  }, [])
 
   return (
     <div className="account-wrapper">
       <div>
         <div className="details-and-dots">
           <h1>Account Details</h1>
-          <img className='pencil' src={Dots} onClick = {toggle}/>
+          <img className='pencil' src={Dots} onClick={toggle} />
         </div>
         <h3>First Name: <span className='bold'>{user.first_name}</span></h3>
         <h3>Last Name: <span className='bold'>{user.last_name}</span></h3>
@@ -56,10 +61,10 @@ function AboutPage(args) {
           <input onChange={(e) => setFirstName(e.target.value)} id='firt-name' />
           <br />
           <label htmlFor='last-name'>Last Name:</label>
-          <input onChange={(e) => setLastName(e.target.value)} id='last-name' />
+          <input  onChange={(e) => setLastName(e.target.value)} id='last-name' />
           <br />
           <label htmlFor='email'>Email:</label>
-          <input onChange={(e) => setEmail(e.target.value)} id='email' />
+          <input  onChange={(e) => setEmail(e.target.value)} id='email' />
           <br />
           <label htmlFor='linkedin'>LinkedIn:</label>
           <input onChange={(e) => setLinkedIn(e.target.value)} id='linkedin' />
@@ -68,7 +73,7 @@ function AboutPage(args) {
           <input onChange={(e) => setPhoneNumber(e.target.value)} id='phone-number' />
           <br />
           <label htmlFor='job-title'>Job Title:</label>
-          <input onChange={(e) => setJobTitle(e.target.value)} id='job-title' />
+          <input  onChange={(e) => setJobTitle(e.target.value)} id='job-title' />
           <br />
         </ModalBody>
         <ModalFooter>

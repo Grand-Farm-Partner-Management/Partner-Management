@@ -55,6 +55,7 @@ function Task({ direction, ...args }) {
         axios.get(`/api/task/projectTasks/${projectId}`)
             .then(res => {
                 dispatch({ type: `PROJECT_TASKS`, payload: res.data });
+                console.log(res.data)
             })
     }
 
@@ -85,7 +86,7 @@ function Task({ direction, ...args }) {
         if (!body.projectTitle) {
             body.projectTitle === currentProject.title;
         }
-        await axios.post(`/api/task`, body)
+        await axios.post(`/api/task/${currentProject.id}`, body)
             .then(async res => {
                 fetchTasks();
             })
