@@ -19,6 +19,7 @@ function Task({ direction, ...args }) {
     const history = useHistory();
     const params = useParams();
 
+    const user = useSelector((store) => store.user);
     const tasks = useSelector((store) => store.tasks);
     const projectDetails = useSelector((store) => store.projects);
     const projectTasks = useSelector((store) => store.projectTasks);
@@ -50,7 +51,6 @@ function Task({ direction, ...args }) {
         axios.get(`/api/task/projectTasks/${projectId}`)
             .then(res => {
                 dispatch({ type: `PROJECT_TASKS`, payload: res.data });
-                console.log(res.data)
             })
     }
 
@@ -75,7 +75,12 @@ function Task({ direction, ...args }) {
     }
 
     const createTask = async (body) => {
-        await axios.post(`/api/task/${user.company_id}`, body)
+        console.log('current', currentProject)
+
+        if (!body.projectTitle) {
+            body.projectTitle === currentProject.title;
+        }
+        await axios.post(`/api/task`, body)
             .then(async res => {
                 fetchTasks();
             })
@@ -128,10 +133,10 @@ function Task({ direction, ...args }) {
                                 <ModalHeader toggle={toggle2}>Edit Project</ModalHeader>
                                 <ModalBody>
                                     <label htmlFor='project-title'>Project Title:</label>
-                                    <input defaultValue = {currentProject.title} onChange={(e) => setProjectTitle(e.target.value)} id='project-title' />
+                                    <input defaultValue={currentProject.title} onChange={(e) => setProjectTitle(e.target.value)} id='project-title' />
                                     <br />
                                     <label htmlFor='project-description'>Project Description:</label>
-                                    <input defaultValue = {currentProject.description} onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
+                                    <input defaultValue={currentProject.description} onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
                                     <br />
                                     <label htmlFor='project-due-date'>Project Due-Date: </label>
                                     <br />
@@ -149,7 +154,7 @@ function Task({ direction, ...args }) {
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button onClick={() => {
-                                        editProject({title: projectTitle, description: projectDescription, due_time: projectDueDate});
+                                        editProject({ title: projectTitle, description: projectDescription, due_time: projectDueDate });
                                         toggle2();
                                     }
                                     }>Confirm</Button>
