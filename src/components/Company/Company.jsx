@@ -30,6 +30,7 @@ function Company(args) {
 
     return (
         <div className='wrapper'>
+        <Button className='create-company'>Create Company</Button>
             <h1 className='companyName'>{members.length > 1 ? members[0].company_name: ''}</h1>
             <h1 onClick={toggle} className='links'>Members</h1>
             <Collapse isOpen={isOpen} {...args}>
