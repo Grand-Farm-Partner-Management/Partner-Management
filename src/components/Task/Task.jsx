@@ -6,6 +6,7 @@ import { Collapse, Button, CardBody, Card, Progress, Modal, ModalHeader, ModalBo
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Dots from '../../images/dots_icon.svg'
+import Back from '../../images/back_icon.svg'
 // Material
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -119,6 +120,7 @@ function Task({ direction, ...args }) {
     return (
         <div className='task-flex'>
             <div className='task-wrapper'>
+                <img src = {Back} onClick = {() => history.push('/projects')} className = 'back-arrow'/>
                 <div className="dot-and-task">
                     <h1>{currentProject.title}</h1>
 

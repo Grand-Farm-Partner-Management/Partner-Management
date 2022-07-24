@@ -210,6 +210,10 @@ input {
   width: 70vw;
 }
 
+.projects h1 {
+  align-self: flex-start;
+}
+
 .project {
   width: 70vw;
   padding: 1em;
@@ -300,6 +304,8 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: -.5em;
+  margin-bottom: .5em;
 }
 
 .dots {
@@ -307,7 +313,13 @@ input {
   margin: .5em;
 }
 
-.dots:hover {
+.back-arrow {
+  height: 1em;
+  margin-bottom: 1em;
+  opacity: 40%;
+}
+
+.dots:hover, .back-arrow:hover {
   cursor: pointer;
 }
 
