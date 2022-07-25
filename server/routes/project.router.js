@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
             res.send(result.rows);
         })
         .catch((error) => {
-            console.log('Error making SELECT for runs:', error);
+            console.log('Error making SELECT for projects:', error);
             res.sendStatus(500);
         });
 })//

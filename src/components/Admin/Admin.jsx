@@ -9,9 +9,33 @@ function AdminPage() {
     - 
     */
     const dispatch = useDispatch();
-    const user = useSelector((store) => store.user);
+    const users = useSelector((store) => store.unassigned);
 
-    console.log('users are', user);
+    let unassigned = [];
+
+    if (users.length >0) {
+        for (let user of users) {
+            if (user.company_id === null) {
+                unassigned.push(user);
+            }
+        }
+    } 
+
+    const fetchUsers = async () => {
+        await axios.get(`/api/company/unassigned`)
+            .then(res => {
+                dispatch({ type: `UNASSIGNED`, payload: res.data });
+            })
+    }
+
+    useEffect(() => {
+        fetchUsers();
+        console.log(users)
+    }, [])
+
+    console.log('users are', users);
+    console.log('unassigned are:', unassigned);
+
     return (
         <div>
 

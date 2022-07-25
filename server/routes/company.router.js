@@ -65,6 +65,20 @@ router.get('/members/:id', (req, res) => {
     });
 });
 
+//to get people who don't have a company
+router.get('/unassigned', (req,res) => {
+  const query = `select * from "user" where company_id is null order by id;`
+
+  pool.query(query)
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch((error) => {
+            console.log('Error making SELECT for unassigned users:', error);
+            res.sendStatus(500);
+        });
+})
+
 /**
 * PUT route for changing partner level
 */
