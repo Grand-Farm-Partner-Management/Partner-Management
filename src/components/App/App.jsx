@@ -21,6 +21,7 @@ import RegisterPage from '../RegisterPage/RegisterPage';
 import Company from '../Company/Company';
 import Projects from '../Projects/Projects';
 import Task from '../Task/Task';
+import AdminPage from '../Admin/Admin';
 
 import './App.css';
 
@@ -123,6 +124,14 @@ function App() {
               <LandingPage />
             }
           </Route>
+
+          <ProtectedRoute
+            // logged in shows UserPage else shows LoginPage
+            exact
+            path="/admin"
+          >
+            <AdminPage />
+          </ProtectedRoute>
 
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>
