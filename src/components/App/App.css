@@ -130,10 +130,11 @@ input {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-right: 10em;
 }
 
 .profile-photo button {
-  margin: 1em;
+  margin-top: 1em;
 }
 
 .bold {
@@ -209,6 +210,10 @@ input {
   width: 70vw;
 }
 
+.projects h1 {
+  align-self: flex-start;
+}
+
 .project {
   width: 70vw;
   padding: 1em;
@@ -279,6 +284,14 @@ input {
   padding: 1em;
 }
 
+.task-title {
+  margin-right: .5em;
+}
+
+.completed-by {
+  opacity: 60%;
+}
+
 .sort-tabs {
   background-color: var(--grey);
   width: 70vw;
@@ -299,14 +312,22 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: -.5em;
+  margin-bottom: .5em;
 }
 
 .dots {
   height: 1em;
-  margin: .5em;
+  margin: .5em 0 .5em 0em;
 }
 
-.dots:hover {
+.back-arrow {
+  height: 1em;
+  margin-bottom: 1em;
+  opacity: 40%;
+}
+
+.dots:hover, .back-arrow:hover {
   cursor: pointer;
 }
 
@@ -329,5 +350,23 @@ input {
   }
   .tab {
     border-top: 1px solid white;
+  }
+  .links {
+    font-size: 1.3em;
+    text-align: center;
+  }
+  .account-wrapper {
+    font-size: .5em;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .blank {
+    margin: 5em 0 0 0;
+  }
+  .profile-photo {
+    margin: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 }
