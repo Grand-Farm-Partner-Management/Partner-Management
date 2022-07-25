@@ -46,7 +46,7 @@ function sendReminderEmails() {
     const queryText1 = `select project.id, project.title, project.description, project.due_time, project.progression, project.completed, project.completed_time, "user".id, "user".first_name, "user".email from project
     join project_employee on project.id = project_employee.project_id
     join "user" on project_employee.employee_id = "user".id
-    where DATE_TRUNC('DAY', project.due_time) = CURRENT_DATE+interval '28days';`
+    where DATE_TRUNC('DAY', project.due_time) = CURRENT_DATE+interval '26days';`
 
     const queryText2 = `select project.id, project.title, project.description, project.due_time, project.progression, project.completed, project.completed_time, "user".id, "user".first_name, "user".email from project
     join project_employee on project.id = project_employee.project_id
