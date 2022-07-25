@@ -52,13 +52,20 @@ router.post('/:id', (req, res,) => {
 
     const queryText2 = `insert into company_project ("company_id", "project_id")
     values ($1, $2);`;
-
+    const queryText3 = `INSERT INTO "company_project" ("company_id", "project_id")
+    VALUES ($1, $2);`;
     pool.query(queryText, [title, description, 0, due_time, false])
         .then(result => {
             const createProjectId = result.rows[0].id
             console.log("new project id:", createProjectId);
             pool.query(queryText2, [company_id, createProjectId])
                 .then(result => {
+                    pool.query(queryText3, [3, createProjectId])
+                        .then(result => {
+                            res.send(result.rows);
+                        }).catch(err => {
+                            console.log(err);
+                        })
                 }).catch(err => {
                     console.log(err);
                 })
@@ -76,7 +83,7 @@ router.post('/:id/assign', (req, res) => {
         .then(result => {
         }).catch(err => {
             console.log(err);
-    })
+        })
 });//
 
 
@@ -101,7 +108,7 @@ router.get('/:id', (req, res) => {
 });
 
 //update project info--
-router.put('/:id/update', (req,res) =>{ 
+router.put('/:id/update', (req, res) => {
     //if (req.body.completed === false){  }
     const body = req.body;
     const query = `update project set 
@@ -110,7 +117,7 @@ router.put('/:id/update', (req,res) =>{
     "due_time" = $3
     where project.id = $4`;
     pool.query(query, [body.title, body.description, body.due_time, req.params.id])
-    .then(response => res.sendStatus(200))
+        .then(response => res.sendStatus(200))
         .catch(error => {
             console.log(`Error updating projects`, error);
             res.sendStatus(500);
@@ -118,14 +125,14 @@ router.put('/:id/update', (req,res) =>{
 });//
 
 //update progress ---
-router.put('/:id/progress', (req,res) =>{ 
+router.put('/:id/progress', (req, res) => {
     //if (req.body.completed === false){  }
     const body = req.body;
     const query = `update project set
     "progression" = $1
     where project.id = $2`;
     pool.query(query, [body.progress, req.params.id])
-    .then(response => res.sendStatus(200))
+        .then(response => res.sendStatus(200))
         .catch(error => {
             console.log(`Error updating projects`, error);
             res.sendStatus(500);
@@ -133,32 +140,32 @@ router.put('/:id/progress', (req,res) =>{
 });
 
 //delete project
-router.delete('/:id/delete', (req, res) =>{
+router.delete('/:id/delete', (req, res) => {
     const query1 = `delete from company_project where project_id = $1`; // delete project from company_project join table
     const query2 = `delete from project_employee where project_id = $1`;// delete project from project_employee join table
     const query3 = `delete from tasks where project_id = $1`; // delete project tasks from tasks table
     const query4 = `delete from project where project.id = $1`; // delete the project from the project table
 
     pool.query(query1, [req.params.id])
-    .then((response) => res.sendStatus(200))
-    .catch(error => {
-        console.log(`Error deleting company_project table`, error);
-    });
-    
+        .then((response) => res.sendStatus(200))
+        .catch(error => {
+            console.log(`Error deleting company_project table`, error);
+        });
+
     pool.query(query2, [req.params.id])
-    .catch(error => {
-        console.log(`Error deleting project_employee table`, error);
-    });
-    
+        .catch(error => {
+            console.log(`Error deleting project_employee table`, error);
+        });
+
     pool.query(query3, [req.params.id])
-    .catch(error => {
-        console.log(`Error deleting tasks table`, error);
-    });
-    
+        .catch(error => {
+            console.log(`Error deleting tasks table`, error);
+        });
+
     pool.query(query4, [req.params.id])
-    .catch(error => {
-        console.log(`Error deleting project table`, error);
-    });
+        .catch(error => {
+            console.log(`Error deleting project table`, error);
+        });
 })
 
 
