@@ -76,8 +76,10 @@ function Projects(args) {
     return (
         <div className='projects-wrapper'>
             <div className='projects'>
+                <h1>Projects</h1>
                 <div className="projectHeading">
-                    <h1>Projects</h1>
+                    <h4 className='project_company_name'>{members.length > 1 ? members[0].company_name : ''}</h4>
+
                     <Button onClick={toggle}>New Project</Button>
                     <Modal isOpen={modal} toggle={toggle} {...args}>
                         <ModalHeader toggle={toggle}>New Project</ModalHeader>
@@ -113,7 +115,6 @@ function Projects(args) {
                         </ModalFooter>
                     </Modal>
                 </div>
-                <h4 className='project_company_name'>{members.length > 1 ? members[0].company_name : ''}</h4>
                 {projects.length < 1 ? <h1 className='nothingYet'>Nothing yet</h1> : ''}
                 {
                     projects.map((project) => {

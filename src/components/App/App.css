@@ -210,6 +210,10 @@ input {
   width: 70vw;
 }
 
+.projects h1 {
+  align-self: flex-start;
+}
+
 .project {
   width: 70vw;
   padding: 1em;
@@ -280,6 +284,14 @@ input {
   padding: 1em;
 }
 
+.task-title {
+  margin-right: .5em;
+}
+
+.completed-by {
+  opacity: 60%;
+}
+
 .sort-tabs {
   background-color: var(--grey);
   width: 70vw;
@@ -300,14 +312,22 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: -.5em;
+  margin-bottom: .5em;
 }
 
 .dots {
   height: 1em;
-  margin: .5em;
+  margin: .5em 0 .5em 0em;
 }
 
-.dots:hover {
+.back-arrow {
+  height: 1em;
+  margin-bottom: 1em;
+  opacity: 40%;
+}
+
+.dots:hover, .back-arrow:hover {
   cursor: pointer;
 }
 
