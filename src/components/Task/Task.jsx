@@ -53,18 +53,17 @@ function Task({ direction, ...args }) {
 
     // Fetching tasks
 
-    const fetchTasks = () => {
+    const fetchTasks = async () => {
         axios.get(`/api/task/projectTasks/${projectId}`)
             .then(res => {
                 dispatch({ type: `PROJECT_TASKS`, payload: res.data });
                 console.log(res.data)
-                calculateProgression();
             })
     }
 
     // Fetching project details
 
-    const fetchProjectDetails = () => {
+    const fetchProjectDetails = async () => {
         axios.get(`/api/project/projectDetails/${projectId}`)
             .then(res => {
                 dispatch({ type: `GET_PROJECTS`, payload: res.data });
@@ -109,15 +108,15 @@ function Task({ direction, ...args }) {
             if (i.completed_by === null) {
                 uncompleted++;
             } else if (i.completed_by !== null) {
-                completed++
+                completed++;
             }
         }
         let progression = ((completed / totalTasks) * 100).toFixed(0)
+        console.log('UNCOMPLETED', uncompleted)
+        console.log('COMPLETED', completed)
+        console.log('TOTAL TASKS', totalTasks)
         console.log('PROGRESSION', progression)
-        if (currentProject && progression !== NaN) {
-            await axios.put(`/api/project/${currentProject.id}/progress/`, { progress: progression });
-            fetchProjectDetails();
-        }
+        axios.put(`/api/project/${currentProject.id}/progress/`, { progress: progression });
     }
 
     function getFormattedDate(date) {
@@ -130,13 +129,14 @@ function Task({ direction, ...args }) {
     }
 
     useEffect(async () => {
-        await dispatch({
+        dispatch({
             type: 'PROJECT_ID',
             payload: projectId
         })
+        await calculateProgression();
         await fetchTasks();
         await fetchProjectDetails();
-        await calculateProgression();
+        console.log('CURRENT PROJECT', currentProject);
     }, [])
 
     // CATCHING ERRORS / UNLOADED DATA

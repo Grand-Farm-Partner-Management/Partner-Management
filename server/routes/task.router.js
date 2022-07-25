@@ -36,7 +36,9 @@ router.get('/', (req, res) => {
     join project on tasks.project_id = project.id
     join project_employee on project.id = project_employee.project_id
     join "user" on project_employee.employee_id = "user".id
-    where "user".id = $1;`
+    where "user".id = $1
+    ORDER BY "due_time"
+    ;`
   pool.query(queryText, [req.user.id])
     .then(result => {
       res.send(result.rows);
@@ -67,22 +69,20 @@ router.put('/:id', (req, res) => {
 
   pool.query(queryText, [req.params.id, req.body.taskId])
     .then(result => {
-      console.log(req.params)
       res.sendStatus(204)
     }).catch(error => {
       res.sendStatus(500)
     })
 })
 
-router.put('/uncomplete', (req, res) => {
-  const queryText = `UPDATE tasks SET "completed_by" = $1 WHERE "id" = $2;`;
-
-  pool.query(queryText, [null, req.body.taskId])
+router.put('/uncomplete/:id', (req, res) => {
+  const queryText = `UPDATE tasks SET "completed_by" = null WHERE "id" = $1;`
+  pool.query(queryText, [req.params.id])
     .then(result => {
-      console.log(req.params)
       res.sendStatus(204)
     }).catch(error => {
-      res.sendStatus(500)
+      res.sendStatus(503)
+      console.log(error)
     })
 })
 
