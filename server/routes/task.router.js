@@ -63,11 +63,21 @@ router.get('/projectTasks/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  const queryText = `UPDATE tasks SET "complete" = Not "complete" WHERE "id" = $1;`;
+  const queryText = `UPDATE tasks SET "completed_by" = $1 WHERE "id" = $2;`;
 
-  // Test
+  pool.query(queryText, [req.params.id, req.body.taskId])
+    .then(result => {
+      console.log(req.params)
+      res.sendStatus(204)
+    }).catch(error => {
+      res.sendStatus(500)
+    })
+})
 
-  pool.query(queryText, [req.params.id])
+router.put('/uncomplete', (req, res) => {
+  const queryText = `UPDATE tasks SET "completed_by" = $1 WHERE "id" = $2;`;
+
+  pool.query(queryText, [null, req.body.taskId])
     .then(result => {
       console.log(req.params)
       res.sendStatus(204)

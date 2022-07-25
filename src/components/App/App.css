@@ -284,6 +284,14 @@ input {
   padding: 1em;
 }
 
+.task-title {
+  margin-right: .5em;
+}
+
+.completed-by {
+  opacity: 60%;
+}
+
 .sort-tabs {
   background-color: var(--grey);
   width: 70vw;
@@ -310,7 +318,7 @@ input {
 
 .dots {
   height: 1em;
-  margin: .5em;
+  margin: .5em 0 .5em 0em;
 }
 
 .back-arrow {

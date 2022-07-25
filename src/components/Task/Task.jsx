@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Dots from '../../images/dots_icon.svg'
 import Back from '../../images/back_icon.svg'
+import TaskItem from '../TaskItem/TaskItem';
 // Material
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -57,6 +58,7 @@ function Task({ direction, ...args }) {
             .then(res => {
                 dispatch({ type: `PROJECT_TASKS`, payload: res.data });
                 console.log(res.data)
+                calculateProgression();
             })
     }
 
@@ -90,7 +92,32 @@ function Task({ direction, ...args }) {
         await axios.post(`/api/task/${currentProject.id}`, body)
             .then(async res => {
                 fetchTasks();
+                calculateProgression();
             })
+    }
+
+    const calculateProgression = async () => {
+
+        if (!projectTasks || !currentProject) {
+            return
+        }
+
+        let totalTasks = projectTasks.length;
+        let completed = 0;
+        let uncompleted = 0;
+        for (const i of projectTasks) {
+            if (i.completed_by === null) {
+                uncompleted++;
+            } else if (i.completed_by !== null) {
+                completed++
+            }
+        }
+        let progression = ((completed / totalTasks) * 100).toFixed(0)
+        console.log('PROGRESSION', progression)
+        if (currentProject && progression !== NaN) {
+            await axios.put(`/api/project/${currentProject.id}/progress/`, { progress: progression });
+            fetchProjectDetails();
+        }
     }
 
     function getFormattedDate(date) {
@@ -102,13 +129,14 @@ function Task({ direction, ...args }) {
         return newDate;
     }
 
-    useEffect(() => {
-        dispatch({
+    useEffect(async () => {
+        await dispatch({
             type: 'PROJECT_ID',
             payload: projectId
         })
-        fetchTasks();
-        fetchProjectDetails();
+        await fetchTasks();
+        await fetchProjectDetails();
+        await calculateProgression();
     }, [])
 
     // CATCHING ERRORS / UNLOADED DATA
@@ -120,7 +148,7 @@ function Task({ direction, ...args }) {
     return (
         <div className='task-flex'>
             <div className='task-wrapper'>
-                <img src = {Back} onClick = {() => history.push('/projects')} className = 'back-arrow'/>
+                <img src={Back} onClick={() => history.push('/projects')} className='back-arrow' />
                 <div className="dot-and-task">
                     <h1>{currentProject.title}</h1>
 
@@ -256,51 +284,7 @@ function Task({ direction, ...args }) {
                     {
                         projectTasks.length === 0 ? <h1 className='no-tasks'>No Tasks Yet</h1> : projectTasks.map((task) => {
                             return (
-                                <div className='task'>
-                                    <Input type="checkbox" />
-                                    <Label check>
-                                        <div className='title-and-dots'>
-                                            <Dropdown isOpen={dropdown2Open} toggle={toggleDropdown2} direction={direction}>
-                                                <DropdownToggle style={{
-                                                    backgroundColor: 'transparent',
-                                                    border: 'none'
-                                                }}>
-                                                    <img className='dots' src={Dots} />
-                                                </DropdownToggle>
-                                                <DropdownMenu {...args}>
-                                                    <DropdownItem header>Project Settings</DropdownItem>
-                                                    <DropdownItem onClick={() => console.log('add')}>Add Members</DropdownItem>
-                                                    <DropdownItem divider />
-                                                    <DropdownItem onClick={() => {
-                                                        swal({
-                                                            title: `Are you sure you want to delete ${currentProject.title}?`,
-                                                            text: "Once deleted, you will not be able to recover this project.",
-                                                            icon: "warning",
-                                                            buttons: true,
-                                                            dangerMode: true,
-                                                        })
-                                                            .then((willDelete) => {
-                                                                if (willDelete) {
-                                                                    swal(`${currentProject.title} has been deleted!`, {
-                                                                        icon: "success",
-                                                                    });
-                                                                    deleteProject();
-                                                                } else {
-                                                                    swal("Process cancelled.");
-                                                                }
-                                                            });
-                                                    }
-                                                    } style={{
-                                                        color: 'red'
-                                                    }}>Delete Project</DropdownItem>
-                                                </DropdownMenu>
-                                            </Dropdown>
-                                            <h4>{task.title}</h4>
-                                        </div>
-                                    </Label>
-                                    <h6>{getFormattedDate(task.due_time)}</h6>
-                                    <h6>{task.description}</h6>
-                                </div>
+                                <TaskItem task={task} />
                             )
                         })
                     }
