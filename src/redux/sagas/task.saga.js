@@ -1,6 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { yearsToMonths } from 'date-fns';
 
 function* taskSaga(){
     yield takeLatest('FETCH_TASK', fetchTask);

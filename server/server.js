@@ -36,7 +36,7 @@ app.use('/api/task', taskRouter);
 
 // Serve static files
 app.use(express.static('build'));
-
+// run every minute (* * * * *), at 9am (0 9 * * *)
 cron.schedule('0 9 * * *', () => {
   sendReminderEmails();
 });

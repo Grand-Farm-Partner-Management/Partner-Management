@@ -36,18 +36,19 @@ function Projects(args) {
             })
     }
 
-    const fetchMembers = async () => {
-        await axios.get(`/api/company/members/${user.company_id}`)
+    const fetchMembers = () => {
+        axios.get(`/api/company/members/${user.company_id}`)
             .then(res => {
                 dispatch({ type: `GET_MEMBERS`, payload: res.data });
             })
     }
 
-    const createProject = async (body) => {
-        await axios.post(`/api/project/${user.company_id}`, body)
+    const createProject = (body) => {
+        axios.post(`/api/project/${user.company_id}`, body)
             .then(async res => {
-                await fetchProjects();
+                fetchProjects();
             })
+        fetchProjects();
     }
 
     function getFormattedDate(date) {
@@ -105,6 +106,7 @@ function Projects(args) {
                         <ModalFooter>
                             <Button onClick={() => {
                                 createProject({ title: projectTitle, description: projectDescription, due_time: projectDueDate });
+                                fetchProjects();
                                 toggle();
                             }
                             }>Create</Button>
@@ -116,7 +118,7 @@ function Projects(args) {
                 {
                     projects.map((project) => {
                         return (
-                            <div  onClick={() => projectTasks(project)} className='project'>
+                            <div onClick={() => projectTasks(project)} className='project'>
                                 <div className="title-and-date">
                                     <h4>{project.title}</h4>
                                     <h6>{getFormattedDate(project.due_time)}</h6>

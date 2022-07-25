@@ -19,6 +19,7 @@ function Task({ direction, ...args }) {
     const history = useHistory();
     const params = useParams();
 
+    const user = useSelector((store) => store.user);
     const tasks = useSelector((store) => store.tasks);
     const projectDetails = useSelector((store) => store.projects);
     const projectTasks = useSelector((store) => store.projectTasks);
@@ -37,6 +38,10 @@ function Task({ direction, ...args }) {
     // State for drop down
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
+
+    // State for edit drop down
+    const [dropdown2Open, setDropdown2Open] = useState(false);
+    const toggleDropdown2 = () => setDropdown2Open(prevState => !prevState);
 
     // State for editing a project
     const [projectTitle, setProjectTitle] = useState('');
@@ -71,11 +76,17 @@ function Task({ direction, ...args }) {
 
     const editProject = async (body) => {
         await axios.put(`/api/project/${projectId}/update`, body)
+        fetchProjectDetails();
         toggle2();
     }
 
     const createTask = async (body) => {
-        await axios.post(`/api/task/${user.company_id}`, body)
+        console.log('current', currentProject)
+
+        if (!body.projectTitle) {
+            body.projectTitle === currentProject.title;
+        }
+        await axios.post(`/api/task/${currentProject.id}`, body)
             .then(async res => {
                 fetchTasks();
             })
@@ -128,10 +139,10 @@ function Task({ direction, ...args }) {
                                 <ModalHeader toggle={toggle2}>Edit Project</ModalHeader>
                                 <ModalBody>
                                     <label htmlFor='project-title'>Project Title:</label>
-                                    <input defaultValue = {currentProject.title} onChange={(e) => setProjectTitle(e.target.value)} id='project-title' />
+                                    <input defaultValue={currentProject.title} onChange={(e) => setProjectTitle(e.target.value)} id='project-title' />
                                     <br />
                                     <label htmlFor='project-description'>Project Description:</label>
-                                    <input defaultValue = {currentProject.description} onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
+                                    <input defaultValue={currentProject.description} onChange={(e) => setProjectDescription(e.target.value)} id='project-description' />
                                     <br />
                                     <label htmlFor='project-due-date'>Project Due-Date: </label>
                                     <br />
@@ -149,7 +160,7 @@ function Task({ direction, ...args }) {
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button onClick={() => {
-                                        editProject({title: projectTitle, description: projectDescription, due_time: projectDueDate});
+                                        editProject({ title: projectTitle, description: projectDescription, due_time: projectDueDate });
                                         toggle2();
                                     }
                                     }>Confirm</Button>
@@ -247,7 +258,41 @@ function Task({ direction, ...args }) {
                                     <Input type="checkbox" />
                                     <Label check>
                                         <div className='title-and-dots'>
-                                            <img className='dots' src={Dots} />
+                                            <Dropdown isOpen={dropdown2Open} toggle={toggleDropdown2} direction={direction}>
+                                                <DropdownToggle style={{
+                                                    backgroundColor: 'transparent',
+                                                    border: 'none'
+                                                }}>
+                                                    <img className='dots' src={Dots} />
+                                                </DropdownToggle>
+                                                <DropdownMenu {...args}>
+                                                    <DropdownItem header>Project Settings</DropdownItem>
+                                                    <DropdownItem onClick={() => console.log('add')}>Add Members</DropdownItem>
+                                                    <DropdownItem divider />
+                                                    <DropdownItem onClick={() => {
+                                                        swal({
+                                                            title: `Are you sure you want to delete ${currentProject.title}?`,
+                                                            text: "Once deleted, you will not be able to recover this project.",
+                                                            icon: "warning",
+                                                            buttons: true,
+                                                            dangerMode: true,
+                                                        })
+                                                            .then((willDelete) => {
+                                                                if (willDelete) {
+                                                                    swal(`${currentProject.title} has been deleted!`, {
+                                                                        icon: "success",
+                                                                    });
+                                                                    deleteProject();
+                                                                } else {
+                                                                    swal("Process cancelled.");
+                                                                }
+                                                            });
+                                                    }
+                                                    } style={{
+                                                        color: 'red'
+                                                    }}>Delete Project</DropdownItem>
+                                                </DropdownMenu>
+                                            </Dropdown>
                                             <h4>{task.title}</h4>
                                         </div>
                                     </Label>

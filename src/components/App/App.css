@@ -112,7 +112,17 @@ input {
 /* ACCOUNT PAGE */
 
 .blank {
-  width: 30em;
+  width: 20em;
+}
+
+.details-and-dots {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3em;
+}
+
+.pencil {
+  height: 2.5em;
 }
 
 .profile-photo {
@@ -140,7 +150,7 @@ input {
 
 .account-wrapper h1 {
   font-size: 3em;
-  margin-bottom: 3em;
+  margin-right: .3em;
 }
 
 /* COMPANY */
@@ -159,7 +169,7 @@ input {
 
 .companyName {
   font-size: 3em;
-  margin: 1em;
+  margin: 1em .3em 1em 1em;
 }
 
 .links {
@@ -173,6 +183,12 @@ input {
 
 .links:hover {
   cursor: pointer;
+}
+
+.company-name-and-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* PROJECTS */
