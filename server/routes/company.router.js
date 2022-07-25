@@ -65,9 +65,22 @@ router.get('/members/:id', (req, res) => {
     });
 });
 
+//to get new companies for Grand Farm to accept
+router.get('/newPartner', (req, res) => {
+  const queryText = `select company.id, company.company_name, company.partner_level from company where partner_level = 101 order by id asc;`
+  pool.query(queryText)
+    .then(result => {
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log('User registration failed: ', err);
+      res.sendStatus(500);
+    });
+});
+
 //to get people who don't have a company
 router.get('/unassigned', (req,res) => {
-  const query = `select * from "user" where company_id is null order by id;`
+  const query = `select "user".id, "user".first_name, "user".last_name, "user".email, "user".company_id from "user" where company_id is null order by id;`
 
   pool.query(query)
         .then(result => {
