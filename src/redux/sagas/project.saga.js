@@ -17,7 +17,7 @@ function* fetchProject(action){
     try{
         const response = yield axios.get('/api/project');
         console.log('response in project company is:', response);
-        yield put({type: 'GET_PROJECT', payload: response.data});//reducer needs to be made
+        yield put({type: 'GET_PROJECTS', payload: response.data});//reducer needs to be made
     }catch{
         console.log('error in fetch project saga.');
     }
@@ -51,7 +51,7 @@ function* fetchCompanyProject(action){
     try{
         const response = yield axios.get(`/api/project${action.payload.id}`);
         console.log('response in project company is:', response);
-        yield put({type: 'GET_PROJECT', payload: response.data});//reducer needs to be made
+        yield put({type: 'GET_PROJECTS', payload: response.data});//reducer needs to be made
     }catch{
         console.log('error in fetch Company project saga.');
     }
