@@ -88,16 +88,15 @@ function TaskItem(props, { direction, ...args }) {
 
     const completeTask = async () => {
         if (checked === false) {
-            await axios.put(`/api/task/${user.id}`, { taskId: task.id })
+            console.log('complete')
+            await axios.put(`/api/task/${user.first_name}`, { taskId: task.id })
             setChecked(true)
             calculateProgression();
-            fetchTasks();
         } else {
             console.log('uncomplete')
             await axios.put(`/api/task/uncomplete/${task.id}`)
             setChecked(false)
             calculateProgression();
-            fetchTasks();
         }
     };
 
@@ -110,7 +109,7 @@ function TaskItem(props, { direction, ...args }) {
         return newDate;
     }
 
-    const [checked, setChecked] = useState(task.completed_by ? true : false);
+    const [checked, setChecked] = useState(task.completed_by === null ? false : true);
 
     useEffect(() => {
         console.log(task)
@@ -134,9 +133,9 @@ function TaskItem(props, { direction, ...args }) {
                             <DropdownMenu {...args}>
                                 <DropdownItem header>Task Settings</DropdownItem>
                                 <DropdownItem onClick={() => console.log('add')}>Assign</DropdownItem>
-                                <DropdownItem onClick={() => console.log('add')}>Create Sub-Task</DropdownItem>
-                                <DropdownItem onClick={() => console.log('add')}>Edit</DropdownItem>
-                                <DropdownItem onClick={() => console.log('add')}>Mark as important</DropdownItem>
+                                <DropdownItem onClick={() => console.log('sub task')}>Create Sub-Task</DropdownItem>
+                                <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
+                                <DropdownItem onClick={() => console.log('mark')}>Mark as important</DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem onClick={() => {
                                     swal({
