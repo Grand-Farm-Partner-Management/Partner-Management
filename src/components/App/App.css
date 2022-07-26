@@ -159,12 +159,12 @@ input {
 /* USER PAGE */
 
 .GrandFarm {
-  width: 30em;
+  width: 27em;
   margin-top: 2em;
 }
 
 .welcome {
-  margin-bottom: .8em;
+  margin-bottom: 1.8em;
 }
 
 .wrapper {
@@ -172,6 +172,26 @@ input {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.question {
+  width: 1.5em;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 1em;
+}
+
+.pm {
+  font-family: heavy;
+  color: var(--navy);
+  margin-top: -1.5em;
+  font-size: 2em;
+  margin-bottom: 1.8em;
+}
+
+.question {
+  cursor: pointer
 }
 
 /* ACCOUNT PAGE */
