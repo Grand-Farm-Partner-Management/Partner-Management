@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import UnassignedList from './UnassignedList';
 import { Collapse, Button, CardBody, Card, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import NewPartnerList from './NewPartnerList';
+import AllCompanies from './AllCompany';
 
 
 function AdminPage(args) {
@@ -15,20 +16,20 @@ function AdminPage(args) {
     const dispatch = useDispatch();
     const unassigned = useSelector((store) => store.unassigned);
     const newPartners = useSelector((store) => store.newPartner);
+    const allCompanies = useSelector((store) => store.company);
     const [isOpen1, setIsOpen1] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
+    const [isOpen3, setIsOpen3] = useState(false);
+    const [isOpen4, setIsOpen4] = useState(false);
     const toggle1 = () => setIsOpen1(!isOpen1);
     const toggle2 = () => setIsOpen2(!isOpen2);
-
+    const toggle3 = () => setIsOpen3(!isOpen3);
+    const toggle4 = () => setIsOpen4(!isOpen4);
 
     console.log('unassigned are:', unassigned);
     console.log('new partners are: ', newPartners);
 
     const fetchUnassigned =() => {
-        // await axios.get(`/api/company/unassigned`)
-        //     .then(res => {
-        //         dispatch({ type: `UNASSIGNED`, payload: res.data });
-        //     })
         dispatch({type: "FETCH_UNASSIGNED"});
     }
 
@@ -38,6 +39,11 @@ function AdminPage(args) {
                 dispatch({ type: `NEW_PARTNER`, payload: res.data });
             })
     }
+
+    const fetchAllCompanies =() => {
+        dispatch({type: "FETCH_COMPANY"});
+    }
+
     if (unassigned.company_id === null || newPartners.partner_level === null) {
         console.log(unassigned, newPartners);
         return;
@@ -45,6 +51,7 @@ function AdminPage(args) {
     useEffect(() => {
         fetchUnassigned();
         fetchNewPartner();
+        fetchAllCompanies();
     }, [])
 
     return (
@@ -60,8 +67,28 @@ function AdminPage(args) {
                     })
                 }
             </Collapse>
-            <h2 onClick={toggle2} className='links'>New Partners</h2>
+            <h2 onClick={toggle2} className='links'>New Partner Requests</h2>
             <Collapse isOpen={isOpen2} {...args} >
+                {
+                    newPartners.map((newPartner) => {
+                        return (
+                            <NewPartnerList newPartner={newPartner} />
+                        )
+                    })
+                }
+            </Collapse>
+            <h2 onClick={toggle3} className='links'>All Partners</h2>
+            <Collapse isOpen={isOpen3} {...args} >
+                {
+                    allCompanies.map((company) => {
+                        return (
+                            <AllCompanies company={company} />
+                        )
+                    })
+                }
+            </Collapse>
+            <h2 onClick={toggle4} className='links'>All Employees</h2>
+            <Collapse isOpen={isOpen4} {...args} >
                 {
                     newPartners.map((newPartner) => {
                         return (

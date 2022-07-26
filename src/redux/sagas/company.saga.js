@@ -89,7 +89,7 @@ function* logoCompany(action) {
         yield axios.put(`api/company/${action.payload.id}`, action.payload);
         yield put({ type: 'FETCH_COMPANY' })
     } catch {
-        console.log('error in rename company saga.');
+        console.log('error in company logo saga.');
     }
 }
 
@@ -97,10 +97,10 @@ function* logoCompany(action) {
 function* deleteCompany(action) {
     console.log('in delete company saga');
     try {
-        yield axios.put(`api/company/${action.payload.id}`, action.payload);
+        yield axios.delete(`api/company/${action.payload.id}`);
         yield put({ type: 'FETCH_COMPANY' })
     } catch {
-        console.log('error in rename company saga.');
+        console.log('error in delete company saga.');
     }
 }
 
