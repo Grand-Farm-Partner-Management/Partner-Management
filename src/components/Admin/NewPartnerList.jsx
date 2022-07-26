@@ -40,6 +40,10 @@ function NewPartnerList({ newPartner }, args) {
           
     }
 
+    function deleteClick(){
+        dispatch({type: 'DELETE_COMPANY', payload: {id: company.id}})
+    }
+
     return (
         <div key={newPartner.id}>
             <div>
@@ -56,6 +60,8 @@ function NewPartnerList({ newPartner }, args) {
                     </DropdownMenu>
                 </Dropdown>
                 <button onClick={() => submitClick()}>Submit</button>
+                <button onClick={() => deleteClick()}>Delete</button>
+
             </div>
         </div>
     )

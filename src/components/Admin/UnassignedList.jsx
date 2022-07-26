@@ -34,6 +34,10 @@ function UnassignedList({ unassign }, ...args) {
           })
     }
 
+    function deleteClick(){
+        dispatch({type: 'DELETE_USER', payload: {id: unassign.id}})
+    }
+
     return (
         <div key={unassign.id}>
             <h4>{unassign.first_name}, {unassign.last_name}, {unassign.email} </h4>
@@ -55,6 +59,7 @@ function UnassignedList({ unassign }, ...args) {
                 </DropdownMenu>
             </Dropdown>
             <button onClick={() => assignClick()}>Assign</button>
+            <button onClick={() => deleteClick()}>Delete</button>
         </div>
     )
 }

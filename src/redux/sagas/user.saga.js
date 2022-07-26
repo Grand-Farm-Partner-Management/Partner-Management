@@ -24,8 +24,18 @@ function* fetchUser() {
   }
 }
 
+function* deleteUser(action){
+  try {
+    yield axios.delete(`api/user/${action.payload.id}`);
+    yield put({ type: 'FETCH_USER' })
+} catch {
+    console.log('error in delete user saga.');
+}
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
+  yield takeLatest('DELETE_USER', deleteUser);
 }
 
 export default userSaga;
