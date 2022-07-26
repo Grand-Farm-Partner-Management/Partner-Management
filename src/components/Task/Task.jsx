@@ -24,7 +24,7 @@ function Task({ direction, ...args }) {
     const user = useSelector((store) => store.user);
     const tasks = useSelector((store) => store.tasks);
     // All PROJECTS
-    const projectDetails = useSelector((store) => store.projects);
+    const projectDetails = useSelector((store) => store.projectDetails);
     // All Tasks for a project
     const projectTasks = useSelector((store) => store.projectTasks);
 
@@ -70,8 +70,7 @@ function Task({ direction, ...args }) {
     const fetchProjectDetails = async () => {
         axios.get(`/api/project/projectDetails/${projectId}`)
             .then(res => {
-                dispatch({ type: `GET_PROJECTS`, payload: res.data });
-                console.log('project details', res.data)
+                dispatch({ type: `GET_PROJECT_DETAILS`, payload: res.data });
             })
     }
 
@@ -133,12 +132,11 @@ function Task({ direction, ...args }) {
     }
 
     useEffect(async () => {
-
+        dispatch({ type: '/CLEAR_PROJECT_DETAILS' });
         await fetchTasks();
         await fetchProjectDetails();
         calculateProgression();
         console.log('CURRENT PROJECT', currentProject);
-        console.log('PROJECT TASKS', projectTasks);
     }, [])
 
     // CATCHING ERRORS / UNLOADED DATA
@@ -240,7 +238,10 @@ function Task({ direction, ...args }) {
                     <Button style={{
                         backgroundColor: 'rgb(175, 204, 54)',
                         borderColor: 'rgb(175, 204, 54)'
-                    }} onClick={toggle}>New Task</Button>
+                    }} onClick={() => {
+                        toggle()
+                        console.log(currentProject)
+                    }}>New Task</Button>
                 </div>
                 <h6 className='project-description'>{getFormattedDate(currentProject.due_time)}</h6>
 
