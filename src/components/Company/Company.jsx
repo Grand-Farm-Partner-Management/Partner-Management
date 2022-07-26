@@ -12,17 +12,33 @@ function Company(args) {
 
     const user = useSelector((store) => store.user);
     const members = useSelector((store) => store.members);
+    const company = useSelector((store) => store.company);
+    console.log("company", company)
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpen2, setIsOpen2] = useState(false);
+
     const toggle = () => setIsOpen(!isOpen);
+    const toggle3 = () => setIsOpen2(!isOpen2);
     const dispatch = useDispatch();
 
     // State for editin company 
     const [companyName, setCompanyName] = useState('');
+    const [companyAbout, setCompanyAbout] = useState('');
 
+    const addCompany = event => {
+        event.preventDefault();
+        dispatch({
+            type: 'ADD_COMPANY',
+            payload: { companyName: companyName, companyAbout: companyAbout }
+        });
+        setCompanyName('');
+        setCompanyAbout('');
+    }
     //  Edit Modal
     const [modal2, setModal2] = useState(false);
     const toggle2 = () => setModal2(!modal2);
+
 
     const fetchMembers = async () => {
         await axios.get(`/api/company/members/${user.company_id}`)
@@ -52,10 +68,16 @@ function Company(args) {
 
     return (
         <div className='wrapper'>
+            <section onSubmit={addCompany}>
+                <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)}
+                 placeholder='company name' required="" />
+                <input  type="text" value={companyAbout} onChange={(event) => setCompanyName(event.target.value)} placeholder='about the company' required="" />
+            </section>
             <Button className='create-company'>Create Company</Button>
             <div className="company-name-and-dots">
                 <h1 className='companyName'>{members.length > 0 ? members[0].company_name : ''}</h1>
-                <img className='dots' src={Dots} onClick = {() => toggle2()} />
+                {/* <h1 className='companyName'>{members.length > 0 ? members[0].about : ''}</h1> */}
+                <img className='dots' src={Dots} onClick={() => toggle2()} />
             </div>
             <h1 onClick={toggle} className='links'>Members</h1>
             <Collapse isOpen={isOpen} {...args}>
@@ -76,18 +98,37 @@ function Company(args) {
                     <label htmlFor='project-title'>Company Name:</label>
                     <input onChange={(e) => setCompanyName(e.target.value)} id='project-title' />
                     <br />
+                    <label htmlFor='about'>About the company:</label>
+                    <input onChange={(e) => setCompanyAbout(e.target.value)} id='project-title' />
+                    <br />
                 </ModalBody>
+
                 <ModalFooter>
                     <Button onClick={() => {
-                        editCompany({ companyName: companyName });
+                        editCompany({
+                            companyName: companyName,
+                            companyAbout: companyAbout
+                        });
                         toggle2();
+                        e
                     }
                     }>Confirm</Button>
                 </ModalFooter>
             </Modal>
 
             <h1 className='links'>Documents</h1>
-            <h1 className='links'>About</h1>
+            <h1 onClick={toggle3} className='links'>About</h1>
+            <Collapse isOpen={isOpen2} {...args}>
+                {
+                    members.map((member) => {
+                        return (
+                            <div className='member'>
+                                <h4> {member.about}</h4>
+                            </div>
+                        )
+                    })
+                }
+            </Collapse>
         </div>
     )
 }

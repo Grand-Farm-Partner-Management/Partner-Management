@@ -10,12 +10,12 @@ sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
 router.post('/:id', (req, res) => {
   const companyName = req.body.companyName;
   const userId = req.params.id
-  const query1 = `INSERT INTO "company" (company_name)
-    VALUES ($1) RETURNING id`;
+  const query1 = `INSERT INTO "company" (company_name, about)
+    VALUES ($1, $2) RETURNING id`;
   const query2 = `UPDATE "user" SET company_id = $1
   WHERE "user".id =$2;`
     pool
-      .query(query1, [req.body.company_name])
+      .query(query1, [req.body.company_name, req.body.about])
       .then((result) => {
         let company = req.body.company_name;
  const message = {
@@ -70,7 +70,7 @@ router.get('/', (req, res) => {
  * GET route for showing all members
  */
 router.get('/members/:id', (req, res) => {
-  const queryText = `SELECT first_name, last_name, company_id, company_name FROM "company"
+  const queryText = `SELECT first_name, last_name, company_id, company_name, about FROM "company"
   JOIN "user" ON "company".id = "user".company_id
   WHERE "user".company_id = $1;`
   pool.query(queryText, [req.params.id])
@@ -147,20 +147,20 @@ router.put('/partnerLevel/:id', (req, res) => {
 * PUT route for adding company logo
 */
 
-router.put('/logo/:id', (req, res) => {
-  const companyId = req.params.id;
-  const newLogo = req.body.logo;
-  const queryText = `UPDATE "company"
-      SET "logo" = $1
-      WHERE id = $2;`
-  pool
-    .query(queryText, [newLogo, companyId])
-    .then(() => res.sendStatus(201))
-    .catch((err) => {
-      console.log('Error updating company name. ', err);
-      res.sendStatus(500);
-    });
-});
+// router.put('/about/:id', (req, res) => {
+//   const companyId = req.params.id;
+//   const newAbout = req.body.about;
+//   const queryText = `UPDATE "company"
+//       SET "about" = $1
+//       WHERE id = $2;`
+//   pool
+//     .query(queryText, [newAbout, companyId])
+//     .then(() => res.sendStatus(201))
+//     .catch((err) => {
+//       console.log('Error updating company About. ', err);
+//       res.sendStatus(500);
+//     });
+// });
 
 /**
 * PUT route for renaming company
@@ -169,11 +169,13 @@ router.put('/logo/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   const companyId = req.params.id;
   const newName = req.body.companyName;
+  const newAbout = req.body.companyAbout; 
+  // console.log("log", req.body);
   const queryText = `UPDATE "company"
-  SET "company_name" = $1
-  WHERE id = $2;`
+  SET "company_name" = $1, "about" =$2
+  WHERE id = $3;`
   pool
-    .query(queryText, [newName, companyId])
+    .query(queryText, [newName, newAbout, companyId])
     .then(() => res.sendStatus(201))
     .catch((err) => {
       console.log('Error updating company name. ', err);
