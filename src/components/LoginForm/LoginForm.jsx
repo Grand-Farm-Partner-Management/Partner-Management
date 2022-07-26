@@ -54,6 +54,7 @@ function LoginForm() {
         <label htmlFor="password">
           Password:
           <input
+            className='password-input'
             type="password"
             name="password"
             required

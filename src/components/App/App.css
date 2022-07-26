@@ -125,6 +125,7 @@ input {
   background-color: var(--green);
   color: white;
   border-color: var(--green);
+  margin-top: 1em;
 }
 
 .login-wrapper {
