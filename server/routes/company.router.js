@@ -92,6 +92,20 @@ router.get('/unassigned', (req,res) => {
         });
 })
 
+
+xrouter.put('/assign', (req, res) => {
+  const companyId = req.body.companyId;
+  const userId = req.body.userId;
+  const queryText = `//update "user" set company_id = $1 where "user".id = $2;`
+  pool
+    .query(queryText, [companyId, userId])
+    .then(() => res.sendStatus(201))
+    .catch((err) => {
+      console.log('Error assigning user. ', err);
+      res.sendStatus(500);
+    });
+});
+
 /**
 * PUT route for changing partner level
 */

@@ -10,7 +10,7 @@ function* companySaga() {
     yield takeLatest('LOGO_COMPANY', logoCompany);
     yield takeLatest('DELETE_COMPANY', deleteCompany);
     yield takeLatest('FETCH_NEW_COMPANY', fetchNewCompany);
-
+    yield takeLatest('ASSIGN_EMPLOYEE', );
 }
 
 // fetches the companies
@@ -25,6 +25,7 @@ function* fetchCompany(action){
     }
 }
 
+//fetches the new companies to be accepted by Grand Farm
 function* fetchNewCompany(action){
     console.log('in fetch new company saga');
     try{

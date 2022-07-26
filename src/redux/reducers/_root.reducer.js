@@ -7,6 +7,7 @@ import tasks from './task.reducer';
 import projectTasks from './projectTask.reducer';
 import unassigned from './unassigned.reducer';
 import newPartner from './newPartner.reducer';
+import company from './company.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   tasks,
   projectTasks,
   unassigned,
-  newPartner
+  newPartner,
+  company
 });
 
 export default rootReducer;

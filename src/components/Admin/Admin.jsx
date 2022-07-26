@@ -8,9 +8,9 @@ import NewPartnerList from './NewPartnerList';
 
 function AdminPage(args) {
     /* 
-    - make a view for freshly created companies to be accepted or deleted
+    -X make a view for freshly created companies to be accepted or deleted
     - make a view of new employees and the ability to reassign them to companies, as wel as adjust levels
-    - 
+    - need to make sagas and reducers for the unassigned users
     */
     const dispatch = useDispatch();
     const unassigned = useSelector((store) => store.unassigned);
