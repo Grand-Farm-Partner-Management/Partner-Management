@@ -48,7 +48,8 @@ function AdminPage(args) {
 
     return (
         <div>
-            <h1 onClick={toggle1} className='links'>Unassigned Employees</h1>
+            <h1>Grand Farm Admin Page</h1>
+            <h2 onClick={toggle1} className='links'>Unassigned Employees</h2>
             <Collapse isOpen={isOpen1} {...args} >
                 {
                     unassigned.map((unassign) => {
@@ -58,7 +59,7 @@ function AdminPage(args) {
                     })
                 }
             </Collapse>
-            <h1 onClick={toggle2} className='links'>New Partners</h1>
+            <h2 onClick={toggle2} className='links'>New Partners</h2>
             <Collapse isOpen={isOpen2} {...args} >
                 {
                     newPartners.map((newPartner) => {
