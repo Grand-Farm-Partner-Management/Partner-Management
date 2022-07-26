@@ -114,7 +114,7 @@ router.get('/unassigned', (req,res) => {
 router.put('/assign', (req, res) => {
   const companyId = req.body.companyId;
   const userId = req.body.userId;
-  const queryText = `//update "user" set company_id = $1 where "user".id = $2;`
+  const queryText = `update "user" set company_id = $1 where "user".id = $2;`
   pool
     .query(queryText, [companyId, userId])
     .then(() => res.sendStatus(201))

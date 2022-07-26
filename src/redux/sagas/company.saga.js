@@ -11,107 +11,118 @@ function* companySaga() {
     yield takeLatest('DELETE_COMPANY', deleteCompany);
     yield takeLatest('FETCH_NEW_COMPANY', fetchNewCompany);
     yield takeLatest('ASSIGN_USER', assignUser);
+    yield takeLatest('FETCH_UNASSIGNED', fetchUnassigned);
 }
 
 // fetches the companies
-function* fetchCompany(action){
+function* fetchCompany(action) {
     console.log('in fetch company saga');
-    try{
+    try {
         const response = yield axios.get('/api/company')
         console.log('response in fetch company is:', response);
-        yield put({type: 'SET_COMPANY', payload: response.data});//reducer needs to be made
-    }catch{
+        yield put({ type: 'SET_COMPANY', payload: response.data });//reducer needs to be made
+    } catch {
         console.log('error in fetch company saga.');
     }
 }
 
 //fetches the new companies to be accepted by Grand Farm
-function* fetchNewCompany(action){
+function* fetchNewCompany(action) {
     console.log('in fetch new company saga');
-    try{
+    try {
         const response = yield axios.get('/api/company/newPartner')
         console.log('response in fetch new company is:', response);
-        yield put({type: 'NEW_PARTNER', payload: response.data});//reducer needs to be made
-    }catch{
+        yield put({ type: 'NEW_PARTNER', payload: response.data });//reducer needs to be made
+    } catch {
         console.log('error in fetch company saga.');
     }
 }
 
 // adds new company to the company table 
-function* postCompany(action){
+function* postCompany(action) {
     console.log('in post company saga');
-    try{
+    try {
         yield axios.post('api/company', action.payload);
-        yield put({ type: 'FETCH_COMPANY'})
-    }catch{
+        yield put({ type: 'FETCH_COMPANY' })
+    } catch {
         console.log('error in post company saga.');
     }
 }
 
 //saga for fetching users in a specific company
-function* fetchCompanyUser(action){
+function* fetchCompanyUser(action) {
     console.log('in fetch company users');
-    try{
+    try {
         const response = yield axios.get(`/api/company/members/${action.payload.id}`)
         console.log('response in fetch company users is:', response);
-        yield put({type: 'SET_COMPANY_USER', payload: response.data});//reducer needs to be made
-    }catch{
+        yield put({ type: 'SET_COMPANY_USER', payload: response.data });
+    } catch {
         console.log('error in fetch company users saga.');
     }
 }
 
 // updates company name
-function* renameCompany(action){
+function* renameCompany(action) {
     console.log('in update company saga');
-    try{
+    try {
         yield axios.put(`api/company/${action.payload.id}`, action.payload);
-        yield put({ type: 'FETCH_COMPANY'})
-    }catch{
+        yield put({ type: 'FETCH_COMPANY' })
+    } catch {
         console.log('error in rename company saga.');
     }
 }
 // change partnership level
-function* updateLevelCompany(action){
+function* updateLevelCompany(action) {
     console.log('in update company partner level saga');
-    try{
+    try {
         yield axios.put(`api/company/partnerLevel/${action.payload.id}`, action.payload);
-        yield put({ type: 'FETCH_NEW_COMPANY'})
-    }catch{
+        yield put({ type: 'FETCH_NEW_COMPANY' })
+    } catch {
         console.log('error in rename company saga.');
     }
 }
 
 //update company for logo
-function* logoCompany(action){
+function* logoCompany(action) {
     console.log('in logo company saga');
-    try{
+    try {
         yield axios.put(`api/company/${action.payload.id}`, action.payload);
-        yield put({ type: 'FETCH_COMPANY'})
-    }catch{
+        yield put({ type: 'FETCH_COMPANY' })
+    } catch {
         console.log('error in rename company saga.');
     }
 }
 
 //delete a company
-function* deleteCompany(action){
+function* deleteCompany(action) {
     console.log('in delete company saga');
-    try{
+    try {
         yield axios.put(`api/company/${action.payload.id}`, action.payload);
-        yield put({ type: 'FETCH_COMPANY'})
-    }catch{
+        yield put({ type: 'FETCH_COMPANY' })
+    } catch {
         console.log('error in rename company saga.');
     }
 }
 
-// change partnership level
-function* assignUser(action){
+// add user to company 
+function* assignUser(action) {
     console.log(`in update user's company saga`);
-    try{
+    try {
         yield axios.put(`api/company/assign`, action.payload);
-        yield put({ type: 'FETCH_NEW_COMPANY'})
-    }catch{
-        console.log('error in rename company saga.');
+        yield put({ type: 'FETCH_UNASSIGNED' })
+    } catch {
+        console.log('error assign saga.');
     }
 }
-
+// grabs users that don't belong to a company
+function* fetchUnassigned(action) {
+    console.log('in fetch unassigned')
+    try {
+        const response = yield axios.get(`/api/company/unassigned`)
+        console.log(response.data);
+        yield put({ type: `UNASSIGNED`, payload: response.data });
+    } catch {
+        console.log('error fetch unassigned saga.');
+    }
+}
 export default companySaga;

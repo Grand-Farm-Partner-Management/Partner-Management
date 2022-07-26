@@ -24,11 +24,12 @@ function AdminPage(args) {
     console.log('unassigned are:', unassigned);
     console.log('new partners are: ', newPartners);
 
-    const fetchUnassigned = async () => {
-        await axios.get(`/api/company/unassigned`)
-            .then(res => {
-                dispatch({ type: `UNASSIGNED`, payload: res.data });
-            })
+    const fetchUnassigned =() => {
+        // await axios.get(`/api/company/unassigned`)
+        //     .then(res => {
+        //         dispatch({ type: `UNASSIGNED`, payload: res.data });
+        //     })
+        dispatch({type: "FETCH_UNASSIGNED"});
     }
 
     const fetchNewPartner = async () => {
