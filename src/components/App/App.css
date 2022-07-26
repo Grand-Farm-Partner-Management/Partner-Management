@@ -174,12 +174,24 @@ input {
   flex-direction: column;
 }
 
-.wrapper h1 {
+.question {
+  width: 1.5em;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 1em;
+}
+
+.pm {
   font-family: heavy;
   color: var(--navy);
   margin-top: -1.5em;
   font-size: 2em;
   margin-bottom: 1.8em;
+}
+
+.question {
+  cursor: pointer
 }
 
 /* ACCOUNT PAGE */
