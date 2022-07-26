@@ -23,7 +23,7 @@ function UnassignedList({ unassign }, ...args) {
     const toggle = () => setDropdownOpen(prevState => !prevState)
 
     function assignClick(){
-        dispatch({type: 'ASSIGN_USER', payload: {id: newCompId }})
+        dispatch({type: 'ASSIGN_USER', payload: {companyId: newCompId, userId: unassign.id }})
 
         swal({
             title: `${unassign.first_name} ${unassign.last_name} has been assigned to ${company}`,
@@ -45,7 +45,7 @@ function UnassignedList({ unassign }, ...args) {
                     {companies.map((comp) => {
                         //console.log('in map', comp.company_name);
                         return (
-                        <DropdownItem onClick={() => {
+                        <DropdownItem key={comp.id} onClick={() => {
                             setCompany(comp.company_name);
                             setNewCompId(comp.id);
                         }}>
