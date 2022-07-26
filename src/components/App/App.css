@@ -76,19 +76,84 @@ Form Treatment
 -------------------------------------------------------------------------------- */
 
 .formPanel {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
   box-sizing: border-box;
-  width: 400px;
   max-width: 100%;
   padding: 25px;
   margin: 0 auto 20px;
   background-color: #efefef;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
+  text-align: right;
+}
+
+.formPanel h2 {
+  align-self: flex-start;
+  margin-bottom: 1em;
+}
+
+.formPanel input {
+  text-align: left;
 }
 
 input {
   margin: 5px;
   margin-bottom: 10px;
+}
+
+/* LOGIN */
+
+.login, .register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 5em 0 5em;
+}
+
+.login-button, .register-button {
+  background-color: white;
+  border: 1px solid var(--grey);
+  padding: .3em .8em .3em .8em;
+  border-radius: 5px;
+}
+
+.register-button {
+  background-color: var(--green);
+  color: white;
+  border-color: var(--green);
+  margin-top: 1em;
+}
+
+.login-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  margin-bottom: 5em;
+}
+
+.GrandFarm-login {
+  width: 30em;
+}
+
+/* REGISTER */
+
+.register-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  margin-bottom: 5em;
+}
+
+.GrandFarm-register {
+  width: 30em;
 }
 
 /* USER PAGE */
@@ -361,7 +426,7 @@ input {
 /* RESPONSIVENESS */
 
 @media screen and (max-width: 900px) {
-  .sort-tabs {
+  .sort-tabs, .login-wrapper, .register-wrapper {
     flex-direction: column;
   }
   .tab {
@@ -376,6 +441,10 @@ input {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+  }
+
+  .register-wrapper, .login-wrapper {
+    height: 100vh;
   }
 
   .profile-photo {
