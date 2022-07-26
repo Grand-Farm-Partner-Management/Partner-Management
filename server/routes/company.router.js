@@ -12,8 +12,8 @@ router.post('/:id', (req, res) => {
   const userId = req.params.id
   const query1 = `INSERT INTO "company" (company_name)
     VALUES ($1) RETURNING id`;
-  const query2 = `UPDATE "user" SET company_id = 5
-  WHERE "user".id = 6;`
+  const query2 = `UPDATE "user" SET company_id = $1
+  WHERE "user".id =$2;`
     pool
       .query(query1, [req.body.company_name])
       .then((result) => {

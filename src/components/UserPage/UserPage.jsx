@@ -14,7 +14,10 @@ function UserPage() {
     <div className="wrapper">
       <img className='GrandFarm' src={GrandFarm} />
       <h2 className='welcome'>Welcome, {user.first_name}!</h2>
-      <Button onClick={() => history.push('/projects')} color="primary">View Projects</Button>
+      <Button style = {{
+        backgroundColor: 'rgb(175, 204, 54)',
+        borderColor: 'rgb(175, 204, 54)'
+      }} onClick={() => history.push('/projects')} color="primary">View Projects</Button>
     </div>
   );
 }

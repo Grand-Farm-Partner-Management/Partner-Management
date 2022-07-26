@@ -53,7 +53,7 @@ function Company(args) {
         <div className='wrapper'>
             <Button className='create-company'>Create Company</Button>
             <div className="company-name-and-dots">
-                <h1 className='companyName'>{members.length > 1 ? members[0].company_name : ''}</h1>
+                <h1 className='companyName'>{members.length > 0 ? members[0].company_name : ''}</h1>
                 <img className='dots' src={Dots} onClick = {() => toggle2()} />
             </div>
             <h1 onClick={toggle} className='links'>Members</h1>
