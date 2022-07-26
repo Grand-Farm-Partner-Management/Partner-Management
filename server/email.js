@@ -13,7 +13,7 @@ function sendReminderEmails() {
     where project.completed_time = CURRENT_DATE;`
     pool.query(queryText).then(result => {
 
-        console.log("result", result.rows);
+        // console.log("result", result.rows);
 
         for (let emails of result.rows) {
             console.log(emails.email);
@@ -59,7 +59,7 @@ function sendReminderEmails() {
     where DATE_TRUNC('DAY', project.due_time) = CURRENT_DATE;`
     pool.query(queryText1).then(result => {
 
-        console.log("result", result.rows);
+        // console.log("result", result.rows);
 
         for (let emails of result.rows) {
             console.log(emails.email);
@@ -94,7 +94,7 @@ function sendReminderEmails() {
 
     pool.query(queryText2).then(result => {
 
-        console.log("result", result.rows);
+        // console.log("result", result.rows);
 
         for (let emails of result.rows) {
             console.log(emails.email);
@@ -130,7 +130,7 @@ function sendReminderEmails() {
     })
     pool.query(queryText3).then(result => {
 
-        console.log("result", result.rows);
+        // console.log("result", result.rows);
 
         for (let emails of result.rows) {
             console.log(emails.email);
@@ -167,14 +167,8 @@ function sendReminderEmails() {
 
 }
 
-// quick check to see if we are running this from the command line. if we are, run the function 
-// for testing purposes and kill the pool when done
-if (require.main === module) {
-    sendReminderEmails(); // we want to remove this when we export to server.js, but keep for testing right now
-    pool.end(); // kill the pool when we're done with it
 
 
-}
 
 
 
