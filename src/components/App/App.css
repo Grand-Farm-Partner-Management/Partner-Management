@@ -4,8 +4,42 @@ body,
   height: 100%;
 }
 
+/* FONTS */
+
+@font-face {
+  font-family: heavy;
+  src: url('../../fonts/Gotham-Bold.otf');
+}
+
+@font-face {
+  font-family: normal;
+  src: url('../../fonts/GothamBook.ttf');
+}
+
+@font-face {
+  font-family: light;
+  src: url('../../fonts/Gotham-Light.otf');
+}
+
+/* COLOR PALLETTE  */
+:root {
+  /* TRY TO USE GROUPS TOGETHER */
+  /* GROUP A */
+  --green: rgb(175, 204, 54);
+  --cream: rgb(244, 241, 223);
+  --teal: rgb(112, 190, 163);
+  /* GROUP B */
+  --yellow: rgb(247, 221, 77);
+  --navy: rgb(36, 76, 98);
+  --green: rgb(175, 204, 54);
+  /* GROUP C */
+  --grey: rgb(66, 77, 87);
+  --green: rgb(175, 204, 54);
+  --navy: rgb(36, 76, 98);
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: light;
   margin: 0px;
 }
 
@@ -15,65 +49,11 @@ img {
 }
 
 /* --------------------------------------------------------------------------------
-Container
+Container`
 -------------------------------------------------------------------------------- */
 
 .container {
   padding: 20px;
-}
-
-/* --------------------------------------------------------------------------------
-Button
--------------------------------------------------------------------------------- */
-
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-color: #014041;
-  border-width: 1px 1px 3px;
-  border-radius: 4px;
-  background-color: #00acb0;
-  color: #f8f8f8;
-  font-size: 1.1rem;
-  outline: 0;
-  cursor: pointer;
-}
-
-.btn_sizeMin {
-  min-height: 50px;
-  min-width: 100px;
-}
-
-.btn_sizeSm {
-  padding: 10px 15px;
-  font-size: 0.8rem;
-}
-
-.btn_sizeFull {
-  display: block;
-  width: 100%;
-}
-
-.btn:hover {
-  background-color: #008183;
-  text-decoration: none;
-}
-
-/* This line makes the "Register" and "Login" buttons look like links */
-.btn_asLink {
-  padding: 0;
-  border-width: 0;
-  border-bottom: 1px solid #444;
-  border-radius: 0;
-  background: none;
-  font: inherit;
-  color: #444;
-}
-
-.btn_asLink:hover {
-  background-color: transparent;
-  border-color: #008183;
-  color: #008183;
 }
 
 /* --------------------------------------------------------------------------------
@@ -109,4 +89,298 @@ Form Treatment
 input {
   margin: 5px;
   margin-bottom: 10px;
+}
+
+/* USER PAGE */
+
+.GrandFarm {
+  width: 30em;
+  margin-top: 2em;
+}
+
+.welcome {
+  margin-bottom: .8em;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* ACCOUNT PAGE */
+
+.blank {
+  width: 20em;
+}
+
+.details-and-dots {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3em;
+}
+
+.pencil {
+  height: 2.5em;
+}
+
+.pencil:hover {
+  cursor: pointer;
+}
+
+.profile-photo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10em;
+}
+
+.profile-photo button {
+  margin-top: 1em;
+}
+
+.bold {
+  font-family: heavy;
+}
+
+.account-wrapper {
+  padding: 3em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.account-wrapper h1 {
+  font-size: 3em;
+  margin-right: .3em;
+}
+
+/* COMPANY */
+
+.members {
+  display: flex;
+  flex-direction: row;
+}
+
+.create-company {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1em;
+}
+
+.companyName {
+  font-size: 3em;
+  margin: 1em .3em 1em 1em;
+}
+
+.links {
+  padding: 1em 3em 1em 3em;
+  font-size: 2em;
+  text-align: center;
+  border: 1px solid black;
+  width: 50vw;
+  background-color: white;
+}
+
+.links:hover {
+  cursor: pointer;
+}
+
+.company-name-and-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* PROJECTS */
+
+.projects-wrapper {
+  margin: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3em;
+}
+
+.projects {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70vw;
+}
+
+.projects h1 {
+  align-self: flex-start;
+}
+
+.project {
+  width: 70vw;
+  padding: 1em;
+  margin: 1em;
+  border: 1px solid black;
+  background-color: white;
+}
+
+.project :hover {
+  cursor: pointer;
+}
+
+.projectHeading {
+  display: flex;
+  width: 70vw;
+  justify-content: space-between;
+  align-content: space-between;
+}
+
+.project_company_name {
+  align-self: flex-start;
+  opacity: 60%;
+}
+
+.project-description {
+  opacity: 60%;
+}
+
+.title-and-date {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-and-date h6 {
+  opacity: 60%;
+}
+
+.nothingYet {
+  margin-top: 5em;
+}
+
+/* TASK */
+
+.task-flex {
+  display: flex;
+  /* width: 90vw; */
+  justify-content:center;
+  align-items: center;
+}
+
+.task-wrapper {
+  margin: 3em;
+  margin-top: 3em;
+  width: 70vw;
+}
+
+.project-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.taskHub {
+  border: 1px solid black;
+  border-bottom: 0;
+}
+
+.task, .completed-task  {
+  border-bottom: 1px solid black;
+  padding: 1em;
+}
+
+.completed-task {
+  opacity: 60%;
+  background-color: rgb(178, 178, 178);
+}
+
+.task {
+  background-color: white;
+}
+
+.task-title {
+  margin-right: .5em;
+}
+
+.completed-by {
+  opacity: 60%;
+}
+
+.sort-tabs {
+  background-color: var(--grey);
+  width: 70vw;
+  color: white;
+  margin-top: 2em;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  border-bottom: 0;
+}
+
+.tab {
+  padding: 1em 2em 1em 2em;
+}
+
+.title-and-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin: -.5em;
+  margin-left: 1em;
+  margin-bottom: .5em;
+}
+
+.dots {
+  height: 1em;
+  margin: .5em 0 1em 0;
+}
+
+.back-arrow {
+  height: 1em;
+  margin-bottom: 1em;
+  opacity: 40%;
+}
+
+.dots:hover, .back-arrow:hover {
+  cursor: pointer;
+}
+
+.no-tasks {
+  display: flex;
+  justify-content: center;
+  margin: 1em;
+}
+
+.dot-and-task {
+  display: flex;
+  align-items: center;
+}
+
+/* RESPONSIVENESS */
+
+@media screen and (max-width: 900px) {
+  .sort-tabs {
+    flex-direction: column;
+  }
+  .tab {
+    border-top: 1px solid white;
+  }
+  .links {
+    font-size: 1.3em;
+    text-align: center;
+  }
+  .account-wrapper {
+    font-size: .5em;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .profile-photo {
+    margin: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
 }

@@ -1,15 +1,23 @@
 import React from 'react';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
+import GrandFarm from '../../../src/images/GrandFarm_Logo.png'
+import { Button } from 'reactstrap';
+import { useHistory } from 'react-router-dom';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UserPage() {
+  const history = useHistory();
   // this component doesn't do much to start, just renders some user reducer info to the DOM
   const user = useSelector((store) => store.user);
+  console.log(user)
   return (
-    <div className="container">
-      <h2>Welcome, {user.username}!</h2>
-      <p>Your ID is: {user.id}</p>
-      <LogOutButton className="btn" />
+    <div className="wrapper">
+      <img className='GrandFarm' src={GrandFarm} />
+      <h2 className='welcome'>Welcome, {user.first_name}!</h2>
+      <Button style = {{
+        backgroundColor: 'rgb(175, 204, 54)',
+        borderColor: 'rgb(175, 204, 54)'
+      }} onClick={() => history.push('/projects')} color="primary">View Projects</Button>
     </div>
   );
 }
