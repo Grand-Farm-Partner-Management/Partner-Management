@@ -24,18 +24,30 @@ function* fetchUser() {
   }
 }
 
-function* deleteUser(action){
+function* deleteUser(action) {
   try {
     yield axios.delete(`api/user/${action.payload.id}`);
     yield put({ type: 'FETCH_USER' })
-} catch {
+  } catch {
     console.log('error in delete user saga.');
+  }
+}
+
+function* fetchAllUsers(){
+  try {
+    const response = yield axios.get('/api/user/all')
+    console.log('response in fetch All Users is:', response);
+    yield put({ type: 'ALL_USER', payload: response.data });//reducer needs to be made
+} catch {
+    console.log('error in fetch company saga.');
 }
 }
 
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
   yield takeLatest('DELETE_USER', deleteUser);
+  yield takeLatest('FETCH_ALL_USER', fetchAllUsers);
+
 }
 
 export default userSaga;
