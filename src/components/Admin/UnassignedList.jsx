@@ -6,7 +6,7 @@ import swal from 'sweetalert';
 
 function UnassignedList({ unassign }, ...args) {
     const dispatch = useDispatch();
-    const [company, setCompany] = useState("companies");
+    const [company, setCompany] = useState("Companies");
     const [newCompId, setNewCompId] = useState(0)
     const companies = useSelector((store) => store.company)
     console.log('----', companies);
@@ -23,7 +23,7 @@ function UnassignedList({ unassign }, ...args) {
     const toggle = () => setDropdownOpen(prevState => !prevState)
 
     function assignClick(){
-        dispatch({type: '', payload: {id: newCompId }})
+        dispatch({type: 'ASSIGN_USER', payload: {id: newCompId }})
 
         swal({
             title: `${unassign.first_name} ${unassign.last_name} has been assigned to ${company}`,

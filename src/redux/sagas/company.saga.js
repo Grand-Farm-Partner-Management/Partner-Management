@@ -10,7 +10,7 @@ function* companySaga() {
     yield takeLatest('LOGO_COMPANY', logoCompany);
     yield takeLatest('DELETE_COMPANY', deleteCompany);
     yield takeLatest('FETCH_NEW_COMPANY', fetchNewCompany);
-    yield takeLatest('ASSIGN_EMPLOYEE', );
+    yield takeLatest('ASSIGN_USER', assignUser);
 }
 
 // fetches the companies
@@ -48,7 +48,7 @@ function* postCompany(action){
     }
 }
 
-//saga for fetching users in a specific caompany
+//saga for fetching users in a specific company
 function* fetchCompanyUser(action){
     console.log('in fetch company users');
     try{
@@ -98,6 +98,17 @@ function* deleteCompany(action){
     try{
         yield axios.put(`api/company/${action.payload.id}`, action.payload);
         yield put({ type: 'FETCH_COMPANY'})
+    }catch{
+        console.log('error in rename company saga.');
+    }
+}
+
+// change partnership level
+function* assignUser(action){
+    console.log(`in update user's company saga`);
+    try{
+        yield axios.put(`api/company/assign`, action.payload);
+        yield put({ type: 'FETCH_NEW_COMPANY'})
     }catch{
         console.log('error in rename company saga.');
     }
