@@ -4,17 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Collapse, Button, CardBody, Card, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
-function UnassignedList(props) {
+function NewPartnerList({newPartner}) {
     //console.log('in unassigned list', unassign);
-    const unassign = props.unassign;
-    const [company, setCompany] = useState(unassign.company_id)
+    const [partnerLevel, setPartnerLevel] = useState(newPartner.partnerLevel)
     
     return (
-        <div key={unassign.id}>
-            <h4>{unassign.first_name} {unassign.last_name} {unassign.email} </h4>
+        <div key={newPartner.id}>
+            <h4> {newPartner.company_name} </h4>
             <button>Add</button>
         </div>
     )
 }
 
-export default UnassignedList;
+export default NewPartnerList;
