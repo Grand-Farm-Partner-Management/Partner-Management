@@ -60,7 +60,7 @@ function AdminPage(args) {
                     })
                 }
             </Collapse>
-            <h2 onClick={toggle2} className='links'>New Partners</h2>
+            <h2 onClick={toggle2} className='links'>New Partner Requests</h2>
             <Collapse isOpen={isOpen2} {...args} >
                 {
                     newPartners.map((newPartner) => {
