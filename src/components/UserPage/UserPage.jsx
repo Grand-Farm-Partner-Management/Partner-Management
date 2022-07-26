@@ -13,6 +13,7 @@ function UserPage() {
   return (
     <div className="wrapper">
       <img className='GrandFarm' src={GrandFarm} />
+      <h1>Partner Management</h1>
       <h2 className='welcome'>Welcome, {user.first_name}!</h2>
       <Button style = {{
         backgroundColor: 'rgb(175, 204, 54)',

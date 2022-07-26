@@ -159,12 +159,12 @@ input {
 /* USER PAGE */
 
 .GrandFarm {
-  width: 30em;
+  width: 27em;
   margin-top: 2em;
 }
 
 .welcome {
-  margin-bottom: .8em;
+  margin-bottom: 1.8em;
 }
 
 .wrapper {
@@ -172,6 +172,14 @@ input {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.wrapper h1 {
+  font-family: heavy;
+  color: var(--navy);
+  margin-top: -1.5em;
+  font-size: 2em;
+  margin-bottom: 1.8em;
 }
 
 /* ACCOUNT PAGE */
