@@ -23,7 +23,9 @@ function Task({ direction, ...args }) {
 
     const user = useSelector((store) => store.user);
     const tasks = useSelector((store) => store.tasks);
+    // All PROJECTS
     const projectDetails = useSelector((store) => store.projects);
+    // All Tasks for a project
     const projectTasks = useSelector((store) => store.projectTasks);
 
     let projectId = params.projectId;
@@ -51,13 +53,15 @@ function Task({ direction, ...args }) {
     const [projectDueDate, setProjectDueDate] = useState('');
     const [date, setDate] = useState(new Date());
 
+    // State for progression
+    const [progression, setProgression] = useState(0);
+
     // Fetching tasks
 
     const fetchTasks = async () => {
         axios.get(`/api/task/projectTasks/${projectId}`)
             .then(res => {
                 dispatch({ type: `PROJECT_TASKS`, payload: res.data });
-                console.log(res.data)
             })
     }
 
@@ -91,7 +95,6 @@ function Task({ direction, ...args }) {
         await axios.post(`/api/task/${currentProject.id}`, body)
             .then(async res => {
                 fetchTasks();
-                calculateProgression();
             })
     }
 
@@ -116,7 +119,8 @@ function Task({ direction, ...args }) {
         console.log('COMPLETED', completed)
         console.log('TOTAL TASKS', totalTasks)
         console.log('PROGRESSION', progression)
-        axios.put(`/api/project/${currentProject.id}/progress/`, { progress: progression });
+        axios.put(`/api/project/${projectId}/progress/`, { progress: progression });
+        setProgression(progression);
     }
 
     function getFormattedDate(date) {
@@ -129,14 +133,12 @@ function Task({ direction, ...args }) {
     }
 
     useEffect(async () => {
-        dispatch({
-            type: 'PROJECT_ID',
-            payload: projectId
-        })
-        await calculateProgression();
+
         await fetchTasks();
         await fetchProjectDetails();
+        calculateProgression();
         console.log('CURRENT PROJECT', currentProject);
+        console.log('PROJECT TASKS', projectTasks);
     }, [])
 
     // CATCHING ERRORS / UNLOADED DATA
@@ -148,7 +150,12 @@ function Task({ direction, ...args }) {
     return (
         <div className='task-flex'>
             <div className='task-wrapper'>
-                <img src={Back} onClick={() => history.push('/projects')} className='back-arrow' />
+                <img src={Back} onClick={() => {
+                    dispatch({ type: '/CLEAR_ID' });
+                    dispatch({ type: '/CLEAR_PROJECT_TASKS' });
+                    dispatch({ type: '/CLEAR_PROJECTS' });
+                    history.push('/projects');
+                }} className='back-arrow' />
                 <div className="dot-and-task">
                     <h1>{currentProject.title}</h1>
 
@@ -189,7 +196,10 @@ function Task({ direction, ...args }) {
                                     </LocalizationProvider>
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button onClick={() => {
+                                    <Button style={{
+                                        backgroundColor: 'rgb(175, 204, 54)',
+                                        borderColor: 'rgb(175, 204, 54)'
+                                    }} onClick={() => {
                                         editProject({ title: projectTitle, description: projectDescription, due_time: projectDueDate });
                                         toggle2();
                                     }
@@ -227,7 +237,10 @@ function Task({ direction, ...args }) {
                 </div>
                 <div className="project-details">
                     <h3 className='project-description'>{currentProject.description}</h3>
-                    <Button onClick={toggle}>New Task</Button>
+                    <Button style={{
+                        backgroundColor: 'rgb(175, 204, 54)',
+                        borderColor: 'rgb(175, 204, 54)'
+                    }} onClick={toggle}>New Task</Button>
                 </div>
                 <h6 className='project-description'>{getFormattedDate(currentProject.due_time)}</h6>
 
@@ -258,7 +271,10 @@ function Task({ direction, ...args }) {
                         </LocalizationProvider>
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={() => {
+                        <Button style={{
+                            backgroundColor: 'rgb(175, 204, 54)',
+                            borderColor: 'rgb(175, 204, 54)'
+                        }} onClick={() => {
                             createTask({ title: projectTitle, description: projectDescription, due_time: projectDueDate });
                             toggle();
                         }
@@ -272,8 +288,8 @@ function Task({ direction, ...args }) {
                     style={{
                         marginTop: '2em'
                     }}
-                    value={currentProject.progression}>
-                    {currentProject.progression}%
+                    value={progression}>
+                    {progression}%
                 </Progress>
                 <div className="sort-tabs">
                     <h3 className='tab'>All Tasks</h3>
