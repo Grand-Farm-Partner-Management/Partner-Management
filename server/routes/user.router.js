@@ -20,11 +20,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 router.post('/register', (req, res, next) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
-<<<<<<< HEAD
-  const email = req.body.username;
-=======
   const email = req.body.email;
->>>>>>> 068ca9f09ca6b1cf03912603e5bee08a17641877
   const linkedIn = req.body.linkedIn;
   const password = encryptLib.encryptPassword(req.body.password);
 

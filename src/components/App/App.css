@@ -223,6 +223,7 @@ input {
   padding: 1em;
   margin: 1em;
   border: 1px solid black;
+  background-color: white;
 }
 
 .project :hover {
@@ -291,6 +292,10 @@ input {
 .completed-task {
   opacity: 60%;
   background-color: rgb(178, 178, 178);
+}
+
+.task {
+  background-color: white;
 }
 
 .task-title {
