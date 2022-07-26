@@ -125,6 +125,10 @@ input {
   height: 2.5em;
 }
 
+.pencil:hover {
+  cursor: pointer;
+}
+
 .profile-photo {
   display: flex;
   flex-direction: column;
@@ -368,7 +372,7 @@ input {
     justify-content: flex-start;
     align-items: flex-start;
   }
-  
+
   .profile-photo {
     margin: 0;
     justify-content: flex-start;

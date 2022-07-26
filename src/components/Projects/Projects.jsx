@@ -69,7 +69,7 @@ function Projects(args) {
     }
 
     useEffect(() => {
-        dispatch({type: '/CLEAR_PROJECT_TASKS'});
+        dispatch({ type: '/CLEAR_PROJECT_TASKS' });
         fetchProjects();
         fetchMembers();
         console.log('PROJECT TASKS STORE', projectTasksStore);
@@ -82,7 +82,10 @@ function Projects(args) {
                 <div className="projectHeading">
                     <h4 className='project_company_name'>{members.length > 1 ? members[0].company_name : ''}</h4>
 
-                    <Button onClick={toggle}>New Project</Button>
+                    <Button style={{
+                        backgroundColor: 'rgb(175, 204, 54)',
+                        borderColor: 'rgb(175, 204, 54)'
+                    }} onClick={toggle}>New Project</Button>
                     <Modal isOpen={modal} toggle={toggle} {...args}>
                         <ModalHeader toggle={toggle}>New Project</ModalHeader>
                         <ModalBody>
