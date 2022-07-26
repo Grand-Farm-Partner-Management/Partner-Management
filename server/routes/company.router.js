@@ -1,7 +1,8 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-
+const sendGridMail = require("@sendgrid/mail");
+sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
 /**
  * POST route for creating a company
  */
@@ -14,8 +15,25 @@ router.post('/:id', (req, res) => {
   const query2 = `UPDATE "user" SET company_id = 5
   WHERE "user".id = 6;`
     pool
-      .query(queryText, [companyName])
+      .query(query1, [req.body.company_name])
       .then((result) => {
+        let company = req.body.company_name;
+ const message = {
+          to:"kamokamophilippe13@gmail.com",
+          from: "philippebaraka13@gmail.com",
+          subject:[company],
+          text: [company],
+          html: [company],
+          html: "<strong> A new company was created, please log in to approve.</strong>",
+      };
+
+      sendGridMail.send(message)
+          .then(() => {
+              console.log("Email sent")
+          })
+          .catch((error) => {
+              console.log(error);
+          })
         const createCompanyId = result.rows[0].id
         pool.query(queryText2, [userId, createProjectId])
           .then(result => {

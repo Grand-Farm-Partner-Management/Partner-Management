@@ -52,13 +52,20 @@ router.post('/:id', (req, res,) => {
 
     const queryText2 = `insert into company_project ("company_id", "project_id")
     values ($1, $2);`;
-
+    const queryText3 = `INSERT INTO "company_project" ("company_id", "project_id")
+    VALUES ($1, $2);`;
     pool.query(queryText, [title, description, 0, due_time, false])
         .then(result => {
             const createProjectId = result.rows[0].id
             console.log("new project id:", createProjectId);
             pool.query(queryText2, [company_id, createProjectId])
                 .then(result => {
+                    pool.query(queryText3, [3, createProjectId])
+                        .then(result => {
+                            res.send(result.rows);
+                        }).catch(err => {
+                            console.log(err);
+                        })
                 }).catch(err => {
                     console.log(err);
                 })

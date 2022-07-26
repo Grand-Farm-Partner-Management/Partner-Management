@@ -51,16 +51,55 @@ function TaskItem(props, { direction, ...args }) {
         fetchTasks();
     }
 
-    const completeTask = async () => {
-        await axios.put(`/api/task/${user.id}`, {taskId: task.id})
+    const calculateProgression = async () => {
+
+        if (!projectTasks || !currentProject) {
+            return
+        }
+
+        let totalTasks = projectTasks.length;
+        let completed = 0;
+        let uncompleted = 0;
+        for (const i of projectTasks) {
+            if (i.completed_by === null) {
+                uncompleted++;
+            } else if (i.completed_by !== null) {
+                completed++;
+            }
+        }
+        let progression = ((completed / totalTasks) * 100).toFixed(0)
+        console.log('UNCOMPLETED TI', uncompleted)
+        console.log('COMPLETED TI', completed)
+        console.log('TOTAL TASKS TI', totalTasks)
+        console.log('PROGRESSION TI', progression)
+        console.log('CURRENT PROJECT', currentProject)
+        axios.put(`/api/project/${currentProject.id}/progress/`, { progress: progression });
         fetchTasks();
+        fetchProjectDetails();
     }
 
-    const uncompleteTask = async () => {
-        console.log('in uncompleteTask')
-        await axios.put(`/api/task/uncomplete`, {taskId: task.id})
-        fetchTasks();
+    const fetchProjectDetails = async () => {
+        axios.get(`/api/project/projectDetails/${projectId}`)
+            .then(res => {
+                dispatch({ type: `GET_PROJECTS`, payload: res.data });
+                console.log('project details', res.data)
+            })
     }
+
+    const completeTask = async () => {
+        if (checked === false) {
+            await axios.put(`/api/task/${user.id}`, { taskId: task.id })
+            setChecked(true)
+            calculateProgression();
+            fetchTasks();
+        } else {
+            console.log('uncomplete')
+            await axios.put(`/api/task/uncomplete/${task.id}`)
+            setChecked(false)
+            calculateProgression();
+            fetchTasks();
+        }
+    };
 
     function getFormattedDate(date) {
         if (date === null) {
@@ -71,6 +110,8 @@ function TaskItem(props, { direction, ...args }) {
         return newDate;
     }
 
+    const [checked, setChecked] = useState(task.completed_by ? true : false);
+
     useEffect(() => {
         console.log(task)
     }, [])
@@ -78,10 +119,11 @@ function TaskItem(props, { direction, ...args }) {
     return (
         <>
             <div className='task'>
-                {task.completed_by === null ? <Input type="checkbox" onChange={() => completeTask()} />
-                    : <Input type="checkbox" checked onChange={() => uncompleteTask()} />}
+                <Input type="checkbox" checked={checked} onChange={() => completeTask()} />
                 <Label check>
+
                     <div className='title-and-dots'>
+                        <h4 className='task-title'>{task.title}</h4> {task.completed_by ? <h6 className='completed-by'> <i>Completed by {task.completed_by}</i></h6> : ''}
                         <Dropdown isOpen={dropdown2Open} toggle={toggleDropdown2} direction={direction}>
                             <DropdownToggle style={{
                                 backgroundColor: 'transparent',
@@ -120,7 +162,6 @@ function TaskItem(props, { direction, ...args }) {
                                 }}>Delete Task</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                        <h4 className='task-title'>{task.title}</h4> {task.completed_by ? <h6 className='completed-by'> <i>Completed by {task.completed_by}</i></h6> : ''}
                     </div>
                 </Label>
                 <h6 className='project-description'>{getFormattedDate(task.due_time)}</h6>
