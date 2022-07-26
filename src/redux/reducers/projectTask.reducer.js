@@ -3,7 +3,7 @@ const projectTaskReducer = (state = [], action) => {
     case 'PROJECT_TASKS':
       return action.payload;
       case 'CLEAR_PROJECT_TASKS':
-        return;
+        return [];
     default:
       return state;
   }
