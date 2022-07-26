@@ -15,6 +15,7 @@ function Projects(args) {
     const user = useSelector((store) => store.user);
     const projects = useSelector((store) => store.projects);
     const members = useSelector((store) => store.members);
+    const projectTasksStore = useSelector((store) => store.projectTasks);
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -32,7 +33,6 @@ function Projects(args) {
         await axios.get(`/api/project/${user.company_id}`)
             .then(res => {
                 dispatch({ type: `GET_PROJECTS`, payload: res.data });
-                console.log(res.data)
             })
     }
 
@@ -69,8 +69,10 @@ function Projects(args) {
     }
 
     useEffect(() => {
+        dispatch({type: '/CLEAR_PROJECT_TASKS'});
         fetchProjects();
         fetchMembers();
+        console.log('PROJECT TASKS STORE', projectTasksStore);
     }, [])
 
     return (

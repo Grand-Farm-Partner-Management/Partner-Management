@@ -50,7 +50,7 @@ CREATE TABLE "tasks" (
 	"description" varchar,
 	"parent_task" int, -- self referencing 
 	"due_time" timestamp,
-	"completed_by" int references "user",
+	"completed_by" varchar,
 	"completed_time" timestamp
 );
 
