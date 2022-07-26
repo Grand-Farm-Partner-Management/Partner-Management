@@ -72,7 +72,6 @@ function Projects(args) {
         dispatch({ type: '/CLEAR_PROJECT_TASKS' });
         fetchProjects();
         fetchMembers();
-        console.log('PROJECT TASKS STORE', projectTasksStore);
     }, [])
 
     return (
