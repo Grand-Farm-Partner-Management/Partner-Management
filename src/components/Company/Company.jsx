@@ -12,8 +12,8 @@ function Company(args) {
 
     const user = useSelector((store) => store.user);
     const members = useSelector((store) => store.members);
-    const company = useSelector((store) => store.company);
-    console.log("company", company)
+   
+    
 
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
@@ -27,7 +27,7 @@ function Company(args) {
     const [companyAbout, setCompanyAbout] = useState('');
 
     const addCompany = event => {
-        event.preventDefault();
+        // event.preventDefault();
         dispatch({
             type: 'ADD_COMPANY',
             payload: { companyName: companyName, companyAbout: companyAbout }
@@ -61,6 +61,7 @@ function Company(args) {
     // }
 
     useEffect(() => {
+        addCompany();
         fetchMembers();
         console.log(members)
         console.log(user)
@@ -68,10 +69,17 @@ function Company(args) {
 
     return (
         <div className='wrapper'>
-            <section onSubmit={addCompany}>
+            <section>
+                
+                <form onSubmit={addCompany}>
                 <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)}
-                 placeholder='company name' required="" />
-                <input  type="text" value={companyAbout} onChange={(event) => setCompanyName(event.target.value)} placeholder='about the company' required="" />
+                    placeholder='company name' required="" />
+
+
+                <input type="text" value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)}
+                    placeholder='about the company' required="" />
+                <button type="submit" >submit</button>
+                </form>
             </section>
             <Button className='create-company'>Create Company</Button>
             <div className="company-name-and-dots">

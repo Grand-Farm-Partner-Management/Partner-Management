@@ -40,7 +40,7 @@ function* fetchNewCompany(action) {
 
 // adds new company to the company table 
 function* postCompany(action) {
-    console.log('in post company saga');
+    console.log('in post company saga', action);
     try {
         yield axios.post('api/company', action.payload);
         yield put({ type: 'FETCH_COMPANY' })
