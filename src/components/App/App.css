@@ -433,9 +433,10 @@ input {
 }
 
 .no-tasks {
-  display: flex;
-  justify-content: center;
-  margin: 1em;
+  padding: 1em;
+  text-align: center;
+  border-bottom: 1px solid black;
+  width: 69.9vw;
 }
 
 .dot-and-task {
