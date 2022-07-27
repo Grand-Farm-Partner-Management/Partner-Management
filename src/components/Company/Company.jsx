@@ -134,19 +134,21 @@ function Company(args) {
                         }} onClick={() => toggleDocAdd()}>Add Link</Button>
                         <p>Here is where external links to documents relevent to this company can be kept.</p>
                     </div>
-                    <hr></hr>
+                    <br></br>
                     {
                         documents.map((document) => {
                             return (
                                 <div className='doc-list'>
                                     <a href={document.link} target='_blank'><h2>{document.link_title}</h2></a>
-                                    <img src={Delete} className='delete' onClick={() => axios.delete(`/api/document/${document.id}`)} />
+                                    <img src={Delete} className='delete' onClick={() => {
+                                        axios.delete(`/api/document/${document.id}`)
+                                        fetchDocuments();
+                                        }} />
                                 </div>
                             )
                         })
                     }
                 </div>
-                <br></br>
             </Collapse>
 
             <Modal isOpen={modalDocAdd} toggle={toggleDocAdd} {...args}>
