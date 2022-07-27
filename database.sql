@@ -51,7 +51,8 @@ CREATE TABLE "tasks" (
 	"parent_task" int, -- self referencing 
 	"due_time" timestamp,
 	"completed_by" varchar,
-	"completed_time" timestamp
+	"completed_time" timestamp,
+	"assigned_user" varchar
 );
 
 CREATE TABLE "project_employee" (
