@@ -60,13 +60,7 @@ router.post('/:id', (req, res,) => {
             console.log("new project id:", createProjectId);
             pool.query(queryText2, [company_id, createProjectId])
                 .then(result => {
-                    // why 3? which company is this?
-                    pool.query(queryText3, [3, createProjectId])
-                        .then(result => {
-                            res.send(result.rows);
-                        }).catch(err => {
-                            console.log(err);
-                        })
+                    res.send(result.rows)
                 }).catch(err => {
                     console.log(err);
                 })
