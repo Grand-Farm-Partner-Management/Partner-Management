@@ -100,7 +100,7 @@ function* deleteCompany(action) {
     try {
         yield axios.delete(`api/company/${action.payload.id}`);
         yield put({ type: 'FETCH_COMPANY' });
-        yield put({ type: 'FETCH_UNASSIGNED'});
+        yield put({ type: 'FETCH_NEW_COMPANY'});
     } catch {
         console.log('error in delete company saga.');
     }
