@@ -12,7 +12,7 @@ Grand Farm aims to capitalize on the region's potential in the agriculture and t
 
 ## Who is it for?
 
-
+Grand Farm Partner Management is strictly for partners of Grand Farm. When a company is created, a request is sent to Grand Farm. Once approved, they are now permitted to create projects.
 
 ## How to Run 
 

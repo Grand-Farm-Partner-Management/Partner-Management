@@ -17,14 +17,14 @@ function Nav(args) {
 
   return (
     <>
-      <img src={menuIcon} onClick={toggle} className = 'menuIcon'/>
-      <Collapse className = 'h' isOpen={isOpen} {...args}>
+      <img src={menuIcon} onClick={toggle} className='menuIcon' />
+      <Collapse className='h' isOpen={isOpen} {...args}>
         <div className="nav">
           <div>
             {/* If no user is logged in, show these links */}
             {!user.id && (
               // If there's no user, show login/registration links
-              <Link className="navLink" to="/login">
+              <Link onClick={toggle} className="navLink" to="/login">
                 Login / Register
               </Link>
             )}
@@ -43,14 +43,12 @@ function Nav(args) {
                 <Link onClick={toggle} className="navLink" to="/projects">
                   Projects
                 </Link>
-
+                <Link onClick={toggle} className="navLink" to="/about">
+                  Account
+                </Link>
+                <LogOutButton onClick={toggle} className="navLogOut" />
               </>
             )}
-
-            <Link onClick={toggle} className="navLink" to="/about">
-              Account
-            </Link>
-            <LogOutButton className="navLogOut" />
           </div>
         </div>
       </Collapse>
