@@ -7,44 +7,45 @@ sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
  * POST route for creating a company
  */
 
-router.post('/:id', (req, res) => {
-  const companyName = req.body.companyName;
-  const userId = req.params.id
-  const query1 = `INSERT INTO "company" (company_name)
-    VALUES ($1) RETURNING id`;
+router.post('/' ,(req, res) => {
+  const name = req.body.companyName;
+  const userId = req.user.id
+  const about = req.body.companyAbout;
+ 
+  console.log("cnjasacasbjlc", req.body);
+  const query1 = `INSERT INTO "company" (company_name, about)
+    VALUES ($1, $2) RETURNING id`;
   const query2 = `UPDATE "user" SET company_id = $1
   WHERE "user".id =$2;`
-    pool
-      .query(query1, [req.body.company_name])
-      .then((result) => {
-        let company = req.body.company_name;
- const message = {
-          to:"kamokamophilippe13@gmail.com",
-          from: "philippebaraka13@gmail.com",
-          subject:[company],
-          text: [company],
-          html: [company],
-          html: "<strong> A new company was created, please log in to approve.</strong>",
+
+   pool.query(query1, [name, about] )
+    .then((result) => {
+      const response = result.rows[0].id
+      console.log("should be id",response)
+      const message = {
+        to: "kamokamophilippe13@gmail.com",
+        from: "philippebaraka13@gmail.com",
+        subject:"dj",
+        text: "dd",
+        html:"<strong>new company was created.</strong>"
+       
       };
 
       sendGridMail.send(message)
-          .then(() => {
-              console.log("Email sent")
-          })
-          .catch((error) => {
-              console.log(error);
-          })
-        const createCompanyId = result.rows[0].id
-        pool.query(queryText2, [userId, createProjectId])
-          .then(result => {
-          }).catch(err => {
-            console.log(err);
-          })
-      })
-      .catch((err) => {
-        console.log('User registration failed: ', err);
-        res.sendStatus(500);
-      });
+      pool.query(query2, [response, userId])
+        .then((result) => {
+          res.send(result.rows);
+          console.log("Email sent")
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+
+    })
+    .catch((err) => {
+      console.log('User registration failed: ', err);
+      res.sendStatus(500);
+    });
 });
 
 // ** ---
@@ -70,7 +71,7 @@ router.get('/', (req, res) => {
  * GET route for showing all members
  */
 router.get('/members/:id', (req, res) => {
-  const queryText = `SELECT first_name, last_name, company_id, company_name FROM "company"
+  const queryText = `SELECT first_name, last_name, company_id, company_name, about FROM "company"
   JOIN "user" ON "company".id = "user".company_id
   WHERE "user".company_id = $1;`
   pool.query(queryText, [req.params.id])
@@ -97,17 +98,17 @@ router.get('/newPartner', (req, res) => {
 });
 
 //to get people who don't have a company
-router.get('/unassigned', (req,res) => {
+router.get('/unassigned', (req, res) => {
   const query = `select "user".id, "user".first_name, "user".last_name, "user".email, "user".company_id from "user" where company_id is null order by id;`
 
   pool.query(query)
-        .then(result => {
-            res.send(result.rows);
-        })
-        .catch((error) => {
-            console.log('Error making SELECT for unassigned users:', error);
-            res.sendStatus(500);
-        });
+    .then(result => {
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log('Error making SELECT for unassigned users:', error);
+      res.sendStatus(500);
+    });
 })
 
 
@@ -147,20 +148,20 @@ router.put('/partnerLevel/:id', (req, res) => {
 * PUT route for adding company logo
 */
 
-router.put('/logo/:id', (req, res) => {
-  const companyId = req.params.id;
-  const newLogo = req.body.logo;
-  const queryText = `UPDATE "company"
-      SET "logo" = $1
-      WHERE id = $2;`
-  pool
-    .query(queryText, [newLogo, companyId])
-    .then(() => res.sendStatus(201))
-    .catch((err) => {
-      console.log('Error updating company name. ', err);
-      res.sendStatus(500);
-    });
-});
+// router.put('/about/:id', (req, res) => {
+//   const companyId = req.params.id;
+//   const newAbout = req.body.about;
+//   const queryText = `UPDATE "company"
+//       SET "about" = $1
+//       WHERE id = $2;`
+//   pool
+//     .query(queryText, [newAbout, companyId])
+//     .then(() => res.sendStatus(201))
+//     .catch((err) => {
+//       console.log('Error updating company About. ', err);
+//       res.sendStatus(500);
+//     });
+// });
 
 /**
 * PUT route for renaming company
@@ -169,11 +170,13 @@ router.put('/logo/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   const companyId = req.params.id;
   const newName = req.body.companyName;
+  const newAbout = req.body.companyAbout;
+  // console.log("log", req.body);
   const queryText = `UPDATE "company"
-  SET "company_name" = $1
-  WHERE id = $2;`
+  SET "company_name" = $1, "about" =$2
+  WHERE id = $3;`
   pool
-    .query(queryText, [newName, companyId])
+    .query(queryText, [newName, newAbout, companyId])
     .then(() => res.sendStatus(201))
     .catch((err) => {
       console.log('Error updating company name. ', err);

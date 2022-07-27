@@ -28,7 +28,7 @@ function* fetchCompany(action) {
 
 //fetches the new companies to be accepted by Grand Farm
 function* fetchNewCompany(action) {
-    console.log('in fetch new company saga');
+    console.log('in fetch new company saga', action );
     try {
         const response = yield axios.get('/api/company/newPartner')
         console.log('response in fetch new company is:', response);
@@ -40,9 +40,9 @@ function* fetchNewCompany(action) {
 
 // adds new company to the company table 
 function* postCompany(action) {
-    console.log('in post company saga');
+    console.log('in post company saga', action);
     try {
-        yield axios.post('api/company', action.payload);
+        yield axios.post(`api/company`, action.payload);
         yield put({ type: 'FETCH_COMPANY' })
     } catch {
         console.log('error in post company saga.');

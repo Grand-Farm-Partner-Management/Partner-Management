@@ -50,7 +50,7 @@ router.get('/projectDetails/:id', (req, res) => {
  * POST route for creating a project
  */
 router.post('/:id', (req, res,) => {
-
+console.log("project", req.body);
     const title = req.body.title;
     const description = req.body.description;
     // Progression

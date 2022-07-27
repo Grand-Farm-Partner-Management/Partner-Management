@@ -18,6 +18,8 @@ function Company(args) {
 
     // Collapse for members
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpen2, setIsOpen2] = useState(false);
+
     const toggle = () => setIsOpen(!isOpen);
 
     // Collapse for documents
@@ -26,7 +28,17 @@ function Company(args) {
 
     // State for editing company 
     const [companyName, setCompanyName] = useState('');
+    const [companyAbout, setCompanyAbout] = useState('');
 
+    const addCompany = event => {
+        // event.preventDefault();
+        dispatch({
+            type: 'ADD_COMPANY',
+            payload: { companyName: companyName, companyAbout: companyAbout}
+        });
+        setCompanyName('');
+        setCompanyAbout('');
+    }
     //  Edit Modal
     const [modal2, setModal2] = useState(false);
     const toggle2 = () => setModal2(!modal2);
@@ -42,7 +54,7 @@ function Company(args) {
     const fetchMembers = async () => {
         await axios.get(`/api/company/members/${user.company_id}`)
             .then(res => {
-                dispatch({ type: `SET_MEMBERS`, payload: res.data });
+                dispatch({ type: `GET_MEMBERS`, payload: res.data });
             })
     }
 
@@ -72,6 +84,7 @@ function Company(args) {
     // }
 
     useEffect(() => {
+        dispatch({ type: 'FETCH_COMPANY', payload: user.user_id })  
         fetchMembers();
         fetchDocuments();
     }, [])
@@ -109,11 +122,19 @@ function Company(args) {
                     <label htmlFor='project-title'>Company Name:</label>
                     <input onChange={(e) => setCompanyName(e.target.value)} id='project-title' />
                     <br />
+                    <label htmlFor='about'>About the company:</label>
+                    <input onChange={(e) => setCompanyAbout(e.target.value)} id='project-title' />
+                    <br />
                 </ModalBody>
+
                 <ModalFooter>
                     <Button onClick={() => {
-                        editCompany({ companyName: companyName });
+                        editCompany({
+                            companyName: companyName,
+                            companyAbout: companyAbout
+                        });
                         toggle2();
+                        e
                     }
                     }>Confirm</Button>
                 </ModalFooter>

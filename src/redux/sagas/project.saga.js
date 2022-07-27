@@ -24,7 +24,7 @@ function* fetchProjectDetails(action){
 
 //fetch projects
 function* fetchProject(action){
-    console.log('in fetch project saga');
+    console.log('in fetch project saga',action);
     try{
         // access the user's company id from redux
         let companyId = yield select(store => store.user.company_id) || action.payload;
@@ -38,7 +38,7 @@ function* fetchProject(action){
 
 //add new projects
 function* newProject(action){
-    console.log('in fetch project saga');
+    console.log('in fetch project saga', action);
     try{
         yield axios.post(`/api/project/${action.payload.user_id}`, action.payload);
         yield put({ type: 'FETCH_PROJECT'})
