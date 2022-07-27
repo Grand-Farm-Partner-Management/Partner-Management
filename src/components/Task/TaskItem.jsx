@@ -18,16 +18,11 @@ import swal from 'sweetalert';
 function TaskItem(props, { direction, ...args }) {
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const params = useParams();
 
     const user = useSelector((store) => store.user);
-    const tasks = useSelector((store) => store.tasks);
-    const projectDetails = useSelector((store) => store.projects);
-    const projectTasks = useSelector((store) => store.projectTasks);
 
     let projectId = params.projectId;
-    let currentProject = projectDetails[0];
     let task = props.task;
 
     // State for drop down

@@ -71,4 +71,33 @@ router.post('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+//select "user".id, "user".first_name, "user".last_name, "user".email from "user" order by id asc;
+router.get('/all', (req, res) => {
+  const queryText = `select "user".id, "user".first_name, "user".last_name, "user".email, "user".company_id, company.company_name from "user"
+  left join company on "user".company_id = company.id
+  order by company.partner_level asc;`
+  pool
+    .query(queryText)
+    .then(result => {
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log('Error selecting all users. ', err);
+      res.sendStatus(500);
+    });
+});
+
+//deletes user with specific id
+router.delete('/:id', (req, res) => {
+  const companyId = req.params.id;
+  const queryText = `DELETE FROM "user" WHERE id = $1;`
+  pool
+    .query(queryText, [companyId])
+    .then(() => res.sendStatus(204))
+    .catch((err) => {
+      console.log('Error deleting user. ', err);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;

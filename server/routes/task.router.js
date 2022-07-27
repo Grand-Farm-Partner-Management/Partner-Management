@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
     join project_employee on project.id = project_employee.project_id
     join "user" on project_employee.employee_id = "user".id
     where "user".id = $1
-    ORDER BY "due_time"
+    ORDER BY tasks.id
     ;`
   pool.query(queryText, [req.user.id])
     .then(result => {

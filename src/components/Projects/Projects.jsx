@@ -118,8 +118,8 @@ function Projects(args) {
                                 </div>
                                 <h6 className='project-description'>{project.description}</h6>
                                 <Progress
-                                    value={project.progression}>
-                                    {project.progression}%
+                                    value={project.completed_percent}>
+                                    {project.completed_percent}%
                                 </Progress>
                             </div>
                         )
