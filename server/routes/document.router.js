@@ -40,7 +40,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  const queryText = `DELETE FROM tasks WHERE "tasks".id = $1`; // delete tasks from tasks table
+  const queryText = `DELETE FROM documents WHERE "documents".id = $1`; // delete tasks from tasks table
   console.log("delete task", req.params.id);
   pool.query(queryText, [req.params.id])
     .then((response) => res.sendStatus(200))

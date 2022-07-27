@@ -282,11 +282,13 @@ input {
 }
 
 .docs {
+  background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 50vw;
+  padding-bottom: 1em;
 }
 
 .docs hr {
