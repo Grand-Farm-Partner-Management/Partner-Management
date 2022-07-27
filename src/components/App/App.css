@@ -281,6 +281,44 @@ input {
   align-items: center;
 }
 
+.docs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+}
+
+.docs hr {
+  border: 1px solid black;
+}
+
+.delete {
+  height: 1em;
+  margin-right: 1em;
+}
+
+.delete:hover {
+  cursor: pointer;
+}
+
+.doc-list {
+  display: flex;
+  text-align: left;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+
+.docs button {
+  align-self: flex-start;
+  width: 10vw;
+  margin-right: 1em;
+}
+
+.button-and-desc {
+  display: flex;
+}
+
 /* PROJECTS */
 
 .projects-wrapper {

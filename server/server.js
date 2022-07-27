@@ -15,6 +15,7 @@ const userRouter = require('./routes/user.router');
 const projectRouter = require('./routes/project.router');
 const companyRouter = require('./routes/company.router');
 const taskRouter = require('./routes/task.router');
+const documentRouter = require('./routes/document.router')
 const sendReminderEmails = require('./email');
 
 // Body parser middleware
@@ -33,6 +34,7 @@ app.use('/api/user', userRouter);
 app.use('/api/project', projectRouter);
 app.use('/api/company', companyRouter);
 app.use('/api/task', taskRouter);
+app.use('/api/document', documentRouter);
 
 // Serve static files
 app.use(express.static('build'));
