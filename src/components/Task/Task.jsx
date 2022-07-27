@@ -21,6 +21,8 @@ function Task({ direction, ...args }) {
     const params = useParams();
 
     const user = useSelector((store) => store.user);
+    const tasks = useSelector((store) => store.tasks);
+
     // All PROJECTS
     const projectDetails = useSelector((store) => store.projectDetails);
     // All Tasks for a project
@@ -111,6 +113,7 @@ function Task({ direction, ...args }) {
     useEffect( () => {
         dispatch({ type: '/CLEAR_PROJECT_DETAILS' });
         dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
+        dispatch({ type: "FETCH_ALL_USER" });
         console.log('CURRENT PROJECT', currentProject);
     }, [])
 
@@ -181,6 +184,8 @@ function Task({ direction, ...args }) {
                                     }>Confirm</Button>
                                 </ModalFooter>
                             </Modal>
+
+                            {/* end edit modal */}
 
                             <DropdownItem onClick={() => console.log('add')}>Add Members</DropdownItem>
                             <DropdownItem divider />

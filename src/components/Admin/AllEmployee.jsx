@@ -12,7 +12,7 @@ function AllEmployee({user}, ...args){
     const dispatch = useDispatch();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const toggle = () => setDropdownOpen(prevState => !prevState)
+    const toggle = () => setDropdownOpen(prevState => !prevState);
 
     function assignClick(){
         dispatch({type: 'ASSIGN_USER', payload: {companyId: newCompId, userId: user.id }})
