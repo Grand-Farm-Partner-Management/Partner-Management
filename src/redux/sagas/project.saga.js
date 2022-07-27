@@ -1,7 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
+import { select } from 'redux-saga/effects'; // access redux
 import axios from 'axios';
 
 function* projectSaga(){
+    yield takeLatest('FETCH_PROJECT_DETAILS', fetchProjectDetails);
     yield takeLatest('FETCH_PROJECT', fetchProject);
     yield takeLatest('NEW_PROJECT', newProject);
     yield takeLatest('ASSIGN_PROJECT', assignProject);
@@ -11,11 +13,22 @@ function* projectSaga(){
     yield takeLatest('DELETE_PROJECT', deleteProject);
 }
 
+function* fetchProjectDetails(action){
+    try{
+        const response = yield axios.get(`/api/project/projectDetails/${action.payload}`);
+        yield put({type: 'SET_PROJECT_DETAILS', payload: response.data});//reducer needs to be made
+    }catch{
+        console.log('error in fetch project saga.');
+    }
+}//
+
 //fetch projects
 function* fetchProject(action){
     console.log('in fetch project saga');
     try{
-        const response = yield axios.get('/api/project');
+        // access the user's company id from redux
+        let companyId = yield select(store => store.user.company_id) || action.payload;
+        const response = yield axios.get(`/api/project/${companyId}`);
         console.log('response in project company is:', response);
         yield put({type: 'GET_PROJECTS', payload: response.data});//reducer needs to be made
     }catch{
@@ -27,10 +40,10 @@ function* fetchProject(action){
 function* newProject(action){
     console.log('in fetch project saga');
     try{
-        yield axios.post(`/api/project/${action.payload.id}`);
+        yield axios.post(`/api/project/${action.payload.user_id}`, action.payload);
         yield put({ type: 'FETCH_PROJECT'})
     }catch{
-        console.log('error in fetch project saga.');
+        console.log('error in new project saga.');
     }
 }//
 
@@ -61,8 +74,8 @@ function* fetchCompanyProject(action){
 function* updateProject(action){
     console.log('in update project saga');
     try{
-        yield axios.put(`api/project/${action.payload.id}/update`);
-        yield put({ type: 'FETCH_PROJECT' })
+        yield axios.put(`/api/project/${action.payload.project_id}/update`, action.payload);
+        yield put({ type: 'FETCH_PROJECT_DETAILS', payload: action.payload.project_id })
     }catch{
         console.log('error in update project saga.');
     }
@@ -81,9 +94,9 @@ function* progressProject(action){
 
 //delete project
 function* deleteProject(action){
-    console.log('in delete project saga');
+    console.log('in delete project saga', action);
     try{
-        yield axios.delete(`/api/project/${action.payload.id}/delete`)
+        yield axios.delete(`/api/project/${action.payload}/delete`)
         yield put({ type: 'FETCH_PROJECT'})
     }catch{
         console.log('error in delete project saga.');

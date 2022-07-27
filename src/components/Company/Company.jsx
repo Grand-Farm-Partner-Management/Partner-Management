@@ -27,7 +27,7 @@ function Company(args) {
     const fetchMembers = async () => {
         await axios.get(`/api/company/members/${user.company_id}`)
             .then(res => {
-                dispatch({ type: `GET_MEMBERS`, payload: res.data });
+                dispatch({ type: `SET_MEMBERS`, payload: res.data });
             })
     }
 

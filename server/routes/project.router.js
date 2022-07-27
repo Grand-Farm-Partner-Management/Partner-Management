@@ -27,7 +27,7 @@ router.get('/projectDetails/:id', (req, res) => {
     WHERE "id" = $1;`
     pool.query(query, [projectId])
         .then(result => {
-            res.send(result.rows);
+            res.send(result.rows[0]);
         })
         .catch((error) => {
             console.log('Error making SELECT for project details:', error);
@@ -60,6 +60,7 @@ router.post('/:id', (req, res,) => {
             console.log("new project id:", createProjectId);
             pool.query(queryText2, [company_id, createProjectId])
                 .then(result => {
+                    // why 3? which company is this?
                     pool.query(queryText3, [3, createProjectId])
                         .then(result => {
                             res.send(result.rows);
