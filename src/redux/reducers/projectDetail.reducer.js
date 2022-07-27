@@ -1,9 +1,9 @@
-const projectDetailReducer = (state = [], action) => {
+const projectDetailReducer = (state = {}, action) => {
     switch (action.type) {
-      case 'GET_PROJECT_DETAILS':
+      case 'SET_PROJECT_DETAILS':
         return action.payload;
         case 'CLEAR_PROJECT_DETAILS':
-          return [];
+          return {};
       default:
         return state;
     }

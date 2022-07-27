@@ -1,6 +1,6 @@
 const memberReducer = (state = [], action) => {
     switch (action.type) {
-      case 'GET_MEMBERS':
+      case 'SET_MEMBERS':
         return action.payload;
       default:
         return state;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Collapse, Button, CardBody, Card, Progress, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
@@ -29,7 +28,7 @@ function Task({ direction, ...args }) {
     const projectTasks = useSelector((store) => store.projectTasks);
 
     let projectId = params.projectId;
-    let currentProject = projectDetails[0];
+    let currentProject = projectDetails;
 
     // State and function for modal
     // New Project Modal
@@ -56,32 +55,15 @@ function Task({ direction, ...args }) {
     // State for progression
     const [progression, setProgression] = useState(0);
 
-    // Fetching tasks
-
-    const fetchTasks = async () => {
-        axios.get(`/api/task/projectTasks/${projectId}`)
-            .then(res => {
-                dispatch({ type: `PROJECT_TASKS`, payload: res.data });
-            })
-    }
-
-    // Fetching project details
-
-    const fetchProjectDetails = async () => {
-        axios.get(`/api/project/projectDetails/${projectId}`)
-            .then(res => {
-                dispatch({ type: `GET_PROJECT_DETAILS`, payload: res.data });
-            })
-    }
-
     const deleteProject = async () => {
-        await axios.delete(`/api/project/${projectId}/delete`)
+        dispatch({ type: 'DELETE_PROJECT', payload: projectId})
         history.push('/projects')
     }
 
     const editProject = async (body) => {
-        await axios.put(`/api/project/${projectId}/update`, body)
-        fetchProjectDetails();
+        // await axios.put(`/api/project/${projectId}/update`, body)
+        // dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
+        dispatch({ type: 'UPDATE_PROJECT', payload: body})
         toggle2();
     }
 
@@ -91,14 +73,10 @@ function Task({ direction, ...args }) {
         if (!body.projectTitle) {
             body.projectTitle === currentProject.title;
         }
-        await axios.post(`/api/task/${currentProject.id}`, body)
-            .then(async res => {
-                fetchTasks();
-            })
+        dispatch({ type: 'NEW_TASK', payload: body })
     }
 
-    const calculateProgression = async () => {
-
+    const calculateProgression = (currentProject, projectTasks) => {
         if (!projectTasks || !currentProject) {
             return
         }
@@ -118,8 +96,9 @@ function Task({ direction, ...args }) {
         console.log('COMPLETED', completed)
         console.log('TOTAL TASKS', totalTasks)
         console.log('PROGRESSION', progression)
-        axios.put(`/api/project/${projectId}/progress/`, { progress: progression });
-        setProgression(progression);
+        return progression;
+        // axios.put(`/api/project/${projectId}/progress/`, { progress: progression });
+        // setProgression(progression);
     }
 
     function getFormattedDate(date) {
@@ -131,19 +110,20 @@ function Task({ direction, ...args }) {
         return newDate;
     }
 
-    useEffect(async () => {
+    useEffect( () => {
         dispatch({ type: '/CLEAR_PROJECT_DETAILS' });
-        await fetchTasks();
-        await fetchProjectDetails();
-        calculateProgression();
+        dispatch({ type: 'FETCH_TASKS', payload: projectId })
+        dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
         console.log('CURRENT PROJECT', currentProject);
     }, [])
 
     // CATCHING ERRORS / UNLOADED DATA
 
-    if (currentProject === undefined) {
+    if (currentProject.id === undefined) {
         return 'No tasks yet'
     };
+
+    // calculate progression
 
     return (
         <div className='task-flex'>
@@ -198,7 +178,7 @@ function Task({ direction, ...args }) {
                                         backgroundColor: 'rgb(175, 204, 54)',
                                         borderColor: 'rgb(175, 204, 54)'
                                     }} onClick={() => {
-                                        editProject({ title: projectTitle, description: projectDescription, due_time: projectDueDate });
+                                        editProject({ title: projectTitle, description: projectDescription, due_time: projectDueDate, project_id: projectId });
                                         toggle2();
                                     }
                                     }>Confirm</Button>
@@ -276,7 +256,7 @@ function Task({ direction, ...args }) {
                             backgroundColor: 'rgb(175, 204, 54)',
                             borderColor: 'rgb(175, 204, 54)'
                         }} onClick={() => {
-                            createTask({ title: projectTitle, description: projectDescription, due_time: projectDueDate });
+                            createTask({ title: projectTitle, description: projectDescription, due_time: projectDueDate, project_id: projectId });
                             toggle();
                         }
                         }>Create</Button>
@@ -289,8 +269,8 @@ function Task({ direction, ...args }) {
                     style={{
                         marginTop: '2em'
                     }}
-                    value={progression}>
-                    {progression}%
+                    value={calculateProgression(currentProject, projectTasks)}>
+                    {calculateProgression(currentProject, projectTasks)}%
                 </Progress>
                 <div className="sort-tabs">
                     <h3 className='tab'>All Tasks</h3>
