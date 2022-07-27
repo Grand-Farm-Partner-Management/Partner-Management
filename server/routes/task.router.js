@@ -53,7 +53,9 @@ router.get('/projectTasks/:id', (req, res) => {
   const projectId = req.params.id;
   const queryText = `select tasks.id, tasks.title, tasks.description, tasks.due_time, tasks.completed_by, tasks.completed_time, tasks.parent_task from tasks
   join project on tasks.project_id = project.id
-  where project.id = $1;`
+  where project.id = $1
+  ORDER  BY due_time
+  ;`
   pool.query(queryText, [projectId])
     .then(result => {
       res.send(result.rows);
