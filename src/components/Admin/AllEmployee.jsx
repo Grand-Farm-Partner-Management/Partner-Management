@@ -4,48 +4,40 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import swal from 'sweetalert';
 
-function UnassignedList({ unassign }, ...args) {
-    const dispatch = useDispatch();
-    const [company, setCompany] = useState("Companies");
+function AllEmployee({user}, ...args){
+    console.log("all users: ", user);
     const [newCompId, setNewCompId] = useState(0)
+    const [company, setCompany] = useState(user.company_name);
     const companies = useSelector((store) => store.company)
-    console.log('----', companies);
-
-    const fetchCompany = () => {
-        dispatch({ type: 'FETCH_COMPANY' })
-    }
-
-    useEffect(() => {
-        fetchCompany();
-    }, [])
+    const dispatch = useDispatch();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggle = () => setDropdownOpen(prevState => !prevState)
 
     function assignClick(){
-        dispatch({type: 'ASSIGN_USER', payload: {companyId: newCompId, userId: unassign.id }})
+        dispatch({type: 'ASSIGN_USER', payload: {companyId: newCompId, userId: user.id }})
 
         swal({
-            title: `${unassign.first_name} ${unassign.last_name} has been assigned to ${company}`,
+            title: `${user.first_name} ${user.last_name} has been reassigned to ${company}`,
             buttons: {
               cancel: "OK",
             },
             icon: "success"
           })
     }
-
+    
     function deleteClick(){
-        dispatch({type: 'DELETE_USER', payload: {id: unassign.id}})
+        dispatch({type: 'DELETE_USER', payload: {id: user.id}})
     }
 
-    return (
-        <div key={unassign.id}>
-            <h4>{unassign.first_name}, {unassign.last_name}, {unassign.email} </h4>
+    return(
+        <div key={user.id}>
+            <h4>{user.first_name} {user.last_name}, {user.email}, works for {user.company_name} </h4>
             <Dropdown isOpen={dropdownOpen} toggle={toggle} >
-                <DropdownToggle caret color='primary'>
-                    {company}
-                </DropdownToggle>
-                <DropdownMenu {...args}>
+                    <DropdownToggle caret color='primary'>
+                        {company}
+                    </DropdownToggle>
+                    <DropdownMenu {...args}>
                     {companies.map((comp) => {
                         //console.log('in map', comp.company_name);
                         return (
@@ -56,12 +48,12 @@ function UnassignedList({ unassign }, ...args) {
                             {comp.company_name}
                         </DropdownItem>
                     )})}
-                </DropdownMenu>
-            </Dropdown>
-            <button onClick={() => assignClick()}>Assign</button>
-            <button onClick={() => deleteClick()}>Delete</button>
+                    </DropdownMenu>
+                </Dropdown>
+                <button onClick={() => assignClick()}>Reassign</button>
+                <button onClick={() => deleteClick()}>Delete User</button>
         </div>
     )
 }
 
-export default UnassignedList;
+export default AllEmployee;

@@ -89,7 +89,7 @@ join project_employee on project.id = project_employee.project_id
 join "user" on project_employee.employee_id = "user".id
 where "user".id = 1;
 
- -- get projects for specific user
+-- get projects for specific user
 select project.id, project.title, project.due_time, project.completed_time from project
 join project_employee on project.id = project_employee.project_id
 join "user" on project_employee.employee_id = "user".id

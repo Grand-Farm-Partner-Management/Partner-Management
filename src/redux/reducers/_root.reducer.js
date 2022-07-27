@@ -8,6 +8,7 @@ import projectTasks from './projectTask.reducer';
 import unassigned from './unassigned.reducer';
 import newPartner from './newPartner.reducer';
 import company from './company.reducer';
+import allUser from './allUser.reducer';
 import projectDetails from './projectDetail.reducer';
 
 // rootReducer is the primary reducer for our entire project
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   unassigned,
   newPartner,
   company,
+  allUser,
   projectDetails
 });
 
