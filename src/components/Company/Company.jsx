@@ -12,9 +12,10 @@ function Company(args) {
 
     const user = useSelector((store) => store.user);
     const members = useSelector((store) => store.members);
-   
-    
+    const company = useSelector((store) => store.company);
 
+    console.log("company", company)
+    console.log("members", members)
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
 
@@ -30,7 +31,7 @@ function Company(args) {
         // event.preventDefault();
         dispatch({
             type: 'ADD_COMPANY',
-            payload: { companyName: companyName, companyAbout: companyAbout }
+            payload: { companyName: companyName, companyAbout: companyAbout}
         });
         setCompanyName('');
         setCompanyAbout('');
@@ -43,7 +44,7 @@ function Company(args) {
     const fetchMembers = async () => {
         await axios.get(`/api/company/members/${user.company_id}`)
             .then(res => {
-                dispatch({ type: `SET_MEMBERS`, payload: res.data });
+                dispatch({ type: `GET_MEMBERS`, payload: res.data });
             })
     }
 
@@ -61,7 +62,7 @@ function Company(args) {
     // }
 
     useEffect(() => {
-        addCompany();
+        dispatch({ type: 'FETCH_COMPANY', payload: user.user_id })  
         fetchMembers();
         console.log(members)
         console.log(user)
@@ -70,15 +71,15 @@ function Company(args) {
     return (
         <div className='wrapper'>
             <section>
-                
+
                 <form onSubmit={addCompany}>
-                <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)}
-                    placeholder='company name' required="" />
+                    <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)}
+                        placeholder='company name' required="" />
 
 
-                <input type="text" value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)}
-                    placeholder='about the company' required="" />
-                <button type="submit" >submit</button>
+                    <input type="text" value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)}
+                        placeholder='about the company' required="" />
+                    <button type="submit" >submit</button>
                 </form>
             </section>
             <Button className='create-company'>Create Company</Button>

@@ -22,6 +22,7 @@ function Task({ direction, ...args }) {
 
     const user = useSelector((store) => store.user);
     const tasks = useSelector((store) => store.tasks);
+    
     // All PROJECTS
     const projectDetails = useSelector((store) => store.projectDetails);
     // All Tasks for a project
