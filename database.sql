@@ -55,6 +55,13 @@ CREATE TABLE "tasks" (
 	"assigned_user" varchar
 );
 
+CREATE TABLE "documents" (
+	"id" SERIAL PRIMARY KEY,
+	"company_id" int references company,
+	"link" varchar,
+	"link_title" varchar
+);
+
 CREATE TABLE "project_employee" (
 	"id" SERIAL PRIMARY KEY,
 	"project_id" int references project,

@@ -13,6 +13,7 @@ function Projects(args) {
 
     const user = useSelector((store) => store.user);
     const projects = useSelector((store) => store.projects);
+   
     const members = useSelector((store) => store.members);
     const dispatch = useDispatch();
     const history = useHistory();
@@ -117,8 +118,8 @@ function Projects(args) {
                                 </div>
                                 <h6 className='project-description'>{project.description}</h6>
                                 <Progress
-                                    value={project.progression}>
-                                    {project.progression}%
+                                    value={project.completed_percent}>
+                                    {project.completed_percent}%
                                 </Progress>
                             </div>
                         )

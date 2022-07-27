@@ -18,7 +18,6 @@ import swal from 'sweetalert';
 function TaskItem(props, { direction, ...args }) {
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const params = useParams();
 
     const user = useSelector((store) => store.user);
@@ -35,7 +34,6 @@ function TaskItem(props, { direction, ...args }) {
 
 
     let projectId = params.projectId;
-    let currentProject = projectDetails[0];
     let task = props.task;
 
     //assign user to task
