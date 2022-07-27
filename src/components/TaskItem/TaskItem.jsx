@@ -38,65 +38,26 @@ function TaskItem(props, { direction, ...args }) {
     const [dropdown2Open, setDropdown2Open] = useState(false);
     const toggleDropdown2 = () => setDropdown2Open(prevState => !prevState);
 
-    const fetchTasks = () => {
-        axios.get(`/api/task/projectTasks/${projectId}`)
-            .then(res => {
-                dispatch({ type: `PROJECT_TASKS`, payload: res.data });
-                console.log(res.data)
-            })
-    }
-
-    const deleteTask = async () => {
-        await axios.delete(`/api/task/${task.id}`)
-        fetchTasks();
-    }
-
-    const calculateProgression = async () => {
-
-        if (!projectTasks || !currentProject) {
-            return
-        }
-
-        let totalTasks = projectTasks.length;
-        let completed = 0;
-        let uncompleted = 0;
-        for (const i of projectTasks) {
-            if (i.completed_by === null) {
-                uncompleted++;
-            } else if (i.completed_by !== null) {
-                completed++;
-            }
-        }
-        let progression = ((completed / totalTasks) * 100).toFixed(0)
-        console.log('UNCOMPLETED TI', uncompleted)
-        console.log('COMPLETED TI', completed)
-        console.log('TOTAL TASKS TI', totalTasks)
-        console.log('PROGRESSION TI', progression)
-        console.log('CURRENT PROJECT', currentProject)
-        axios.put(`/api/project/${currentProject.id}/progress/`, { progress: progression });
-        fetchTasks();
-        fetchProjectDetails();
-    }
-
-    const fetchProjectDetails = async () => {
-        axios.get(`/api/project/projectDetails/${projectId}`)
-            .then(res => {
-                dispatch({ type: `GET_PROJECTS`, payload: res.data });
-                console.log('project details', res.data)
-            })
-    }
-
     const completeTask = async () => {
-        if (checked === false) {
+        if (!task.completed_by) {
             console.log('complete')
-            await axios.put(`/api/task/${user.first_name}`, { taskId: task.id })
-            setChecked(true)
-            calculateProgression();
+            dispatch({
+                type: 'COMPLETE_TASK',
+                payload: {
+                    completedBy: user.first_name,
+                    taskId: task.id,
+                    projectId: projectId
+                }
+            })
         } else {
             console.log('uncomplete')
-            await axios.put(`/api/task/uncomplete/${task.id}`)
-            setChecked(false)
-            calculateProgression();
+            dispatch({
+                type: 'UNCOMPLETE_TASK',
+                payload: {
+                    taskId: task.id,
+                    projectId: projectId
+                }
+            })
         }
     };
 
@@ -109,8 +70,6 @@ function TaskItem(props, { direction, ...args }) {
         return newDate;
     }
 
-    const [checked, setChecked] = useState(task.completed_by === null ? false : true);
-
     useEffect(() => {
         console.log(task)
     }, [])
@@ -118,7 +77,7 @@ function TaskItem(props, { direction, ...args }) {
     return (
         <>
             <div className='task'>
-                <Input type="checkbox" checked={checked} onChange={() => completeTask()} />
+                <Input type="checkbox" checked={task.completed_by === null ? false : true} onChange={() => completeTask()} />
                 <Label check>
 
                     <div className='title-and-dots'>
@@ -150,7 +109,7 @@ function TaskItem(props, { direction, ...args }) {
                                                 swal(`${task.title} has been deleted!`, {
                                                     icon: "success",
                                                 });
-                                                deleteTask();
+                                                dispatch({ type: 'DELETE_TASK', payload: { taskId: task.id, projectId: projectId }})
                                             } else {
                                                 swal("Process cancelled.");
                                             }

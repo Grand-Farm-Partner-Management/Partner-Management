@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Collapse, Button, CardBody, Card, Progress, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -15,7 +14,6 @@ function Projects(args) {
     const user = useSelector((store) => store.user);
     const projects = useSelector((store) => store.projects);
     const members = useSelector((store) => store.members);
-    const projectTasksStore = useSelector((store) => store.projectTasks);
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -28,28 +26,6 @@ function Projects(args) {
     const [projectDescription, setProjectDescription] = useState('');
     const [projectDueDate, setProjectDueDate] = useState('');
     const [date, setDate] = useState(new Date());
-
-    const fetchProjects = async () => {
-        await axios.get(`/api/project/${user.company_id}`)
-            .then(res => {
-                dispatch({ type: `GET_PROJECTS`, payload: res.data });
-            })
-    }
-
-    const fetchMembers = () => {
-        axios.get(`/api/company/members/${user.company_id}`)
-            .then(res => {
-                dispatch({ type: `GET_MEMBERS`, payload: res.data });
-            })
-    }
-
-    const createProject = (body) => {
-        axios.post(`/api/project/${user.company_id}`, body)
-            .then(async res => {
-                fetchProjects();
-            })
-        fetchProjects();
-    }
 
     function getFormattedDate(date) {
         if (date === null) {
@@ -70,8 +46,11 @@ function Projects(args) {
 
     useEffect(() => {
         dispatch({ type: '/CLEAR_PROJECT_TASKS' });
-        fetchProjects();
-        fetchMembers();
+        dispatch({ type: 'FETCH_PROJECT', payload: user.company_id })
+        dispatch({
+            type: 'FETCH_MEMBERS',
+            payload: user.company_id
+        })
     }, [])
 
     return (
@@ -111,8 +90,16 @@ function Projects(args) {
                         </ModalBody>
                         <ModalFooter>
                             <Button onClick={() => {
-                                createProject({ title: projectTitle, description: projectDescription, due_time: projectDueDate });
-                                fetchProjects();
+                                dispatch({
+                                    type: 'NEW_PROJECT',
+                                    payload: {
+                                        title: projectTitle,
+                                        description: projectDescription,
+                                        due_time: projectDueDate,
+                                        user_id: user.company_id
+                                    }
+                                });
+                                // fetchProjects();
                                 toggle();
                             }
                             }>Create</Button>
