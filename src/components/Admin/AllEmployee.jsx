@@ -32,7 +32,7 @@ function AllEmployee({user}, ...args){
 
     return(
         <div key={user.id}>
-            <h4>{user.first_name} {user.last_name} works for {user.company_name} </h4>
+            <h4>{user.first_name} {user.last_name}, {user.email}, works for {user.company_name} </h4>
             <Dropdown isOpen={dropdownOpen} toggle={toggle} >
                     <DropdownToggle caret color='primary'>
                         {company}

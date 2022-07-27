@@ -76,7 +76,8 @@ function* updateLevelCompany(action) {
     console.log('in update company partner level saga');
     try {
         yield axios.put(`api/company/partnerLevel/${action.payload.id}`, action.payload);
-        yield put({ type: 'FETCH_NEW_COMPANY' })
+        yield put({ type: 'FETCH_NEW_COMPANY' });
+        yield put({ type: 'FETCH_COMPANY' });
     } catch {
         console.log('error in rename company saga.');
     }
@@ -98,7 +99,8 @@ function* deleteCompany(action) {
     console.log('in delete company saga');
     try {
         yield axios.delete(`api/company/${action.payload.id}`);
-        yield put({ type: 'FETCH_COMPANY' })
+        yield put({ type: 'FETCH_COMPANY' });
+        yield put({ type: 'FETCH_UNASSIGNED'});
     } catch {
         console.log('error in delete company saga.');
     }
@@ -110,6 +112,7 @@ function* assignUser(action) {
     try {
         yield axios.put(`api/company/assign`, action.payload);
         yield put({ type: 'FETCH_UNASSIGNED' })
+        yield put({ type: 'FETCH_ALL_USER' })
     } catch {
         console.log('error assign saga.');
     }
