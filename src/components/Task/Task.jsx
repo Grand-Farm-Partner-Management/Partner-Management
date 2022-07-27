@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Dots from '../../images/dots_icon.svg'
 import Back from '../../images/back_icon.svg'
-import TaskItem from '../TaskItem/TaskItem';
+import TaskItem from './TaskItem';
 // Material
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -21,11 +21,9 @@ function Task({ direction, ...args }) {
     const params = useParams();
 
     const user = useSelector((store) => store.user);
-    const tasks = useSelector((store) => store.tasks);
     // All PROJECTS
     const projectDetails = useSelector((store) => store.projectDetails);
     // All Tasks for a project
-    const projectTasks = useSelector((store) => store.projectTasks);
 
     let projectId = params.projectId;
     let currentProject = projectDetails;
@@ -76,30 +74,30 @@ function Task({ direction, ...args }) {
         dispatch({ type: 'NEW_TASK', payload: body })
     }
 
-    const calculateProgression = (currentProject, projectTasks) => {
-        if (!projectTasks || !currentProject) {
-            return
-        }
+    // const calculateProgression = (currentProject, currentProject.tasks) => {
+    //     if (!currentProject.tasks || !currentProject) {
+    //         return
+    //     }
 
-        let totalTasks = projectTasks.length;
-        let completed = 0;
-        let uncompleted = 0;
-        for (const i of projectTasks) {
-            if (i.completed_by === null) {
-                uncompleted++;
-            } else if (i.completed_by !== null) {
-                completed++;
-            }
-        }
-        let progression = ((completed / totalTasks) * 100).toFixed(0)
-        console.log('UNCOMPLETED', uncompleted)
-        console.log('COMPLETED', completed)
-        console.log('TOTAL TASKS', totalTasks)
-        console.log('PROGRESSION', progression)
-        return progression;
-        // axios.put(`/api/project/${projectId}/progress/`, { progress: progression });
-        // setProgression(progression);
-    }
+    //     let totalTasks = currentProject.tasks.length;
+    //     let completed = 0;
+    //     let uncompleted = 0;
+    //     for (const i of currentProject.tasks) {
+    //         if (i.completed_by === null) {
+    //             uncompleted++;
+    //         } else if (i.completed_by !== null) {
+    //             completed++;
+    //         }
+    //     }
+    //     let progression = ((completed / totalTasks) * 100).toFixed(0)
+    //     console.log('UNCOMPLETED', uncompleted)
+    //     console.log('COMPLETED', completed)
+    //     console.log('TOTAL TASKS', totalTasks)
+    //     console.log('PROGRESSION', progression)
+    //     return progression;
+    //     // axios.put(`/api/project/${projectId}/progress/`, { progress: progression });
+    //     // setProgression(progression);
+    // }
 
     function getFormattedDate(date) {
         if (date === null) {
@@ -112,7 +110,6 @@ function Task({ direction, ...args }) {
 
     useEffect( () => {
         dispatch({ type: '/CLEAR_PROJECT_DETAILS' });
-        dispatch({ type: 'FETCH_TASKS', payload: projectId })
         dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
         console.log('CURRENT PROJECT', currentProject);
     }, [])
@@ -269,8 +266,8 @@ function Task({ direction, ...args }) {
                     style={{
                         marginTop: '2em'
                     }}
-                    value={calculateProgression(currentProject, projectTasks)}>
-                    {calculateProgression(currentProject, projectTasks)}%
+                    value={currentProject.completed_percent}>
+                    {currentProject.completed_percent}%
                 </Progress>
                 <div className="sort-tabs">
                     <h3 className='tab'>All Tasks</h3>
@@ -279,7 +276,7 @@ function Task({ direction, ...args }) {
                 </div>
                 <div className='taskHub'>
                     {
-                        projectTasks.length === 0 ? <h1 className='no-tasks'>No Tasks Yet</h1> : projectTasks.map((task) => {
+                        currentProject.tasks.length === 0 ? <h1 className='no-tasks'>No Tasks Yet</h1> : currentProject.tasks.map((task) => {
                             return (
                                 <TaskItem task={task} />
                             )

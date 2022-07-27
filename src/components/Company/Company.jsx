@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dots from '../../images/dots_icon.svg'
+import Delete from '../../images/delete_icon.svg'
 import { Collapse, Button, CardBody, Card, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
@@ -12,17 +13,31 @@ function Company(args) {
 
     const user = useSelector((store) => store.user);
     const members = useSelector((store) => store.members);
-
-    const [isOpen, setIsOpen] = useState(false);
-    const toggle = () => setIsOpen(!isOpen);
+    const documents = useSelector((store) => store.documents);
     const dispatch = useDispatch();
 
-    // State for editin company 
+    // Collapse for members
+    const [isOpen, setIsOpen] = useState(false);
+    const toggle = () => setIsOpen(!isOpen);
+
+    // Collapse for documents
+    const [isOpenDoc, setIsOpenDoc] = useState(false);
+    const toggleDoc = () => setIsOpenDoc(!isOpenDoc);
+
+    // State for editing company 
     const [companyName, setCompanyName] = useState('');
 
     //  Edit Modal
     const [modal2, setModal2] = useState(false);
     const toggle2 = () => setModal2(!modal2);
+
+    //  Add to Docs Modal
+    const [modalDocAdd, setModalDocAdd] = useState(false);
+    const toggleDocAdd = () => setModalDocAdd(!modalDocAdd);
+
+    //  State for adding to docs
+    const [link, setLink] = useState('');
+    const [linkTitle, setLinkTitle] = useState('');
 
     const fetchMembers = async () => {
         await axios.get(`/api/company/members/${user.company_id}`)
@@ -31,10 +46,22 @@ function Company(args) {
             })
     }
 
+    const fetchDocuments = async () => {
+        await axios.get(`/api/document/${user.company_id}`)
+            .then(res => {
+                dispatch({ type: `SET_DOCUMENTS`, payload: res.data });
+            })
+    }
+
     const editCompany = async (body) => {
         await axios.put(`/api/company/${user.company_id}`, body);
         await fetchMembers();
         toggle2();
+    }
+
+    const addDocument = (body) => {
+        axios.post(`/api/document/${user.company_id}`, body).then(res => fetchDocuments())
+        console.log(documents)
     }
 
     // const createCompany = () => {
@@ -46,20 +73,24 @@ function Company(args) {
 
     useEffect(() => {
         fetchMembers();
-        console.log(members)
+        fetchDocuments();
     }, [])
 
     return (
         <div className='wrapper'>
             <Button style={{
-                            backgroundColor: 'rgb(175, 204, 54)',
-                            borderColor: 'rgb(175, 204, 54)'
-                        }} className='create-company'>Create Company</Button>
+                backgroundColor: 'rgb(175, 204, 54)',
+                borderColor: 'rgb(175, 204, 54)'
+            }} className='create-company'>Create Company</Button>
             <div className="company-name-and-dots">
                 <h1 className='companyName'>{members.length > 0 ? members[0].company_name : ''}</h1>
-                <img className='dots' src={Dots} onClick = {() => toggle2()} />
+                <img className='dots' src={Dots} onClick={() => toggle2()} />
             </div>
-            <h1 onClick={toggle} className='links'>Members</h1>
+            <h1 onClick={() => {
+                toggle();
+                setIsOpenDoc(false);
+            }
+            } className='links'>Members</h1>
             <Collapse isOpen={isOpen} {...args}>
                 {
                     members.map((member) => {
@@ -88,7 +119,61 @@ function Company(args) {
                 </ModalFooter>
             </Modal>
 
-            <h1 className='links'>Documents</h1>
+            <h1 onClick={() => {
+                toggleDoc();
+                setIsOpen(false);
+            }
+            } className='links'>Documents</h1>
+
+            <Collapse isOpen={isOpenDoc} {...args}>
+                <div className='docs'>
+                    <div className="button-and-desc">
+                        <Button style={{
+                            backgroundColor: 'rgb(175, 204, 54)',
+                            borderColor: 'rgb(175, 204, 54)'
+                        }} onClick={() => toggleDocAdd()}>Add Link</Button>
+                        <p>Here is where external links to documents relevent to this company can be kept.</p>
+                    </div>
+                    <hr></hr>
+                    {
+                        documents.map((document) => {
+                            return (
+                                <div className='doc-list'>
+                                    <a href={document.link} target='_blank'><h2>{document.link_title}</h2></a>
+                                    <img src={Delete} className='delete' onClick={() => axios.delete(`/api/document/${document.id}`)} />
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                <br></br>
+            </Collapse>
+
+            <Modal isOpen={modalDocAdd} toggle={toggleDocAdd} {...args}>
+                <ModalHeader toggle={toggleDocAdd}>Add Link</ModalHeader>
+                <ModalBody>
+                    <label htmlFor='link'>Link: </label>
+                    <input style={{
+                        width: '60%'
+                    }} placeholder="ex: https://www.google.com/" onChange={(e) => setLink(e.target.value)} id='link' />
+                    <br />
+                    <label htmlFor='link-title'>Link Title: </label>
+                    <input style={{
+                        width: '60%'
+                    }} placeholder="ex: Google" onChange={(e) => setLinkTitle(e.target.value)} id='link-title' />
+                </ModalBody>
+                <ModalFooter>
+                    <Button style={{
+                        backgroundColor: 'rgb(175, 204, 54)',
+                        borderColor: 'rgb(175, 204, 54)'
+                    }} onClick={() => {
+                        addDocument({ link: link, linkTitle: linkTitle });
+                        toggleDocAdd();
+                    }
+                    }>Confirm</Button>
+                </ModalFooter>
+            </Modal>
+
             <h1 className='links'>About</h1>
         </div>
     )
