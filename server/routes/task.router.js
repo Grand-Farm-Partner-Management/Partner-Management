@@ -77,6 +77,19 @@ router.put('/:id', (req, res) => {
     })
 })
 
+//assign task to user
+router.put('/assign/:id', (req, res) => {
+  console.log("assign user to task:", req.body, req.params.id);
+  const queryText = `UPDATE tasks SET "assigned_user" = $1 WHERE "id" = $2;`;
+
+  pool.query(queryText, [ req.body.userId, req.body.taskId])
+    .then(result => {
+      res.sendStatus(204)
+    }).catch(error => {
+      res.sendStatus(500)
+    })
+})
+
 router.put('/uncomplete/:id', (req, res) => {
   const queryText = `UPDATE tasks SET "completed_by" = null WHERE "id" = $1;`
   pool.query(queryText, [req.params.id])

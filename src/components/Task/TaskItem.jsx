@@ -27,11 +27,10 @@ function TaskItem(props, { direction, ...args }) {
     const allUsers = useSelector((store) => store.allUser);
     const companyUser = useSelector((store) => store.members);
 
-    console.log("company user:", user);
+    //console.log("company user:", companyUser);
 
     const [assignedId, setAssignedId] = useState(0);
     const [assignedName, setAssignedName] = useState("Company Members");
-
 
     let projectId = params.projectId;
     let task = props.task;
@@ -84,9 +83,14 @@ function TaskItem(props, { direction, ...args }) {
         return newDate;
     }
 
+    const assignTask = async (body) => {
+        console.log("before dispatch, ", body);
+        dispatch({ type: 'ASSIGN_TASK', payload: body })
+    }
+
     useEffect(() => {
         console.log("task is:", task)
-        dispatch({type: 'FETCH_MEMBERS', payload: user.company_id});
+        dispatch({ type: 'FETCH_MEMBERS', payload: user.company_id });
     }, [])
 
     return (
@@ -115,7 +119,7 @@ function TaskItem(props, { direction, ...args }) {
                                     <ModalBody>
                                         <label htmlFor='project-title'>Assign User to Task:</label>
 
-                                            {/* start dropdown */}
+                                        {/* start dropdown */}
 
                                         <Dropdown isOpen={dropdown3Open} toggle={toggleDropdown3} >
                                             <DropdownToggle caret color='primary'>
@@ -123,11 +127,10 @@ function TaskItem(props, { direction, ...args }) {
                                             </DropdownToggle>
                                             <DropdownMenu {...args}>
                                                 {companyUser.map((member) => {
-                                                    console.log("mapping: ", member);
                                                     return (
                                                         <DropdownItem key={member.id} onClick={() => {
-                                                        setAssignedId(member.id);
-                                                        setAssignedName(member.first_name +" "+ member.last_name)
+                                                            setAssignedId(member.id);
+                                                            setAssignedName(member.first_name + " " + member.last_name)
                                                         }}>
                                                             {member.first_name} {member.last_name}
                                                         </DropdownItem>
@@ -136,7 +139,7 @@ function TaskItem(props, { direction, ...args }) {
                                             </DropdownMenu>
                                         </Dropdown>
 
-                                                {/* end dropdown */}
+                                        {/* end dropdown */}
 
                                         <br />
                                     </ModalBody>
@@ -145,7 +148,7 @@ function TaskItem(props, { direction, ...args }) {
                                             backgroundColor: 'rgb(175, 204, 54)',
                                             borderColor: 'rgb(175, 204, 54)'
                                         }} onClick={() => {
-                                            editProject({});
+                                            assignTask({ taskId: task.id, userId: assignedId });
                                             toggle1();
                                         }
                                         }>Confirm</Button>
@@ -185,6 +188,7 @@ function TaskItem(props, { direction, ...args }) {
                     </div>
                 </Label>
                 <h6 className='project-description'>{getFormattedDate(task.due_time)}</h6>
+                <h6>Assigned to </h6>
                 <h6>{task.description}</h6>
             </div>
 

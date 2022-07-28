@@ -7,6 +7,8 @@ function* taskSaga(){
     yield takeLatest('UNCOMPLETE_TASK', uncompleteTask);
     yield takeLatest('PROJECT_TASK', projectTask);
     yield takeLatest('DELETE_TASK', deleteTask);
+    yield takeLatest('ASSIGN_TASK', assignTask);
+
 }
 
 // saga for post of new tasks
@@ -27,7 +29,7 @@ function* projectTask(action){
         const response = yield axios.get(`/api/task/projectTask/:id`);
         yield put({type: 'PROJECT_ID', payload: response.data});//reducer needs to be made
     }catch{
-        console.log('error in post task saga.');
+        console.log('error in project task saga.');
     }
 }
 
@@ -38,20 +40,33 @@ function* completeTask(action){
         yield axios.put(`/api/task/${action.payload.completedBy}`, action.payload);
         yield put({ type: 'FETCH_PROJECT_DETAILS', payload: action.payload.projectId })
     }catch{
-        console.log('error in post task saga.');
+        console.log('error in complete task saga.');
     }
 }
 
 // update to complete tasks
 function* uncompleteTask(action){
-    console.log('in complete task saga');
+    console.log('in uncomplete task saga');
     try{
         yield axios.put(`/api/task/uncomplete/${action.payload.taskId}`);
         // yield put({ type: 'FETCH_TASKS', payload: action.payload.projectId})
         yield put({ type: 'FETCH_PROJECT_DETAILS', payload: action.payload.projectId })
 
     }catch{
-        console.log('error in post task saga.');
+        console.log('error in uncomplete task saga.');
+    }
+}
+
+// Assign user to task
+function* assignTask(action){
+    console.log('in assign task saga', action);
+
+    try{
+        yield axios.put(`/api/task/assign/:${action.payload.taskId}`, action.payload);
+        yield put({type: 'PROJECT_TASK'});
+
+    }catch{
+        console.log('error in Assign task saga.');
     }
 }
 
