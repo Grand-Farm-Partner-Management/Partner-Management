@@ -13,7 +13,7 @@ function Projects(args) {
 
     const user = useSelector((store) => store.user);
     const projects = useSelector((store) => store.projects);
-   
+
     const members = useSelector((store) => store.members);
     const dispatch = useDispatch();
     const history = useHistory();
@@ -53,7 +53,7 @@ function Projects(args) {
         } else {
             for (let task of tasks) {
                 if (task.completed_by) {
-                    completed ++;
+                    completed++;
                 }
             }
             return ((completed / totalTasks) * 100).toFixed(0);
@@ -106,17 +106,27 @@ function Projects(args) {
                             </LocalizationProvider>
                         </ModalBody>
                         <ModalFooter>
-                            <Button onClick={() => {
-                                dispatch({
-                                    type: 'NEW_PROJECT',
-                                    payload: {
-                                        title: projectTitle,
-                                        description: projectDescription,
-                                        due_time: projectDueDate,
-                                        user_id: user.company_id
-                                    }
-                                });
-                                toggle();
+                            <Button style={{
+                                            backgroundColor: 'rgb(175, 204, 54)',
+                                            borderColor: 'rgb(175, 204, 54)'
+                                        }} onClick={() => {
+                                if (projectTitle && projectDescription && projectDueDate) {
+                                    dispatch({
+                                        type: 'NEW_PROJECT',
+                                        payload: {
+                                            title: projectTitle,
+                                            description: projectDescription,
+                                            due_time: projectDueDate,
+                                            user_id: user.company_id
+                                        }
+                                    });
+                                    setProjectTitle('');
+                                    setProjectDescription('');
+                                    setProjectDueDate('');
+                                    toggle();
+                                } else {
+                                    alert ('Please enter a title, description and date.')
+                                }
                             }
                             }>Create</Button>
                         </ModalFooter>
@@ -126,7 +136,7 @@ function Projects(args) {
                 {
                     projects.map((project) => {
                         return (
-                            <div  key = {project.id} onClick={() => projectTasks(project)} className='project'>
+                            <div key={project.id} onClick={() => projectTasks(project)} className='project'>
                                 <div className="title-and-date">
                                     <h4>{project.title}</h4>
                                     <h6>{getFormattedDate(project.due_time)}</h6>

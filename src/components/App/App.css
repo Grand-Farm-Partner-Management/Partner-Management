@@ -458,6 +458,10 @@ input {
   padding: 1em 2em 1em 2em;
 }
 
+.assigned {
+  opacity: 60%;
+}
+
 .title-and-dots {
   display: flex;
   justify-content: center;
