@@ -61,8 +61,6 @@ function Task({ direction, ...args }) {
     }
 
     const editProject = async (body) => {
-        // await axios.put(`/api/project/${projectId}/update`, body)
-        // dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
         dispatch({ type: 'UPDATE_PROJECT', payload: body})
         toggle2();
     }
@@ -76,31 +74,6 @@ function Task({ direction, ...args }) {
         dispatch({ type: 'NEW_TASK', payload: body })
     }
 
-    // const calculateProgression = (currentProject, currentProject.tasks) => {
-    //     if (!currentProject.tasks || !currentProject) {
-    //         return
-    //     }
-
-    //     let totalTasks = currentProject.tasks.length;
-    //     let completed = 0;
-    //     let uncompleted = 0;
-    //     for (const i of currentProject.tasks) {
-    //         if (i.completed_by === null) {
-    //             uncompleted++;
-    //         } else if (i.completed_by !== null) {
-    //             completed++;
-    //         }
-    //     }
-    //     let progression = ((completed / totalTasks) * 100).toFixed(0)
-    //     console.log('UNCOMPLETED', uncompleted)
-    //     console.log('COMPLETED', completed)
-    //     console.log('TOTAL TASKS', totalTasks)
-    //     console.log('PROGRESSION', progression)
-    //     return progression;
-    //     // axios.put(`/api/project/${projectId}/progress/`, { progress: progression });
-    //     // setProgression(progression);
-    // }
-
     function getFormattedDate(date) {
         if (date === null) {
             return
@@ -108,6 +81,21 @@ function Task({ direction, ...args }) {
         let t = date.indexOf('T');
         let newDate = date.slice(0, t)
         return newDate;
+    }
+
+    const calculateProgression = (tasks) => {
+        let completed = 0;
+        let totalTasks = tasks.length;
+        if (tasks.length === 0) {
+            return 0
+        } else {
+            for (let task of tasks) {
+                if (task.completed_by) {
+                    completed ++;
+                }
+            }
+            return (completed / totalTasks) * 100;
+        }
     }
 
     useEffect( () => {
@@ -271,8 +259,8 @@ function Task({ direction, ...args }) {
                     style={{
                         marginTop: '2em'
                     }}
-                    value={currentProject.completed_percent}>
-                    {currentProject.completed_percent}%
+                    value={calculateProgression(currentProject.tasks)}>
+                    {calculateProgression(currentProject.tasks)}%
                 </Progress>
                 <div className="sort-tabs">
                     <h3 className='tab'>All Tasks</h3>

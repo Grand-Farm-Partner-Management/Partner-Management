@@ -24,7 +24,7 @@ function AdminPage(args) {
     const [isOpen2, setIsOpen2] = useState(false);
     const [isOpen3, setIsOpen3] = useState(false);
     const [isOpen4, setIsOpen4] = useState(false);
-    
+
     const toggle1 = () => setIsOpen1(!isOpen1);
     const toggle2 = () => setIsOpen2(!isOpen2);
     const toggle3 = () => setIsOpen3(!isOpen3);
@@ -34,8 +34,8 @@ function AdminPage(args) {
     console.log('new partners are: ', newPartners);
     console.log("all users are: ", allUsers);
 
-    const fetchUnassigned =() => {
-        dispatch({type: "FETCH_UNASSIGNED"});
+    const fetchUnassigned = () => {
+        dispatch({ type: "FETCH_UNASSIGNED" });
     }
 
     const fetchNewPartner = async () => {
@@ -45,15 +45,15 @@ function AdminPage(args) {
             })
     }
 
-    const fetchAllCompanies =() => {
-        dispatch({type: "FETCH_COMPANY"});
+    const fetchAllCompanies = () => {
+        dispatch({ type: "FETCH_COMPANY" });
     }
 
-    const fetchAllEmployees =() => {
-        dispatch({type: "FETCH_ALL_USER"});
+    const fetchAllEmployees = () => {
+        dispatch({ type: "FETCH_ALL_USER" });
     }
 
-    if (unassigned.company_id === null || newPartners.partner_level === null|| allCompanies === null || allUsers === null) {
+    if (unassigned.company_id === null || newPartners.partner_level === null || allCompanies === null || allUsers === null) {
         console.log(unassigned, newPartners);
         return;
     }
@@ -77,44 +77,68 @@ function AdminPage(args) {
                         <th>Assign</th>
                         <th>Delete</th>
                     </tr>
-                {
-                    unassigned.map((unassign) => {
-                        return (
-                            <UnassignedList unassign={unassign} />
-                        )
-                    })
-                }
+                    {
+                        unassigned.map((unassign) => {
+                            return (
+                                <UnassignedList unassign={unassign} />
+                            )
+                        })
+                    }
                 </table>
             </Collapse>
             <h2 onClick={toggle2} className='links'>New Partner Requests</h2>
             <Collapse isOpen={isOpen2} {...args} >
-                {
-                    newPartners.map((newPartner) => {
-                        return (
-                            <NewPartnerList newPartner={newPartner} />
-                        )
-                    })
-                }
+                <table>
+                    <tr>
+                        <th> Company Name </th>
+                        <th>Assign</th>
+                        <th> Delete </th>
+                    </tr>
+                    {
+                        newPartners.map((newPartner) => {
+                            return (
+                                <NewPartnerList newPartner={newPartner} />
+                            )
+                        })
+                    }
+                </table>
             </Collapse>
             <h2 onClick={toggle3} className='links'>All Partners</h2>
             <Collapse isOpen={isOpen3} {...args} >
-                {
-                    allCompanies.map((company) => {
-                        return (
-                            <AllCompanies company={company} />
-                        )
-                    })
-                }
+                <table>
+                    <tr>
+                        <th> Company Name </th>
+                        <th>Partner Level</th>
+                        <th> Assign </th>
+                        <th>Delete</th>
+                    </tr>
+                    {
+                        allCompanies.map((company) => {
+                            return (
+                                <AllCompanies company={company} />
+                            )
+                        })
+                    }
+                </table>
             </Collapse>
             <h2 onClick={toggle4} className='links'>All Employees</h2>
             <Collapse isOpen={isOpen4} {...args} >
-                {
-                    allUsers.map((user) => {
-                        return (
-                            <AllEmployee user={user} />
-                        )
-                    })
-                }
+                <table>
+                    <tr>
+                        <th> First Name </th>
+                        <th> Last Name </th>
+                        <th> Email </th>
+                        <th>Assign</th>
+                        <th>Delete</th>
+                    </tr>
+                    {
+                        allUsers.map((user) => {
+                            return (
+                                <AllEmployee user={user} />
+                            )
+                        })
+                    }
+                </table>
             </Collapse>
         </div>
     )

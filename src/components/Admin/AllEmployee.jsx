@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
 import swal from 'sweetalert';
 
 function AllEmployee({user}, ...args){
@@ -31,11 +31,20 @@ function AllEmployee({user}, ...args){
     }
 
     return(
-        <div key={user.id}>
-            <h4>{user.first_name} {user.last_name}, {user.email}, works for {user.company_name} </h4>
+        <tr className='admin-list' key={user.id}>
+            <td>
+                <p>{user.first_name} </p>
+            </td>
+            <td>
+                <p>{user.last_name}</p>
+            </td>
+            <td>
+                <p>{user.email}</p>
+            </td>
+            <td>
             <Dropdown isOpen={dropdownOpen} toggle={toggle} >
                     <DropdownToggle caret color='primary'>
-                        {company}
+                        Company
                     </DropdownToggle>
                     <DropdownMenu {...args}>
                     {companies.map((comp) => {
@@ -50,9 +59,17 @@ function AllEmployee({user}, ...args){
                     )})}
                     </DropdownMenu>
                 </Dropdown>
-                <button onClick={() => assignClick()}>Reassign</button>
-                <button onClick={() => deleteClick()}>Delete User</button>
-        </div>
+                <Button style={{
+                            backgroundColor: 'rgb(175, 204, 54)',
+                            borderColor: 'rgb(175, 204, 54)',
+                            marginTop: '.5em'
+                        }} onClick={() => assignClick()}>Reassign</Button>
+                </td>
+                <td>
+                <Button color = 'danger' onClick={() => deleteClick()}>Delete User</Button>
+                </td>
+                
+        </tr>
     )
 }
 
