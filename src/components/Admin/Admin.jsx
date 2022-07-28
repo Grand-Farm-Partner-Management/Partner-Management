@@ -88,13 +88,20 @@ function AdminPage(args) {
             </Collapse>
             <h2 onClick={toggle2} className='links'>New Partner Requests</h2>
             <Collapse isOpen={isOpen2} {...args} >
-                {
-                    newPartners.map((newPartner) => {
-                        return (
-                            <NewPartnerList newPartner={newPartner} />
-                        )
-                    })
-                }
+                <table>
+                    <tr>
+                        <th> Company Name </th>
+                        <th>Assign</th>
+                        <th> Delete </th>
+                    </tr>
+                    {
+                        newPartners.map((newPartner) => {
+                            return (
+                                <NewPartnerList newPartner={newPartner} />
+                            )
+                        })
+                    }
+                </table>
             </Collapse>
             <h2 onClick={toggle3} className='links'>All Partners</h2>
             <Collapse isOpen={isOpen3} {...args} >

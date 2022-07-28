@@ -499,6 +499,10 @@ input {
   flex-direction: column;
 }
 
+.admin h1 {
+  margin-bottom: 1em;
+}
+
 .admin table {
   border: 1px solid black;
   border-collapse: collapse;
