@@ -51,10 +51,10 @@ router.get('/', (req, res) => {
 
 router.get('/projectTasks/:id', (req, res) => {
   const projectId = req.params.id;
-  const queryText = `select tasks.id, tasks.title, tasks.description, tasks.due_time, tasks.completed_by, tasks.completed_time, tasks.parent_task from tasks
+  const queryText = `select tasks.id, tasks.title, tasks.priority, tasks.description, tasks.due_time, tasks.completed_by, tasks.completed_time, tasks.parent_task from tasks
   join project on tasks.project_id = project.id
-  where project.id = $1
-  ORDER  BY due_time
+  where project.id = 66
+  ORDER  BY priority, due_time
   ;`
   pool.query(queryText, [projectId])
     .then(result => {
@@ -65,6 +65,17 @@ router.get('/projectTasks/:id', (req, res) => {
       res.sendStatus(500);
     });
 });
+
+router.put('/important/:id', (req, res) => {
+  let taskId = req.params.id;
+  const queryText = `UPDATE "tasks" SET priority = 1 WHERE id = $1;`;
+  pool.query(queryText, [taskId])
+    .then(result => {
+      res.sendStatus(204)
+    }).catch(error => {
+      res.sendStatus(500)
+    })
+})
 
 router.put('/:id', (req, res) => {
   const queryText = `UPDATE tasks SET "completed_by" = $1 WHERE "id" = $2;`;

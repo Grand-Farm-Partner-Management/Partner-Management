@@ -56,7 +56,7 @@ function Projects(args) {
                     completed ++;
                 }
             }
-            return (completed / totalTasks) * 100;
+            return ((completed / totalTasks) * 100).toFixed(0);
         }
     }
 

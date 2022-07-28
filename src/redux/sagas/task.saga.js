@@ -7,8 +7,8 @@ function* taskSaga(){
     yield takeLatest('UNCOMPLETE_TASK', uncompleteTask);
     yield takeLatest('PROJECT_TASK', projectTask);
     yield takeLatest('DELETE_TASK', deleteTask);
+    yield takeLatest('IMPORTANT_TASK', importantTask);
     yield takeLatest('ASSIGN_TASK', assignTask);
-
 }
 
 // saga for post of new tasks
@@ -41,6 +41,17 @@ function* completeTask(action){
         yield put({ type: 'FETCH_PROJECT_DETAILS', payload: action.payload.projectId })
     }catch{
         console.log('error in complete task saga.');
+    }
+}
+
+// update to complete tasks
+function* importantTask(action){
+    console.log('in complete task saga');
+    try{
+        yield axios.put(`/api/task/important/${action.payload.taskId}`);
+        yield put({ type: 'FETCH_PROJECT_DETAILS', payload: action.payload.projectId })
+    }catch{
+        console.log('error in post task saga.');
     }
 }
 
