@@ -38,7 +38,7 @@ function* fetchProject(action){
 
 //add new projects
 function* newProject(action){
-    console.log('in fetch project saga', action);
+    console.log('in new project saga', action);
     try{
         yield axios.post(`/api/project/${action.payload.user_id}`, action.payload);
         yield put({ type: 'FETCH_PROJECT'})

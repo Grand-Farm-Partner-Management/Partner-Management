@@ -24,9 +24,9 @@ function* newTask(action){
 
 // fetch project tasks
 function* projectTask(action){
-    console.log('in project task saga');
+    console.log('in project task saga', action);
     try{
-        const response = yield axios.get(`/api/task/projectTask/:id`);
+        const response = yield axios.get(`/api/task/projectTask/${action.payload.projectId}`);
         yield put({type: 'PROJECT_ID', payload: response.data});//reducer needs to be made
     }catch{
         console.log('error in project task saga.');
