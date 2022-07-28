@@ -29,7 +29,7 @@ CREATE TABLE "company" (
 	"id" SERIAL PRIMARY KEY,
 	"company_name" varchar,
 	"partner_level" int,
-	"docs" varchar,
+	"about" varchar,
 	"logo" varchar
 );
 
