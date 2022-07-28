@@ -27,15 +27,17 @@ function Company(args) {
     // State for editin company 
     const [companyName, setCompanyName] = useState('');
     const [companyAbout, setCompanyAbout] = useState('');
+    const [companyAboutCreate, setCompanyAboutCreate] = useState('');
+    const [companyNameCreate, setCompanyNameCreate] = useState('');
 
     const addCompany = event => {
-        // event.preventDefault();
+        event.preventDefault();
         dispatch({
             type: 'ADD_COMPANY',
-            payload: { companyName: companyName, companyAbout: companyAbout }
+            payload: { companyNameCreate: companyNameCreate, companyAboutCreate: companyAboutCreate }
         });
-        setCompanyName('');
-        setCompanyAbout('');
+        setCompanyNameCreate('');
+        setCompanyAboutCreate('');
     }
     //  Edit Modal
     const [modal2, setModal2] = useState(false);
@@ -61,15 +63,17 @@ function Company(args) {
 
     useEffect(() => {
         dispatch({ type: 'FETCH_COMPANY', payload: user.user_id })
+        dispatch({
+            type: 'FETCH_MEMBERS',
+            payload: user.company_id
+        })
         fetchMembers();
-        console.log(members)
-        console.log(user)
     }, [])
 
     return (
         <div className='wrapper'>
             <section>
-
+                <h1>Create a Company</h1>
                 <Form inline onSubmit={addCompany}>
                     <FormGroup>
                         <Label for="company name"
@@ -77,7 +81,7 @@ function Company(args) {
                         >
                             Company name
                         </Label>
-                        <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)}
+                        <input type="text" value={companyNameCreate} onChange={(event) => setCompanyNameCreate(event.target.value)}
                             placeholder='company name' required="" />
                     </FormGroup>
                     {' '}
@@ -87,7 +91,7 @@ function Company(args) {
                         >
                             About company
                         </Label>
-                        <input type="text" value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)}
+                        <input type="text" value={companyAboutCreate} onChange={(event) => setCompanyAboutCreate(event.target.value)}
                             placeholder='about the company' required="" />
                     </FormGroup>
                     {' '}
@@ -130,7 +134,7 @@ function Company(args) {
                             companyAbout: companyAbout
                         });
                         toggle2();
-                        e
+                        
                     }
                     }>Confirm</Button>
                 </ModalFooter>

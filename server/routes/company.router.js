@@ -8,9 +8,9 @@ sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
  */
 
 router.post('/' ,(req, res) => {
-  const name = req.body.companyName;
+  const name = req.body.companyNameCreate;
   const userId = req.user.id
-  const about = req.body.companyAbout;
+  const about = req.body.companyAboutCreate;
  
   console.log("cnjasacasbjlc", req.body);
   const query1 = `INSERT INTO "company" (company_name, partner_level, about)
@@ -18,7 +18,7 @@ router.post('/' ,(req, res) => {
   const query2 = `UPDATE "user" SET company_id = $1
   WHERE "user".id =$2;`
 
-   pool.query(query1, [name, 101, about] )
+   pool.query(query1, [name,101, about] )
     .then((result) => {
       const response = result.rows[0].id
       console.log("should be id",response)
@@ -56,8 +56,10 @@ router.post('/' ,(req, res) => {
  * GET route for showing all companies
  */
 router.get('/', (req, res) => {
-  const queryText = `SELECT * FROM "company" ORDER BY partner_level ASC;`
-  pool.query(queryText)
+  const queryText = `SELECT * FROM "company" 
+  JOIN "user" ON "company".id = "user".id
+  WHERE "company".id = $1;`
+  pool.query(queryText, [req.params.id] )
     .then(result => {
       res.send(result.rows);
     })
