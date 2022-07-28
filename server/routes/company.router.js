@@ -71,7 +71,7 @@ router.get('/', (req, res) => {
  * GET route for showing all members
  */
 router.get('/members/:id', (req, res) => {
-  const queryText = `SELECT first_name, last_name, company_id, company_name, about FROM "company"
+  const queryText = `SELECT "user".id, first_name, last_name, company_id, company_name, about FROM "company"
   JOIN "user" ON "company".id = "user".company_id
   WHERE "user".company_id = $1;`
   pool.query(queryText, [req.params.id])
