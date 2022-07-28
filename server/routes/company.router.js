@@ -13,12 +13,12 @@ router.post('/' ,(req, res) => {
   const about = req.body.companyAbout;
  
   console.log("cnjasacasbjlc", req.body);
-  const query1 = `INSERT INTO "company" (company_name, about)
-    VALUES ($1, $2) RETURNING id`;
+  const query1 = `INSERT INTO "company" (company_name, partner_level, about)
+    VALUES ($1, $2, $3) RETURNING id`;
   const query2 = `UPDATE "user" SET company_id = $1
   WHERE "user".id =$2;`
 
-   pool.query(query1, [name, about] )
+   pool.query(query1, [name, 101, about] )
     .then((result) => {
       const response = result.rows[0].id
       console.log("should be id",response)
