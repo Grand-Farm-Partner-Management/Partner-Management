@@ -28,12 +28,27 @@ function TaskItem(props, { direction, ...args }) {
     const companyUser = useSelector((store) => store.members);
 
     //console.log("company user:", companyUser);
+    
 
     const [assignedId, setAssignedId] = useState(0);
     const [assignedName, setAssignedName] = useState("Company Members");
 
     let projectId = params.projectId;
     let task = props.task;
+    let taskUser = "no one yet"
+
+    if (task.assigned_user === null){
+        console.log("is null for :", task.id);
+
+    }else {
+        for (let member of companyUser){
+            console.log("member:",member, task.assigned_user);
+            if (member.id == task.assigned_user){
+                taskUser = `${member.first_name} ${member.last_name}`;
+            }
+        }
+        console.log("assigned is: ", taskUser, task.id);
+    }
 
     //assign user to task
     const [modal1, setModal1] = useState(false);
@@ -188,7 +203,7 @@ function TaskItem(props, { direction, ...args }) {
                     </div>
                 </Label>
                 <h6 className='project-description'>{getFormattedDate(task.due_time)}</h6>
-                <h6>Assigned to </h6>
+                <h6>Assigned to {taskUser} </h6>
                 <h6>{task.description}</h6>
             </div>
 
