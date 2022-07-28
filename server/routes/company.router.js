@@ -57,11 +57,11 @@ router.post('/' ,(req, res) => {
  */
 router.get('/', (req, res) => {
   const queryText = `SELECT * FROM "company" 
-  JOIN "user" ON "company".id = "user".id
-  WHERE "company".id = $1;`
-  pool.query(queryText, [req.params.id] )
+  JOIN "user" ON "company".id = "user".company_id
+  WHERE "user".id =$1;`
+  pool.query(queryText, [req.user.id] )
     .then(result => {
-      res.send(result.rows);
+      res.send(result.rows[0]);
     })
     .catch((err) => {
       console.log('User registration failed: ', err);
@@ -173,7 +173,7 @@ router.put('/:id', (req, res) => {
   const companyId = req.params.id;
   const newName = req.body.companyName;
   const newAbout = req.body.companyAbout;
-  // console.log("log", req.body);
+  console.log("log", req.body);
   const queryText = `UPDATE "company"
   SET "company_name" = $1, "about" =$2
   WHERE id = $3;`
