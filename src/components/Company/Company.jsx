@@ -18,9 +18,11 @@ function Company(args) {
     console.log("members", members)
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
+    const [isOpenCompany, setIsOpenCompany] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
     const toggle3 = () => setIsOpen2(!isOpen2);
+    const toggleCompany1 = () => setIsOpenCompany(!isOpenCompany);
     const dispatch = useDispatch();
 
     // State for editin company 
@@ -31,14 +33,17 @@ function Company(args) {
         // event.preventDefault();
         dispatch({
             type: 'ADD_COMPANY',
-            payload: { companyName: companyName, companyAbout: companyAbout}
+            payload: { companyName: companyName, companyAbout: companyAbout }
         });
         setCompanyName('');
         setCompanyAbout('');
     }
     //  Edit Modal
     const [modal2, setModal2] = useState(false);
+    const [modalCompany, setModalCompany] = useState(false);
     const toggle2 = () => setModal2(!modal2);
+    const toggleCompany = () => setModalCompany(!modalCompany);
+
 
 
     const fetchMembers = async () => {
@@ -52,17 +57,12 @@ function Company(args) {
         await axios.put(`/api/company/${user.company_id}`, body);
         await fetchMembers();
         toggle2();
+        toggleCompany();
     }
 
-    // const createCompany = () => {
-    //     await axios.post(`/api/company/members/${user.company_id}`)
-    //     .then(res => {
-    //         dispatch({ type: `GET_MEMBERS`, payload: res.data });
-    //     })
-    // }
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_COMPANY', payload: user.user_id })  
+        dispatch({ type: 'FETCH_COMPANY', payload: user.user_id })
         fetchMembers();
         console.log(members)
         console.log(user)
@@ -83,6 +83,25 @@ function Company(args) {
                 </form>
             </section>
             <Button className='create-company'>Create Company</Button>
+                <Modal isOpenCompany={modalCompany} toggle={toggleCompany}>
+                    <ModalBody toggle={toggleCompany}>Create company</ModalBody>
+                    <ModalBody>
+                        <label htmlFor='project-title'>company Name:</label>
+                        <form onSubmit={addCompany}>
+                            <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)} id='project-title'
+                                placeholder='company name' required="" />
+
+                            <label htmlFor='about'>About the company:</label>
+                                <input type="text" value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)}
+                                placeholder='about the company' required="" />
+                            <button type="submit" >submit</button>
+                        </form>
+
+                    </ModalBody>
+                </Modal>
+
+
+            
             <div className="company-name-and-dots">
                 <h1 className='companyName'>{members.length > 0 ? members[0].company_name : ''}</h1>
                 {/* <h1 className='companyName'>{members.length > 0 ? members[0].about : ''}</h1> */}
