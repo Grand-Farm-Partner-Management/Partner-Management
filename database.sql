@@ -52,7 +52,8 @@ CREATE TABLE "tasks" (
 	"due_time" timestamp,
 	"completed_by" varchar,
 	"completed_time" timestamp,
-	"assigned_user" varchar
+	"assigned_user" varchar,
+	"priority", int
 );
 
 CREATE TABLE "documents" (
