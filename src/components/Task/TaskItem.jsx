@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Dots from '../../images/dots_icon.svg'
 import Back from '../../images/back_icon.svg'
+import Important from '../../images/important_icon.svg'
 // Material
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -21,13 +22,7 @@ function TaskItem(props, { direction, ...args }) {
     const params = useParams();
 
     const user = useSelector((store) => store.user);
-    const tasks = useSelector((store) => store.tasks);
-    const projectDetails = useSelector((store) => store.projects);
-    const projectTasks = useSelector((store) => store.projectTasks);
-    const allUsers = useSelector((store) => store.allUser);
     const companyUser = useSelector((store) => store.members);
-
-    console.log("company user:", user);
 
     const [assignedId, setAssignedId] = useState(0);
     const [assignedName, setAssignedName] = useState("Company Members");
@@ -54,7 +49,6 @@ function TaskItem(props, { direction, ...args }) {
 
     const completeTask = async () => {
         if (!task.completed_by) {
-            console.log('complete')
             dispatch({
                 type: 'COMPLETE_TASK',
                 payload: {
@@ -64,7 +58,6 @@ function TaskItem(props, { direction, ...args }) {
                 }
             })
         } else {
-            console.log('uncomplete')
             dispatch({
                 type: 'UNCOMPLETE_TASK',
                 payload: {
@@ -85,8 +78,7 @@ function TaskItem(props, { direction, ...args }) {
     }
 
     useEffect(() => {
-        console.log("task is:", task)
-        dispatch({type: 'FETCH_MEMBERS', payload: user.company_id});
+        dispatch({ type: 'FETCH_MEMBERS', payload: user.company_id });
     }, [])
 
     return (
@@ -96,6 +88,7 @@ function TaskItem(props, { direction, ...args }) {
                 <Label check>
 
                     <div className='title-and-dots'>
+                        {task.priority ? <img className='important' src={Important} /> : ''}
                         <h4 className='task-title'>{task.title}</h4> {task.completed_by ? <h6 className='completed-by'> <i>Completed by {task.completed_by}</i></h6> : ''}
                         <Dropdown isOpen={dropdown2Open} toggle={toggleDropdown2} direction={direction}>
                             <DropdownToggle style={{
@@ -111,11 +104,11 @@ function TaskItem(props, { direction, ...args }) {
                                 {/* start assign modal */}
 
                                 <Modal isOpen={modal1} toggle={toggle1} {...args}>
-                                    <ModalHeader toggle={toggle1}>Assign A User</ModalHeader>
+                                    <ModalHeader>Assign to User</ModalHeader>
                                     <ModalBody>
                                         <label htmlFor='project-title'>Assign User to Task:</label>
 
-                                            {/* start dropdown */}
+                                        {/* start dropdown */}
 
                                         <Dropdown isOpen={dropdown3Open} toggle={toggleDropdown3} >
                                             <DropdownToggle caret color='primary'>
@@ -123,11 +116,10 @@ function TaskItem(props, { direction, ...args }) {
                                             </DropdownToggle>
                                             <DropdownMenu {...args}>
                                                 {companyUser.map((member) => {
-                                                    console.log("mapping: ", member);
                                                     return (
                                                         <DropdownItem key={member.id} onClick={() => {
-                                                        setAssignedId(member.id);
-                                                        setAssignedName(member.first_name +" "+ member.last_name)
+                                                            setAssignedId(member.id);
+                                                            setAssignedName(member.first_name + " " + member.last_name)
                                                         }}>
                                                             {member.first_name} {member.last_name}
                                                         </DropdownItem>
@@ -136,7 +128,7 @@ function TaskItem(props, { direction, ...args }) {
                                             </DropdownMenu>
                                         </Dropdown>
 
-                                                {/* end dropdown */}
+                                        {/* end dropdown */}
 
                                         <br />
                                     </ModalBody>
@@ -156,7 +148,7 @@ function TaskItem(props, { direction, ...args }) {
 
                                 <DropdownItem onClick={() => console.log('sub task')}>Create Sub-Task</DropdownItem>
                                 <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
-                                <DropdownItem onClick={() => console.log('mark')}>Mark as important</DropdownItem>
+                                <DropdownItem onClick={() => dispatch({type: 'IMPORTANT_TASK', payload: {taskId: task.id, projectId: projectId}})}>Mark as important</DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem onClick={() => {
                                     swal({

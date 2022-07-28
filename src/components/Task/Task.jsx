@@ -94,12 +94,11 @@ function Task({ direction, ...args }) {
                     completed ++;
                 }
             }
-            return (completed / totalTasks) * 100;
+            return ((completed / totalTasks) * 100).toFixed(0);
         }
     }
 
     useEffect( () => {
-        dispatch({ type: '/CLEAR_PROJECT_DETAILS' });
         dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
         dispatch({ type: "FETCH_ALL_USER" });
         console.log('CURRENT PROJECT', currentProject);
