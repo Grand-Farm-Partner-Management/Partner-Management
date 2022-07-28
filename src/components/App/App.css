@@ -499,12 +499,16 @@ input {
   flex-direction: column;
 }
 
+.admin h1 {
+  margin-bottom: 1em;
+}
+
 .admin table {
   border: 1px solid black;
   border-collapse: collapse;
   margin-bottom: 1em;
   font-size: 1em;
-  width: 30vw;
+  width: 50vw;
   background-color: white;
   margin-top: 1em;
 }
@@ -558,5 +562,12 @@ input {
     margin: 0;
     justify-content: flex-start;
     align-items: flex-start;
+  }
+  .admin table {
+    font-size: .5em;
+  }
+  .admin button {
+    text-align: center;
+    font-size: .8em;
   }
 }
