@@ -35,7 +35,7 @@
 }
 
 .navLink:hover, .navLogOut:hover {
-  background-color: rgba(215, 239, 205, 0.955);
+  background-color: rgba(174, 204, 54, 0.247);
   color: inherit;
 }
 
