@@ -45,6 +45,21 @@ function Projects(args) {
         history.push(`/tasks/${project.id}`);
     }
 
+    const calculateProgression = (tasks) => {
+        let completed = 0;
+        let totalTasks = tasks.length;
+        if (tasks.length === 0) {
+            return 0
+        } else {
+            for (let task of tasks) {
+                if (task.completed_by) {
+                    completed ++;
+                }
+            }
+            return (completed / totalTasks) * 100;
+        }
+    }
+
     useEffect(() => {
         dispatch({ type: '/CLEAR_PROJECT_TASKS' });
         dispatch({ type: 'FETCH_PROJECT', payload: user.company_id })
@@ -52,6 +67,7 @@ function Projects(args) {
             type: 'FETCH_MEMBERS',
             payload: user.company_id
         })
+        console.log(projects)
     }, [])
 
     return (
@@ -100,7 +116,6 @@ function Projects(args) {
                                         user_id: user.company_id
                                     }
                                 });
-                                // fetchProjects();
                                 toggle();
                             }
                             }>Create</Button>
@@ -111,15 +126,15 @@ function Projects(args) {
                 {
                     projects.map((project) => {
                         return (
-                            <div onClick={() => projectTasks(project)} className='project'>
+                            <div  key = {project.id} onClick={() => projectTasks(project)} className='project'>
                                 <div className="title-and-date">
                                     <h4>{project.title}</h4>
                                     <h6>{getFormattedDate(project.due_time)}</h6>
                                 </div>
                                 <h6 className='project-description'>{project.description}</h6>
                                 <Progress
-                                    value={project.completed_percent}>
-                                    {project.completed_percent}%
+                                    value={calculateProgression(project.tasks)}>
+                                    {calculateProgression(project.tasks)}%
                                 </Progress>
                             </div>
                         )

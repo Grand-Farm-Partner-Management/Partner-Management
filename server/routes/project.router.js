@@ -23,19 +23,15 @@ router.get('/', (req, res) => {
 
 router.get('/projectDetails/:id', (req, res) => {
     const projectId = req.params.id;
-    const query = `SELECT *,
+    const query = `    SELECT *,
     (
         SELECT coalesce(json_agg(item), '[]'::json) FROM (
             SELECT * FROM "tasks" WHERE "tasks".project_id="project"."id" ORDER BY "due_time"
         ) item
-    ) AS tasks,
-	((
-		(select count(*) from "tasks" WHERE "tasks"."project_id"="project"."id" AND "tasks".completed_by IS NOT NULL)*100 /
-		(select count(*) from "tasks" WHERE "tasks"."project_id"="project"."id")*100
-	)/100)::INTEGER AS completed_percent
+    ) AS tasks
     FROM "project"
     WHERE "id" = $1
-    ORDER BY;`
+    ORDER BY due_time;`
     pool.query(query, [projectId])
         .then(result => {
             res.send(result.rows[0]);
@@ -104,11 +100,7 @@ router.get('/:id', (req, res) => {
         SELECT coalesce(json_agg(item), '[]'::json) FROM (
             SELECT * FROM "tasks" WHERE "tasks".project_id="project"."id" ORDER BY "due_time"
         ) item
-    ) AS tasks,
-	((
-		(select count(*) from "tasks" WHERE "tasks"."project_id"="project"."id" AND "tasks".completed_by IS NOT NULL)*100 /
-		(select count(*) from "tasks" WHERE "tasks"."project_id"="project"."id")*100
-	)/100)::INTEGER AS completed_percent
+    ) AS tasks
     FROM "project" 
     join company_project on project.id = company_project.project_id
     join company on company_project.company_id = company.id
