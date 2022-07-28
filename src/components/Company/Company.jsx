@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dots from '../../images/dots_icon.svg'
-import { Collapse, Button, CardBody, Card, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, Modal, ModalHeader, ModalBody, ModalFooter, Label, Form, FormGroup } from 'reactstrap';
 
 
 
@@ -22,7 +22,6 @@ function Company(args) {
 
     const toggle = () => setIsOpen(!isOpen);
     const toggle3 = () => setIsOpen2(!isOpen2);
-    const toggleCompany1 = () => setIsOpenCompany(!isOpenCompany);
     const dispatch = useDispatch();
 
     // State for editin company 
@@ -40,9 +39,8 @@ function Company(args) {
     }
     //  Edit Modal
     const [modal2, setModal2] = useState(false);
-    const [modalCompany, setModalCompany] = useState(false);
     const toggle2 = () => setModal2(!modal2);
-    const toggleCompany = () => setModalCompany(!modalCompany);
+
 
 
 
@@ -57,7 +55,7 @@ function Company(args) {
         await axios.put(`/api/company/${user.company_id}`, body);
         await fetchMembers();
         toggle2();
-        toggleCompany();
+
     }
 
 
@@ -72,36 +70,30 @@ function Company(args) {
         <div className='wrapper'>
             <section>
 
-                <form onSubmit={addCompany}>
-                    <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)}
-                        placeholder='company name' required="" />
-
-
-                    <input type="text" value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)}
-                        placeholder='about the company' required="" />
-                    <button type="submit" >submit</button>
-                </form>
+                <Form inline onSubmit={addCompany}>
+                    <FormGroup>
+                        <Label for="company name"
+                            hidden
+                        >
+                            Company name
+                        </Label>
+                        <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)}
+                            placeholder='company name' required="" />
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                        <Label for="about company"
+                            hidden
+                        >
+                            About company
+                        </Label>
+                        <input type="text" value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)}
+                            placeholder='about the company' required="" />
+                    </FormGroup>
+                    {' '}
+                    <Button>Submit</Button>
+                </Form>
             </section>
-            <Button className='create-company'>Create Company</Button>
-                <Modal isOpenCompany={modalCompany} toggle={toggleCompany} >
-                    <ModalBody toggle={toggleCompany}>Create company</ModalBody>
-                    <ModalBody>
-                        <label htmlFor='project-title'>company Name:</label>
-                        <form onSubmit={addCompany}>
-                            <input type="text" value={companyName} onChange={(event) => setCompanyName(event.target.value)} id='project-title'
-                                placeholder='company name' required="" />
-
-                            <label htmlFor='about'>About the company:</label>
-                                <input type="text" value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)}
-                                placeholder='about the company' required="" />
-                            <button type="submit" >submit</button>
-                        </form>
-
-                    </ModalBody>
-                </Modal>
-
-
-            
             <div className="company-name-and-dots">
                 <h1 className='companyName'>{members.length > 0 ? members[0].company_name : ''}</h1>
                 {/* <h1 className='companyName'>{members.length > 0 ? members[0].about : ''}</h1> */}
