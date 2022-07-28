@@ -48,6 +48,12 @@ img {
   max-width: 100%;
 }
 
+hr {
+  color: black;
+  border: 1px solid black;
+  width: 50vw;
+}
+
 /* --------------------------------------------------------------------------------
 Container`
 -------------------------------------------------------------------------------- */
@@ -483,6 +489,46 @@ input {
   display: flex;
   align-items: center;
 }
+
+/* ADMIN */
+
+.admin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.admin table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+  font-size: 1em;
+  width: 30vw;
+  background-color: white;
+  margin-top: 1em;
+}
+
+.admin tr, .admin td, .admin th {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 1em;
+  font-size: 1em;
+  overflow: scroll;
+}
+
+/* .admin-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+} */
+
+.list {
+  display: flex;
+}
+
 
 /* RESPONSIVENESS */
 

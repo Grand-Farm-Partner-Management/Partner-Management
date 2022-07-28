@@ -65,10 +65,18 @@ function AdminPage(args) {
     }, [])
 
     return (
-        <div>
+        <div className='admin'>
             <h1>Grand Farm Admin Page</h1>
             <h2 onClick={toggle1} className='links'>Unassigned Employees</h2>
             <Collapse isOpen={isOpen1} {...args} >
+                <table>
+                    <tr>
+                        <th> First Name </th>
+                        <th> Last Name </th>
+                        <th> Email </th>
+                        <th>Assign</th>
+                        <th>Delete</th>
+                    </tr>
                 {
                     unassigned.map((unassign) => {
                         return (
@@ -76,6 +84,7 @@ function AdminPage(args) {
                         )
                     })
                 }
+                </table>
             </Collapse>
             <h2 onClick={toggle2} className='links'>New Partner Requests</h2>
             <Collapse isOpen={isOpen2} {...args} >

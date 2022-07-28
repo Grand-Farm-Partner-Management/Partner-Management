@@ -35,7 +35,7 @@ router.get('/projectDetails/:id', (req, res) => {
 	)/100)::INTEGER AS completed_percent
     FROM "project"
     WHERE "id" = $1
-    ORDER BY "due_time";`
+    ORDER BY;`
     pool.query(query, [projectId])
         .then(result => {
             res.send(result.rows[0]);
