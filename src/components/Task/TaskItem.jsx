@@ -92,16 +92,18 @@ function TaskItem(props, { direction, ...args }) {
 
     const assignTask = async (body) => {
         console.log("before dispatch, ", body);
-        dispatch({ type: 'ASSIGN_TASK', payload: body })
+        dispatch({ type: 'ASSIGN_TASK', payload: body });
+        dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId });
     }
 
     useEffect(() => {
         dispatch({ type: 'FETCH_MEMBERS', payload: user.company_id });
+        
     }, [])
 
     return (
-        <>
-            <div className='task'>
+        < >
+            <div key={task.id} className='task'>
                 <Input type="checkbox" checked={task.completed_by === null ? false : true} onChange={() => completeTask()} />
                 <Label check>
 

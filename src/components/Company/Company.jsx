@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dots from '../../images/dots_icon.svg'
 import Delete from '../../images/delete_icon.svg'
-import { Collapse, Button, CardBody, Card, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Collapse, Button, CardBody, Card, Modal, ModalHeader, ModalBody, ModalFooter, Label, Form, FormGroup } from 'reactstrap';
 
 
 
@@ -22,12 +22,13 @@ function Company(args) {
 
     const toggle = () => setIsOpen(!isOpen);
     const toggle3 = () => setIsOpen2(!isOpen2);
-    const toggleCompany1 = () => setIsOpenCompany(!isOpenCompany);
     const dispatch = useDispatch();
 
     // State for editing company 
     const [companyName, setCompanyName] = useState('');
     const [companyAbout, setCompanyAbout] = useState('');
+    const [companyAboutCreate, setCompanyAboutCreate] = useState('');
+    const [companyNameCreate, setCompanyNameCreate] = useState('');
 
     // Collapse for documents
     const [isOpenDoc, setIsOpenDoc] = useState(false);
@@ -46,13 +47,13 @@ function Company(args) {
     const [linkTitle, setLinkTitle] = useState('');
 
     const addCompany = event => {
-        // event.preventDefault();
+        event.preventDefault();
         dispatch({
             type: 'ADD_COMPANY',
-            payload: { companyName: companyName, companyAbout: companyAbout }
+            payload: { companyNameCreate: companyNameCreate, companyAboutCreate: companyAboutCreate }
         });
-        setCompanyName('');
-        setCompanyAbout('');
+        setCompanyNameCreate('');
+        setCompanyAboutCreate('');
     }
     //  Edit Modal
     const [modal2, setModal2] = useState(false);
@@ -116,6 +117,38 @@ function Company(args) {
                 setIsOpen2(false);
                 setIsOpenDoc();
             }} className='links'>Members</h1>
+            <section>
+                <h1>Create a Company</h1>
+                <Form inline onSubmit={addCompany}>
+                    <FormGroup>
+                        <Label for="company name"
+                            hidden
+                        >
+                            Company name
+                        </Label>
+                        <input type="text" value={companyNameCreate} onChange={(event) => setCompanyNameCreate(event.target.value)}
+                            placeholder='company name' required="" />
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                        <Label for="about company"
+                            hidden
+                        >
+                            About company
+                        </Label>
+                        <input type="text" value={companyAboutCreate} onChange={(event) => setCompanyAboutCreate(event.target.value)}
+                            placeholder='about the company' required="" />
+                    </FormGroup>
+                    {' '}
+                    <Button>Submit</Button>
+                </Form>
+            </section>
+            { company.company_name && (<div className="company-name-and-dots">
+                <h1 className='companyName'>{company.company_name}</h1>
+                {/* <h1 className='companyName'>{members.length > 0 ? members[0].about : ''}</h1> */}
+                <img className='dots' src={Dots} onClick={() => toggle2()} />
+            </div>)}
+            <h1 onClick={toggle} className='links'>Members</h1>
             <Collapse isOpen={isOpen} {...args}>
                 {
                     members.map((member) => {
