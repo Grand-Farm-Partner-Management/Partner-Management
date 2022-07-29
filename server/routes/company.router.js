@@ -8,9 +8,9 @@ sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
  */
 
 router.post('/' ,(req, res) => {
-  const name = req.body.companyName;
+  const name = req.body.companyNameCreate;
   const userId = req.user.id
-  const about = req.body.companyAbout;
+  const about = req.body.companyAboutCreate;
  
   console.log("cnjasacasbjlc", req.body);
   const query1 = `INSERT INTO "company" (company_name, partner_level, about)
@@ -18,7 +18,7 @@ router.post('/' ,(req, res) => {
   const query2 = `UPDATE "user" SET company_id = $1
   WHERE "user".id =$2;`
 
-   pool.query(query1, [name, 101, about] )
+   pool.query(query1, [name,101, about] )
     .then((result) => {
       const response = result.rows[0].id
       console.log("should be id",response)
@@ -56,8 +56,26 @@ router.post('/' ,(req, res) => {
  * GET route for showing all companies
  */
 router.get('/', (req, res) => {
-  const queryText = `SELECT * FROM "company" ORDER BY partner_level ASC;`
-  pool.query(queryText)
+  const queryText = `SELECT * FROM "company" 
+  JOIN "user" ON "company".id = "user".company_id
+  WHERE "user".id =$1;`
+  pool.query(queryText, [req.user.id] )
+    .then(result => {
+      res.send(result.rows[0]);
+    })
+    .catch((err) => {
+      console.log('User registration failed: ', err);
+      res.sendStatus(500);
+    });
+});
+
+/**
+ * GET route for showing one company
+ */
+ router.get('/:id', (req, res) => {
+   const companyId = req.params.id;
+  const queryText = `SELECT * FROM "company" WHERE id = $1;`
+  pool.query(queryText, [companyId])
     .then(result => {
       res.send(result.rows);
     })
@@ -171,7 +189,7 @@ router.put('/:id', (req, res) => {
   const companyId = req.params.id;
   const newName = req.body.companyName;
   const newAbout = req.body.companyAbout;
-  // console.log("log", req.body);
+  console.log("log", req.body);
   const queryText = `UPDATE "company"
   SET "company_name" = $1, "about" =$2
   WHERE id = $3;`

@@ -46,7 +46,7 @@ function AdminPage(args) {
     }
 
     const fetchAllCompanies = () => {
-        dispatch({ type: "FETCH_COMPANY" });
+        dispatch({ type: "FETCH_ALL_COMPANIES" });
     }
 
     const fetchAllEmployees = () => {
