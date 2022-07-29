@@ -62,7 +62,7 @@ function Company(args) {
 
 
     useEffect(() => {
-        dispatch({ type: 'FETCH_COMPANY', payload: user.user_id })
+        dispatch({ type: 'FETCH_COMPANY' })
         dispatch({
             type: 'FETCH_MEMBERS',
             payload: user.company_id
@@ -98,11 +98,11 @@ function Company(args) {
                     <Button>Submit</Button>
                 </Form>
             </section>
-            <div className="company-name-and-dots">
-                <h1 className='companyName'>{members.length > 0 ? members[0].company_name : ''}</h1>
+            { company.company_name && (<div className="company-name-and-dots">
+                <h1 className='companyName'>{company.company_name}</h1>
                 {/* <h1 className='companyName'>{members.length > 0 ? members[0].about : ''}</h1> */}
                 <img className='dots' src={Dots} onClick={() => toggle2()} />
-            </div>
+            </div>)}
             <h1 onClick={toggle} className='links'>Members</h1>
             <Collapse isOpen={isOpen} {...args}>
                 {
@@ -141,17 +141,16 @@ function Company(args) {
             </Modal>
 
             <h1 className='links'>Documents</h1>
+            
             <h1 onClick={toggle3} className='links'>About</h1>
             <Collapse isOpen={isOpen2} {...args}>
-                {
-                    members.map((member) => {
-                        return (
+            
                             <div className='member'>
-                                <h4> {member.about}</h4>
+                                <h4> {company.about}</h4>
                             </div>
-                        )
-                    })
-                }
+                        
+                   
+                
             </Collapse>
         </div>
     )
