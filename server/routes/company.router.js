@@ -70,6 +70,22 @@ router.get('/', (req, res) => {
 });
 
 /**
+ * GET route for showing one company
+ */
+ router.get('/:id', (req, res) => {
+   const companyId = req.params.id;
+  const queryText = `SELECT * FROM "company" WHERE id = $1;`
+  pool.query(queryText, [companyId])
+    .then(result => {
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log('User registration failed: ', err);
+      res.sendStatus(500);
+    });
+});
+
+/**
  * GET route for showing all members
  */
 router.get('/members/:id', (req, res) => {

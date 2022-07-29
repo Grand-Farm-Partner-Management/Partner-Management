@@ -257,7 +257,7 @@ input {
 }
 
 .create-company {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   margin: 1em;
@@ -325,6 +325,15 @@ input {
 
 .button-and-desc {
   display: flex;
+}
+
+.about {
+  width: 50vw;
+  text-align: center;
+}
+
+.about-section {
+  background-color: white;
 }
 
 /* PROJECTS */
@@ -456,6 +465,10 @@ input {
 
 .tab {
   padding: 1em 2em 1em 2em;
+}
+
+.assigned {
+  opacity: 60%;
 }
 
 .title-and-dots {

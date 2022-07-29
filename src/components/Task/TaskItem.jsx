@@ -30,13 +30,11 @@ function TaskItem(props, { direction, ...args }) {
     let task = props.task;
     let taskUser = "no one yet"
 
-    if (task.assigned_user === null){
-        console.log("is null for :", task.id);
-
-    }else {
-        for (let member of companyUser){
-            console.log("member:",member, task.assigned_user);
-            if (member.id == task.assigned_user){
+    if (task.assigned_user === null) {
+    } else {
+        for (let member of companyUser) {
+            console.log("member:", member, task.assigned_user);
+            if (member.id == task.assigned_user) {
                 taskUser = `${member.first_name} ${member.last_name}`;
             }
         }
@@ -45,19 +43,22 @@ function TaskItem(props, { direction, ...args }) {
 
     //assign user to task
     const [modal1, setModal1] = useState(false);
-    const toggle1 = () => setModal1(!modal1);
+    const toggle1 = () => {
+        setModal1(!modal1)
+        toggleDropdown2();
+    };
 
     // State for drop down
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
+    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
     // State for edit drop down
     const [dropdown2Open, setDropdown2Open] = useState(false);
-    const toggleDropdown2 = () => setDropdown2Open(prevState => !prevState);
+    const toggleDropdown2 = () => setDropdown2Open(!dropdown2Open);
 
     //state for assigning users to task drop down
     const [dropdown3Open, setDropdown3Open] = useState(false);
-    const toggleDropdown3 = () => setDropdown3Open(prevState => !prevState);
+    const toggleDropdown3 = () => setDropdown3Open(!dropdown3Open);
 
     const completeTask = async () => {
         if (!task.completed_by) {
@@ -118,56 +119,11 @@ function TaskItem(props, { direction, ...args }) {
                             </DropdownToggle>
                             <DropdownMenu {...args}>
                                 <DropdownItem header>Task Settings</DropdownItem>
-                                <DropdownItem onClick={() => toggle1()}>Assign</DropdownItem>
-
-                                {/* start assign modal */}
-
-                                <Modal isOpen={modal1} toggle={toggle1} {...args}>
-                                    <ModalHeader>Assign to User</ModalHeader>
-                                    <ModalBody>
-                                        <label htmlFor='project-title'>Assign User to Task:</label>
-
-                                        {/* start dropdown */}
-
-                                        <Dropdown isOpen={dropdown3Open} toggle={toggleDropdown3} >
-                                            <DropdownToggle caret color='primary'>
-                                                {assignedName}
-                                            </DropdownToggle>
-                                            <DropdownMenu {...args}>
-                                                {companyUser.map((member) => {
-                                                    return (
-                                                        <DropdownItem key={member.id} onClick={() => {
-                                                            setAssignedId(member.id);
-                                                            setAssignedName(member.first_name + " " + member.last_name)
-                                                        }}>
-                                                            {member.first_name} {member.last_name}
-                                                        </DropdownItem>
-                                                    )
-                                                })}
-                                            </DropdownMenu>
-                                        </Dropdown>
-
-                                        {/* end dropdown */}
-
-                                        <br />
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <Button style={{
-                                            backgroundColor: 'rgb(175, 204, 54)',
-                                            borderColor: 'rgb(175, 204, 54)'
-                                        }} onClick={() => {
-                                            assignTask({ taskId: task.id, userId: assignedId });
-                                            toggle1();
-                                        }
-                                        }>Confirm</Button>
-                                    </ModalFooter>
-                                </Modal>
-
-                                {/* end assign modal */}
-
-                                <DropdownItem onClick={() => console.log('sub task')}>Create Sub-Task</DropdownItem>
+                                <DropdownItem toggle = 'true' onClick={() => {
+                                    toggle1();
+                                    }}>Assign</DropdownItem>
                                 <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
-                                <DropdownItem onClick={() => dispatch({type: 'IMPORTANT_TASK', payload: {taskId: task.id, projectId: projectId}})}>Mark as important</DropdownItem>
+                                <DropdownItem onClick={() => dispatch({ type: 'IMPORTANT_TASK', payload: { taskId: task.id, projectId: projectId } })}>Mark as important</DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem onClick={() => {
                                     swal({
@@ -195,8 +151,55 @@ function TaskItem(props, { direction, ...args }) {
                         </Dropdown>
                     </div>
                 </Label>
+                                                {/* start assign modal */}
+
+                                                <Modal isOpen={modal1} toggle={() => toggle1()} {...args}>
+                                    <ModalHeader>Assign to User</ModalHeader>
+                                    <ModalBody>
+                                        <label htmlFor='project-title'>Assign User to Task:</label>
+
+                                        {/* start dropdown */}
+
+                                        <Dropdown isOpen={dropdown3Open} toggle={toggleDropdown3} >
+                                            <DropdownToggle caret color='primary' style={{
+                                                marginTop: '1em'
+                                            }}>
+                                                {assignedName}
+                                            </DropdownToggle>
+                                            <DropdownMenu {...args}>
+                                                {companyUser.map((member) => {
+                                                    return (
+                                                        <DropdownItem key={member.id} onClick={() => {
+                                                            setAssignedId(member.id);
+                                                            setAssignedName(member.first_name + " " + member.last_name)
+                                                        }}>
+                                                            {member.first_name} {member.last_name}
+                                                        </DropdownItem>
+                                                    )
+                                                })}
+                                            </DropdownMenu>
+                                        </Dropdown>
+
+                                        {/* end dropdown */}
+
+                                        <br />
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button style={{
+                                            backgroundColor: 'rgb(175, 204, 54)',
+                                            borderColor: 'rgb(175, 204, 54)'
+                                        }} onClick={() => {
+                                            assignTask({ taskId: task.id, userId: assignedId });
+                                            dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
+                                            toggle1();
+                                        }
+                                        }>Confirm</Button>
+                                    </ModalFooter>
+                                </Modal>
+
+                                {/* end assign modal */}
                 <h6 className='project-description'>{getFormattedDate(task.due_time)}</h6>
-                <h6>Assigned to {taskUser} </h6>
+                <h6 className='assigned'><i>{task.assigned_user ? `Assigned to ${taskUser}` : ''}</i></h6>
                 <h6>{task.description}</h6>
             </div>
 

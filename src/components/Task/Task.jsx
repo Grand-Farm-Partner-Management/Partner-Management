@@ -209,7 +209,6 @@ function Task({ direction, ...args }) {
                         borderColor: 'rgb(175, 204, 54)'
                     }} onClick={() => {
                         toggle()
-                        console.log(currentProject)
                     }}>New Task</Button>
                 </div>
                 <h6 className='project-description'>{getFormattedDate(currentProject.due_time)}</h6>
@@ -245,8 +244,15 @@ function Task({ direction, ...args }) {
                             backgroundColor: 'rgb(175, 204, 54)',
                             borderColor: 'rgb(175, 204, 54)'
                         }} onClick={() => {
-                            createTask({ title: projectTitle, description: projectDescription, due_time: projectDueDate, project_id: projectId });
-                            toggle();
+                            if (projectTitle, projectDescription, projectDueDate) {
+                                createTask({ title: projectTitle, description: projectDescription, due_time: projectDueDate, project_id: projectId });
+                                setProjectDescription('');
+                                setProjectDueDate('')
+                                setProjectTitle('')
+                                toggle();
+                            } else {
+                                alert ('Please enter a title, description, and date')
+                            }
                         }
                         }>Create</Button>
                     </ModalFooter>
