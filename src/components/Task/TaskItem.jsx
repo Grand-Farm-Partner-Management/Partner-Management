@@ -120,10 +120,38 @@ function TaskItem(props, { direction, ...args }) {
                                 <DropdownItem toggle = 'true' onClick={() => {
                                     toggle1();
                                     }}>Assign</DropdownItem>
+                                <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
+                                <DropdownItem onClick={() => dispatch({ type: 'IMPORTANT_TASK', payload: { taskId: task.id, projectId: projectId } })}>Mark as important</DropdownItem>
+                                <DropdownItem divider />
+                                <DropdownItem onClick={() => {
+                                    swal({
+                                        title: `Are you sure you want to delete ${task.title}?`,
+                                        text: "Once deleted, you will not be able to recover this task.",
+                                        icon: "warning",
+                                        buttons: true,
+                                        dangerMode: true,
+                                    })
+                                        .then((willDelete) => {
+                                            if (willDelete) {
+                                                swal(`${task.title} has been deleted!`, {
+                                                    icon: "success",
+                                                });
+                                                dispatch({ type: 'DELETE_TASK', payload: { taskId: task.id, projectId: projectId } })
+                                            } else {
+                                                swal("Process cancelled.");
+                                            }
+                                        });
+                                }
+                                } style={{
+                                    color: 'red'
+                                }}>Delete Task</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                </Label>
+                                                {/* start assign modal */}
 
-                                {/* start assign modal */}
-
-                                <Modal isOpen={modal1} toggle={toggle1} {...args}>
+                                                <Modal isOpen={modal1} toggle={() => toggle1()} {...args}>
                                     <ModalHeader>Assign to User</ModalHeader>
                                     <ModalBody>
                                         <label htmlFor='project-title'>Assign User to Task:</label>
@@ -168,37 +196,6 @@ function TaskItem(props, { direction, ...args }) {
                                 </Modal>
 
                                 {/* end assign modal */}
-
-                                <DropdownItem onClick={() => console.log('sub task')}>Create Sub-Task</DropdownItem>
-                                <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
-                                <DropdownItem onClick={() => dispatch({ type: 'IMPORTANT_TASK', payload: { taskId: task.id, projectId: projectId } })}>Mark as important</DropdownItem>
-                                <DropdownItem divider />
-                                <DropdownItem onClick={() => {
-                                    swal({
-                                        title: `Are you sure you want to delete ${task.title}?`,
-                                        text: "Once deleted, you will not be able to recover this task.",
-                                        icon: "warning",
-                                        buttons: true,
-                                        dangerMode: true,
-                                    })
-                                        .then((willDelete) => {
-                                            if (willDelete) {
-                                                swal(`${task.title} has been deleted!`, {
-                                                    icon: "success",
-                                                });
-                                                dispatch({ type: 'DELETE_TASK', payload: { taskId: task.id, projectId: projectId } })
-                                            } else {
-                                                swal("Process cancelled.");
-                                            }
-                                        });
-                                }
-                                } style={{
-                                    color: 'red'
-                                }}>Delete Task</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
-                </Label>
                 <h6 className='project-description'>{getFormattedDate(task.due_time)}</h6>
                 <h6 className='assigned'><i>{task.assigned_user ? `Assigned to ${taskUser}` : ''}</i></h6>
                 <h6>{task.description}</h6>
