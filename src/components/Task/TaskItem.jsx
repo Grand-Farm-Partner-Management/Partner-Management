@@ -30,13 +30,13 @@ function TaskItem(props, { direction, ...args }) {
     let task = props.task;
     let taskUser = "no one yet"
 
-    if (task.assigned_user === null){
+    if (task.assigned_user === null) {
         console.log("is null for :", task.id);
 
-    }else {
-        for (let member of companyUser){
-            console.log("member:",member, task.assigned_user);
-            if (member.id == task.assigned_user){
+    } else {
+        for (let member of companyUser) {
+            console.log("member:", member, task.assigned_user);
+            if (member.id == task.assigned_user) {
                 taskUser = `${member.first_name} ${member.last_name}`;
             }
         }
@@ -45,7 +45,7 @@ function TaskItem(props, { direction, ...args }) {
 
     //assign user to task
     const [modal1, setModal1] = useState(false);
-    const toggle1 = () => setModal1(!modal1);
+    const AssignToggle = () => setModal1(!modal1);
 
     // State for drop down
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -97,7 +97,7 @@ function TaskItem(props, { direction, ...args }) {
 
     useEffect(() => {
         dispatch({ type: 'FETCH_MEMBERS', payload: user.company_id });
-        
+
     }, [])
 
     return (
@@ -118,12 +118,12 @@ function TaskItem(props, { direction, ...args }) {
                             </DropdownToggle>
                             <DropdownMenu {...args}>
                                 <DropdownItem header>Task Settings</DropdownItem>
-                                <DropdownItem onClick={() => toggle1()}>Assign</DropdownItem>
+                                <DropdownItem onClick={() => AssignToggle()}> Assign</DropdownItem>
 
                                 {/* start assign modal */}
 
-                                <Modal isOpen={modal1} toggle={toggle1} {...args}>
-                                    <ModalHeader>Assign to User</ModalHeader>
+                                <Modal isOpen={modal1} toggle={AssignToggle} {...args}>
+                                    <ModalHeader toggle={AssignToggle}>Assign to User</ModalHeader>
                                     <ModalBody>
                                         <label htmlFor='project-title'>Assign User to Task:</label>
 
@@ -157,7 +157,7 @@ function TaskItem(props, { direction, ...args }) {
                                             borderColor: 'rgb(175, 204, 54)'
                                         }} onClick={() => {
                                             assignTask({ taskId: task.id, userId: assignedId });
-                                            toggle1();
+                                            AssignToggle();
                                         }
                                         }>Confirm</Button>
                                     </ModalFooter>
@@ -167,7 +167,7 @@ function TaskItem(props, { direction, ...args }) {
 
                                 <DropdownItem onClick={() => console.log('sub task')}>Create Sub-Task</DropdownItem>
                                 <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
-                                <DropdownItem onClick={() => dispatch({type: 'IMPORTANT_TASK', payload: {taskId: task.id, projectId: projectId}})}>Mark as important</DropdownItem>
+                                <DropdownItem onClick={() => dispatch({ type: 'IMPORTANT_TASK', payload: { taskId: task.id, projectId: projectId } })}>Mark as important</DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem onClick={() => {
                                     swal({
