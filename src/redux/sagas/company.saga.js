@@ -3,6 +3,7 @@ import axios from 'axios';
 
 function* companySaga() {
     yield takeLatest('FETCH_COMPANY', fetchCompany);
+    yield takeLatest('FETCH_ALL_COMPANIES', fetchAllCompanies);
     yield takeLatest('ADD_COMPANY', postCompany);
     yield takeLatest('FETCH_COMPANY_USERS', fetchCompanyUser);
     yield takeLatest('RENAME_COMPANY', renameCompany);
@@ -14,11 +15,22 @@ function* companySaga() {
     yield takeLatest('FETCH_UNASSIGNED', fetchUnassigned);
 }
 
-// fetches the companies
+function* fetchAllCompanies(action) {
+    console.log('in fetch company saga');
+    try {
+        const response = yield axios.get(`/api/company`)
+        console.log('response in fetch company is:', response);
+        yield put({ type: 'SET_COMPANY', payload: response.data });//reducer needs to be made
+    } catch {
+        console.log('error in fetch company saga.');
+    }
+}
+
+// fetches one specific company
 function* fetchCompany(action) {
     console.log('in fetch company saga');
     try {
-        const response = yield axios.get('/api/company')
+        const response = yield axios.get(`/api/company/${action.payload}`)
         console.log('response in fetch company is:', response);
         
         yield put({ type: 'SET_COMPANY', payload: response.data });//reducer needs to be made
