@@ -31,8 +31,6 @@ function TaskItem(props, { direction, ...args }) {
     let taskUser = "no one yet"
 
     if (task.assigned_user === null) {
-        console.log("is null for :", task.id);
-
     } else {
         for (let member of companyUser) {
             console.log("member:", member, task.assigned_user);
@@ -121,9 +119,9 @@ function TaskItem(props, { direction, ...args }) {
                             </DropdownToggle>
                             <DropdownMenu {...args}>
                                 <DropdownItem header>Task Settings</DropdownItem>
-                                <DropdownItem toggle='true' onClick={() => {
+                                <DropdownItem toggle = 'true' onClick={() => {
                                     toggle1();
-                                }}>Assign</DropdownItem>
+                                    }}>Assign</DropdownItem>
                                 <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
                                 <DropdownItem onClick={() => dispatch({ type: 'IMPORTANT_TASK', payload: { taskId: task.id, projectId: projectId } })}>Mark as important</DropdownItem>
                                 <DropdownItem divider />
@@ -153,91 +151,60 @@ function TaskItem(props, { direction, ...args }) {
                         </Dropdown>
                     </div>
                 </Label>
-                {/* start assign modal */}
+                                                {/* start assign modal */}
 
-                <Modal isOpen={modal1} toggle={() => toggle1()} {...args}>
-                    <ModalHeader>Assign to User</ModalHeader>
-                    <ModalBody>
-                        <label htmlFor='project-title'>Assign User to Task:</label>
+                                                <Modal isOpen={modal1} toggle={() => toggle1()} {...args}>
+                                    <ModalHeader>Assign to User</ModalHeader>
+                                    <ModalBody>
+                                        <label htmlFor='project-title'>Assign User to Task:</label>
 
-                        {/* start dropdown */}
+                                        {/* start dropdown */}
 
-                        <Dropdown isOpen={dropdown3Open} toggle={toggleDropdown3} >
-                            <DropdownToggle caret color='primary' style={{
-                                marginTop: '1em'
-                            }}>
-                                {assignedName}
-                            </DropdownToggle>
-                            <DropdownMenu {...args}>
-                                {companyUser.map((member) => {
-                                    return (
-                                        <DropdownItem key={member.id} onClick={() => {
-                                            setAssignedId(member.id);
-                                            setAssignedName(member.first_name + " " + member.last_name)
-                                        }}>
-                                            {member.first_name} {member.last_name}
-                                        </DropdownItem>
-                                    )
-                                })}
-                            </DropdownMenu>
-                        </Dropdown>
+                                        <Dropdown isOpen={dropdown3Open} toggle={toggleDropdown3} >
+                                            <DropdownToggle caret color='primary' style={{
+                                                marginTop: '1em'
+                                            }}>
+                                                {assignedName}
+                                            </DropdownToggle>
+                                            <DropdownMenu {...args}>
+                                                {companyUser.map((member) => {
+                                                    return (
+                                                        <DropdownItem key={member.id} onClick={() => {
+                                                            setAssignedId(member.id);
+                                                            setAssignedName(member.first_name + " " + member.last_name)
+                                                        }}>
+                                                            {member.first_name} {member.last_name}
+                                                        </DropdownItem>
+                                                    )
+                                                })}
+                                            </DropdownMenu>
+                                        </Dropdown>
 
-                        {/* end dropdown */}
+                                        {/* end dropdown */}
 
-                        <br />
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button style={{
-                            backgroundColor: 'rgb(175, 204, 54)',
-                            borderColor: 'rgb(175, 204, 54)'
-                        }} onClick={() => {
-                            assignTask({ taskId: task.id, userId: assignedId });
-                            dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
-                            toggle1();
-                        }
-                        }>Confirm</Button>
-                    </ModalFooter>
-                </Modal>
+                                        <br />
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button style={{
+                                            backgroundColor: 'rgb(175, 204, 54)',
+                                            borderColor: 'rgb(175, 204, 54)'
+                                        }} onClick={() => {
+                                            assignTask({ taskId: task.id, userId: assignedId });
+                                            dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
+                                            toggle1();
+                                        }
+                                        }>Confirm</Button>
+                                    </ModalFooter>
+                                </Modal>
 
-                {/* end assign modal */}
-
-                <DropdownItem onClick={() => console.log('sub task')}>Create Sub-Task</DropdownItem>
-                <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
-                <DropdownItem onClick={() => dispatch({ type: 'IMPORTANT_TASK', payload: { taskId: task.id, projectId: projectId } })}>Mark as important</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem onClick={() => {
-                    swal({
-                        title: `Are you sure you want to delete ${task.title}?`,
-                        text: "Once deleted, you will not be able to recover this task.",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                        .then((willDelete) => {
-                            if (willDelete) {
-                                swal(`${task.title} has been deleted!`, {
-                                    icon: "success",
-                                });
-                                dispatch({ type: 'DELETE_TASK', payload: { taskId: task.id, projectId: projectId } })
-                            } else {
-                                swal("Process cancelled.");
-                            }
-                        });
-                }
-                } style={{
-                    color: 'red'
-                }}>Delete Task</DropdownItem>
-            </DropdownMenu>
-        </Dropdown>
-                </Label >
-                </div >
+                                {/* end assign modal */}
                 <h6 className='project-description'>{getFormattedDate(task.due_time)}</h6>
                 <h6 className='assigned'><i>{task.assigned_user ? `Assigned to ${taskUser}` : ''}</i></h6>
                 <h6>{task.description}</h6>
-                
-                </div >
-                </>
-                )
+            </div>
+
+        </>
+    )
 }
 
 export default TaskItem;
