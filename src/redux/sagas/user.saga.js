@@ -37,10 +37,10 @@ function* deleteUser(action) {
 function* fetchAllUsers(){
   try {
     const response = yield axios.get('/api/user/all')
-    console.log('response in fetch All Users is:', response);
+    console.log('response in fetch all users is:', response);
     yield put({ type: 'ALL_USER', payload: response.data });//reducer needs to be made
 } catch {
-    console.log('error in fetch company saga.');
+    console.log('error in fetch all users saga.');
 }
 }
 

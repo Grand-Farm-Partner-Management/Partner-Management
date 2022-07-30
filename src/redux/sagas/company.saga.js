@@ -13,14 +13,15 @@ function* companySaga() {
     yield takeLatest('FETCH_NEW_COMPANY', fetchNewCompany);
     yield takeLatest('ASSIGN_USER', assignUser);
     yield takeLatest('FETCH_UNASSIGNED', fetchUnassigned);
+    yield takeLatest('FETCH_NEW_PARTNER', fetchNewPartner);
 }
 
 function* fetchAllCompanies(action) {
     console.log('in fetch company saga');
     try {
-        const response = yield axios.get(`/api/company`)
+        const response = yield axios.get(`/api/company/all`)
         console.log('response in fetch company is:', response);
-        yield put({ type: 'SET_COMPANY', payload: response.data });//reducer needs to be made
+        yield put({ type: 'SET_ALL_COMPANY', payload: response.data });//reducer needs to be made
     } catch {
         console.log('error in fetch company saga.');
     }
@@ -134,9 +135,22 @@ function* assignUser(action) {
 function* fetchUnassigned(action) {
     console.log('in fetch unassigned')
     try {
+        console.log(" ----- fetch unassigned before the get ");
         const response = yield axios.get(`/api/company/unassigned`)
-        console.log(response.data);
+        console.log("]]] response in fetch un assigned", response.data);
         yield put({ type: `UNASSIGNED`, payload: response.data });
+    } catch {
+        console.log('error fetch unassigned saga.');
+    }
+}
+
+// to get the new partners
+function* fetchNewPartner(action){
+    console.log("in fetch new partner");
+    try {
+        const response = yield axios.get(`/api/company/newPartner`)
+        console.log(response.data);
+        yield put({ type: `NEW_PARTNERS`, payload: response.data });
     } catch {
         console.log('error fetch unassigned saga.');
     }

@@ -69,6 +69,19 @@ router.get('/', (req, res) => {
     });
 });
 
+//for showing all companies
+router.get('/all', (req, res) => {
+  const queryText = `SELECT * FROM "company" order by id asc;`
+  pool.query(queryText, [req.user.id] )
+    .then(result => {
+      res.send(result.rows[0]);
+    })
+    .catch((err) => {
+      console.log('User registration failed: ', err);
+      res.sendStatus(500);
+    });
+});
+
 /**
  * GET route for showing one company
  */
@@ -117,7 +130,8 @@ router.get('/newPartner', (req, res) => {
 
 //to get people who don't have a company
 router.get('/unassigned', (req, res) => {
-  const query = `select "user".id, "user".first_name, "user".last_name, "user".email, "user".company_id from "user" where company_id is null order by id;`
+  const query = `select "user".id, "user".first_name, "user".last_name, "user".email, "user".company_id 
+  from "user" where company_id is null order by id;`
 
   pool.query(query)
     .then(result => {
