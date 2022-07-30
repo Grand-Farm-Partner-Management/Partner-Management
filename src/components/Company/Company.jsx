@@ -74,6 +74,7 @@ function Company(args) {
         <div className='wrapper'>
             <section>
                 <h1>Create a Company</h1>
+
                 <Form inline onSubmit={addCompany}>
                     <FormGroup>
                         <Label for="company name"
@@ -98,7 +99,7 @@ function Company(args) {
                     <Button>Submit</Button>
                 </Form>
             </section>
-            { company.company_name && (<div className="company-name-and-dots">
+            {company.company_name && (<div className="company-name-and-dots">
                 <h1 className='companyName'>{company.company_name}</h1>
                 {/* <h1 className='companyName'>{members.length > 0 ? members[0].about : ''}</h1> */}
                 <img className='dots' src={Dots} onClick={() => toggle2()} />
@@ -134,23 +135,23 @@ function Company(args) {
                             companyAbout: companyAbout
                         });
                         toggle2();
-                        
+
                     }
                     }>Confirm</Button>
                 </ModalFooter>
             </Modal>
 
             <h1 className='links'>Documents</h1>
-            
+
             <h1 onClick={toggle3} className='links'>About</h1>
             <Collapse isOpen={isOpen2} {...args}>
-            
-                            <div className='member'>
-                                <h4> {company.about}</h4>
-                            </div>
-                        
-                   
-                
+
+                <div className='member'>
+                    <h4> {company.about}</h4>
+                </div>
+
+
+
             </Collapse>
         </div>
     )
