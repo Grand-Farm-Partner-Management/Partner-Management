@@ -463,8 +463,15 @@ input {
   margin: 0 1em 0 0;
 }
 
+.selected-tab {
+  color: white;
+  padding: 1em 2em 1em 2em;
+}
+
 .tab {
   padding: 1em 2em 1em 2em;
+  height: 100%;
+  opacity: 30%;
 }
 
 .assigned {

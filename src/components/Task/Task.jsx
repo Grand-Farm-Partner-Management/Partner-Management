@@ -284,9 +284,9 @@ function Task({ direction, ...args }) {
                     {calculateProgression(currentProject.tasks)}%
                 </Progress>
                 <div className="sort-tabs">
-                    <h3 className='tab' onClick={() => setTab('all_tasks')}>All Tasks</h3>
-                    <h3 className='tab' onClick={() => setTab('my_tasks')}>My Tasks</h3>
-                    <h3 className='tab' onClick={() => setTab('completed_tasks')}>Completed</h3>
+                    <h3 className={tab === 'all_tasks' ? 'selected-tab' : 'tab'} onClick={() => setTab('all_tasks')}>All Tasks</h3>
+                    <h3 className={tab === 'my_tasks' ? 'selected-tab' : 'tab'} onClick={() => setTab('my_tasks')}>My Tasks</h3>
+                    <h3 className={tab === 'completed_tasks' ? 'selected-tab' : 'tab'} onClick={() => setTab('completed_tasks')}>Completed</h3>
                 </div>
                 <div className='taskHub'>
                     {
