@@ -77,7 +77,7 @@ function Company(args) {
             <Button style={{
                 backgroundColor: 'rgb(175, 204, 54)',
                 borderColor: 'rgb(175, 204, 54)'
-            }} className='create-company' onClick={() => toggleModalCompany()}>Create Company</Button>
+            }} className={user.company_id ? 'hide-company-button' : 'create-company'} onClick={() => toggleModalCompany()}>Create Company</Button>
 
             {/* COMPANY MODAL */}
 

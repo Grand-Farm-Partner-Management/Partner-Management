@@ -263,6 +263,10 @@ input {
   margin: 1em;
 }
 
+.hide-company-button {
+  display: none;
+}
+
 .companyName {
   font-size: 3em;
   margin: 1em .3em 1em 1em;
