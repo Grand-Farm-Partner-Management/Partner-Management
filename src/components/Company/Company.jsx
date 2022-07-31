@@ -46,7 +46,7 @@ function Company(args) {
     const [link, setLink] = useState('');
     const [linkTitle, setLinkTitle] = useState('');
 
-    const addCompany = event => {
+    const addCompany = (event) => {
         event.preventDefault();
         dispatch({
             type: 'ADD_COMPANY',
@@ -96,12 +96,11 @@ function Company(args) {
                         backgroundColor: 'rgb(175, 204, 54)',
                         borderColor: 'rgb(175, 204, 54)'
                     }} onClick={() => {
-                        editCompany({
-                            companyName: companyName,
-                            companyAbout: companyAbout
+                        addCompany({
+                            companyNameCreate: companyNameCreate,
+                            companyAboutCreate: companyAboutCreate
                         });
-                        dispatch({ type: 'FETCH_COMPANY', payload: user.company_id })
-                        toggle2();
+                        toggleModalCompany();
                     }
                     }>Confirm</Button>
                 </ModalFooter>
@@ -112,37 +111,6 @@ function Company(args) {
                 <h1 className='companyName'>{members.length > 0 ? members[0].company_name : ''}</h1>
                 <img className='dots' src={Dots} onClick={() => toggle2()} />
             </div>
-            <h1 onClick={() => {
-                toggle()
-                setIsOpen2(false);
-                setIsOpenDoc();
-            }} className='links'>Members</h1>
-            <section>
-                <h1>Create a Company</h1>
-                <Form inline onSubmit={addCompany}>
-                    <FormGroup>
-                        <Label for="company name"
-                            hidden
-                        >
-                            Company name
-                        </Label>
-                        <input type="text" value={companyNameCreate} onChange={(event) => setCompanyNameCreate(event.target.value)}
-                            placeholder='company name' required="" />
-                    </FormGroup>
-                    {' '}
-                    <FormGroup>
-                        <Label for="about company"
-                            hidden
-                        >
-                            About company
-                        </Label>
-                        <input type="text" value={companyAboutCreate} onChange={(event) => setCompanyAboutCreate(event.target.value)}
-                            placeholder='about the company' required="" />
-                    </FormGroup>
-                    {' '}
-                    <Button>Submit</Button>
-                </Form>
-            </section>
             { company.company_name && (<div className="company-name-and-dots">
                 <h1 className='companyName'>{company.company_name}</h1>
                 {/* <h1 className='companyName'>{members.length > 0 ? members[0].about : ''}</h1> */}

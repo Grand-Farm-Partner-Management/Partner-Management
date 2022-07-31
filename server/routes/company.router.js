@@ -85,7 +85,7 @@ router.get('/all', (req, res) => {
 /**
  * GET route for showing one company
  */
- router.get('/:id', (req, res) => {
+ router.get('/singleCompany/:id', (req, res) => {
    const companyId = req.params.id;
   const queryText = `SELECT * FROM "company" WHERE id = $1;`
   pool.query(queryText, [companyId])

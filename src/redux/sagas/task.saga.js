@@ -9,6 +9,7 @@ function* taskSaga(){
     yield takeLatest('DELETE_TASK', deleteTask);
     yield takeLatest('IMPORTANT_TASK', importantTask);
     yield takeLatest('ASSIGN_TASK', assignTask);
+    yield takeLatest('EDIT_TASK', editTask);
 }
 
 // saga for post of new tasks
@@ -86,6 +87,17 @@ function* deleteTask(action){
     console.log('in delete task saga');
     try{
         yield axios.delete(`/api/task/${action.payload.taskId}`)
+        yield put({ type: 'FETCH_PROJECT_DETAILS', payload: action.payload.projectId })
+    }catch{
+        console.log('error in delete task saga.');
+    }
+}
+
+function* editTask(action){
+    console.log('in edit task saga');
+    console.log('ACTION PAYLOAD', action.payload)
+    try{
+        yield axios.put(`/api/task/edit/${action.payload.taskId}`, action.payload)
         yield put({ type: 'FETCH_PROJECT_DETAILS', payload: action.payload.projectId })
     }catch{
         console.log('error in delete task saga.');
