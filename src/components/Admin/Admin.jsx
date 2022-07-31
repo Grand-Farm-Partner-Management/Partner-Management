@@ -17,7 +17,7 @@ function AdminPage(args) {
     const dispatch = useDispatch();
     const unassigned = useSelector((store) => store.unassigned);
     const newPartners = useSelector((store) => store.newPartner);
-    const allCompanies = useSelector((store) => store.company);
+    const allCompanies = useSelector((store) => store.allCompany);
     const allUsers = useSelector((store) => store.allUser);
 
     const [isOpen1, setIsOpen1] = useState(false);
@@ -33,30 +33,29 @@ function AdminPage(args) {
     console.log('unassigned are:', unassigned);
     console.log('new partners are: ', newPartners);
     console.log("all users are: ", allUsers);
+    console.log("all companies: ", allCompanies);
 
     const fetchUnassigned = () => {
         dispatch({ type: "FETCH_UNASSIGNED" });
     }
 
-    const fetchNewPartner = async () => {
-        await axios.get(`/api/company/newPartner`)
-            .then(res => {
-                dispatch({ type: `NEW_PARTNER`, payload: res.data });
-            })
+    const fetchNewPartner =() => {
+       dispatch({type: "FETCH_NEW_PARTNER"})
     }
 
     const fetchAllCompanies = () => {
-        dispatch({ type: "FETCH_ALL_COMPANIES" });
+        dispatch({ type: "FETCH_ALL_COMPANIES" });//
     }
 
     const fetchAllEmployees = () => {
-        dispatch({ type: "FETCH_ALL_USER" });
+        dispatch({ type: "FETCH_ALL_USER" }); //
     }
 
     if (unassigned.company_id === null || newPartners.partner_level === null || allCompanies === null || allUsers === null) {
         console.log(unassigned, newPartners);
         return;
     }
+
     useEffect(() => {
         fetchUnassigned();
         fetchNewPartner();

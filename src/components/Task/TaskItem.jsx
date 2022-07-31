@@ -98,7 +98,7 @@ function TaskItem(props, { direction, ...args }) {
 
     useEffect(() => {
         dispatch({ type: 'FETCH_MEMBERS', payload: user.company_id });
-        
+
     }, [])
 
     return (

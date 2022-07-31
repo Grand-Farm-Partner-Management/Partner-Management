@@ -5,7 +5,7 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 're
 import swal from 'sweetalert';
 
 function AllEmployee({user}, ...args){
-    console.log("all users: ", user);
+    //console.log("all users: ", user);
     const [newCompId, setNewCompId] = useState(0)
     const [company, setCompany] = useState(user.company_name);
     const companies = useSelector((store) => store.company)

@@ -43,7 +43,7 @@ router.post('/' ,(req, res) => {
 
     })
     .catch((err) => {
-      console.log('User registration failed: ', err);
+      console.log('error in adding new company: ', err);
       res.sendStatus(500);
     });
 });
@@ -69,6 +69,19 @@ router.get('/', (req, res) => {
     });
 });
 
+//for showing all companies
+router.get('/all', (req, res) => {
+  const queryText = `SELECT * FROM "company" order by id asc;`
+  pool.query(queryText)
+    .then(result => {
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log('errror in getting all companies: ', err);
+      res.sendStatus(500);
+    });
+});
+
 /**
  * GET route for showing one company
  */
@@ -80,7 +93,7 @@ router.get('/', (req, res) => {
       res.send(result.rows);
     })
     .catch((err) => {
-      console.log('User registration failed: ', err);
+      console.log('error getting specific company: ', err);
       res.sendStatus(500);
     });
 });
@@ -97,7 +110,7 @@ router.get('/members/:id', (req, res) => {
       res.send(result.rows);
     })
     .catch((err) => {
-      console.log('User registration failed: ', err);
+      console.log('error for all employees in a company: ', err);
       res.sendStatus(500);
     });
 });
@@ -117,7 +130,8 @@ router.get('/newPartner', (req, res) => {
 
 //to get people who don't have a company
 router.get('/unassigned', (req, res) => {
-  const query = `select "user".id, "user".first_name, "user".last_name, "user".email, "user".company_id from "user" where company_id is null order by id;`
+  const query = `select "user".id, "user".first_name, "user".last_name, "user".email, "user".company_id 
+  from "user" where company_id is null order by id;`
 
   pool.query(query)
     .then(result => {
