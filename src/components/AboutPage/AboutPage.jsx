@@ -85,10 +85,6 @@ function AboutPage(args) {
           }>Confirm</Button>
         </ModalFooter>
       </Modal>
-      <div className="profile-photo">
-        <img className='blank' src={Blank}></img>
-        <Button className='change-pfp'>Change Profile Picture</Button>
-      </div>
     </div>
   );
 }

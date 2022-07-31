@@ -471,6 +471,10 @@ input {
   opacity: 60%;
 }
 
+.tab:hover {
+  cursor: pointer;
+}
+
 .title-and-dots {
   display: flex;
   justify-content: center;

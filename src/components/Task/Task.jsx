@@ -21,12 +21,14 @@ function Task({ direction, ...args }) {
     const params = useParams();
 
     const user = useSelector((store) => store.user);
-    const tasks = useSelector((store) => store.tasks);
     const companyUser = useSelector((store) => store.members);
 
+    // Tabs for changing task list
+    const [tab, setTab] = useState('all_tasks')
 
     // All PROJECTS
     const projectDetails = useSelector((store) => store.projectDetails);
+
     // All Tasks for a project
 
     let projectId = params.projectId;
@@ -112,6 +114,7 @@ function Task({ direction, ...args }) {
     useEffect(() => {
         dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
         dispatch({ type: "FETCH_ALL_USER" });
+        console.log('CURRENT TASKS', currentProject.tasks);
         console.log('CURRENT PROJECT', currentProject);
     }, [])
 
@@ -264,7 +267,7 @@ function Task({ direction, ...args }) {
                                 setProjectTitle('')
                                 toggle();
                             } else {
-                                alert ('Please enter a title, description, and date')
+                                alert('Please enter a title, description, and date')
                             }
                         }
                         }>Create</Button>
@@ -281,17 +284,30 @@ function Task({ direction, ...args }) {
                     {calculateProgression(currentProject.tasks)}%
                 </Progress>
                 <div className="sort-tabs">
-                    <h3 className='tab'>All Tasks</h3>
-                    <h3 className='tab'>My Tasks</h3>
-                    <h3 className='tab'>Completed</h3>
+                    <h3 className='tab' onClick={() => setTab('all_tasks')}>All Tasks</h3>
+                    <h3 className='tab' onClick={() => setTab('my_tasks')}>My Tasks</h3>
+                    <h3 className='tab' onClick={() => setTab('completed_tasks')}>Completed</h3>
                 </div>
                 <div className='taskHub'>
                     {
-                        currentProject.tasks.length === 0 ? <h1 className='no-tasks'>No Tasks Yet</h1> : currentProject.tasks.map((task) => {
-                            return (
-                                <TaskItem task={task} />
-                            )
-                        })
+                        currentProject.tasks.length === 0 ? <h1 className='no-tasks'>No Tasks Yet</h1>
+                            : currentProject.tasks.map((task) => {
+                                if (tab === 'all_tasks') {
+                                    return (
+                                        <TaskItem task={task} />
+                                    )
+                                }
+                                if (task.completed_by && tab === 'completed_tasks') {
+                                    return (
+                                        <TaskItem task={task} />
+                                    )
+                                }
+                                if (task.assigned_user == user.id && tab === 'my_tasks') {
+                                    return (
+                                        <TaskItem task={task} />
+                                    )
+                                }
+                            })
                     }
                 </div>
                 {/* start assign project Modal */}

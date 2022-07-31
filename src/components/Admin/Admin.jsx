@@ -30,17 +30,13 @@ function AdminPage(args) {
     const toggle3 = () => setIsOpen3(!isOpen3);
     const toggle4 = () => setIsOpen4(!isOpen4);
 
-    console.log('unassigned are:', unassigned);
-    console.log('new partners are: ', newPartners);
-    console.log("all users are: ", allUsers);
-    console.log("all companies: ", allCompanies);
-
     const fetchUnassigned = () => {
         dispatch({ type: "FETCH_UNASSIGNED" });
     }
 
     const fetchNewPartner =() => {
        dispatch({type: "FETCH_NEW_PARTNER"})
+       console.log('NEW PARTNER', newPartners)
     }
 
     const fetchAllCompanies = () => {

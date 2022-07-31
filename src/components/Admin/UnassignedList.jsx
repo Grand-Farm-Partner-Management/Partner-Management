@@ -10,10 +10,10 @@ function UnassignedList({ unassign }, ...args) {
     const [company, setCompany] = useState("Companies");
     const [newCompId, setNewCompId] = useState(0)
     const companies = useSelector((store) => store.company)
-    console.log('----', companies);
+    const user = useSelector((store) => store.user)
 
     const fetchCompany = () => {
-        dispatch({ type: 'FETCH_COMPANY' })
+        dispatch({ type: 'FETCH_COMPANY', payload: user.company_id })
     }
 
     useEffect(() => {
@@ -57,7 +57,6 @@ function UnassignedList({ unassign }, ...args) {
                     </DropdownToggle>
                     <DropdownMenu {...args}>
                         {companies.map((comp) => {
-                            //console.log('in map', comp.company_name);
                             return (
                                 <DropdownItem key={comp.id} onClick={() => {
                                     setCompany(comp.company_name);

@@ -5,7 +5,6 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 're
 import swal from 'sweetalert';
 
 function AllCompanies({ company }, ...args) {
-    console.log("all companies, company: ", company);
 
     const dispatch = useDispatch();
 
