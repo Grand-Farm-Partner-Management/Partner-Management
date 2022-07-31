@@ -44,7 +44,7 @@ function AdminPage(args) {
     }
 
     const fetchAllCompanies = () => {
-        dispatch({ type: "FETCH_ALL_COMPANIES" });
+        dispatch({ type: "FETCH_ALL_COMPANIES" });//
     }
 
     const fetchAllEmployees = () => {
@@ -55,6 +55,7 @@ function AdminPage(args) {
         console.log(unassigned, newPartners);
         return;
     }
+
     useEffect(() => {
         fetchUnassigned();
         fetchNewPartner();

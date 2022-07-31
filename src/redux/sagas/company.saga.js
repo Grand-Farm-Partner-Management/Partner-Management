@@ -20,7 +20,7 @@ function* fetchAllCompanies(action) {
     console.log('in fetch company saga');
     try {
         const response = yield axios.get(`/api/company/all`)
-        console.log('response in fetch company is:', response);
+        console.log('response in fetch all company is:', response);
         yield put({ type: 'SET_ALL_COMPANY', payload: response.data });//reducer needs to be made
     } catch {
         console.log('error in fetch company saga.');
@@ -149,7 +149,7 @@ function* fetchNewPartner(action){
     console.log("in fetch new partner");
     try {
         const response = yield axios.get(`/api/company/newPartner`)
-        console.log(response.data);
+        console.log("{{{{ response in fetch new partner is: ",response.data);
         yield put({ type: `NEW_PARTNERS`, payload: response.data });
     } catch {
         console.log('error fetch unassigned saga.');

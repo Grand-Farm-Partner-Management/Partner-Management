@@ -43,7 +43,7 @@ router.post('/' ,(req, res) => {
 
     })
     .catch((err) => {
-      console.log('User registration failed: ', err);
+      console.log('error in adding new company: ', err);
       res.sendStatus(500);
     });
 });
@@ -72,12 +72,12 @@ router.get('/', (req, res) => {
 //for showing all companies
 router.get('/all', (req, res) => {
   const queryText = `SELECT * FROM "company" order by id asc;`
-  pool.query(queryText, [req.user.id] )
+  pool.query(queryText)
     .then(result => {
-      res.send(result.rows[0]);
+      res.send(result.rows);
     })
     .catch((err) => {
-      console.log('User registration failed: ', err);
+      console.log('errror in getting all companies: ', err);
       res.sendStatus(500);
     });
 });
@@ -93,7 +93,7 @@ router.get('/all', (req, res) => {
       res.send(result.rows);
     })
     .catch((err) => {
-      console.log('User registration failed: ', err);
+      console.log('error getting specific company: ', err);
       res.sendStatus(500);
     });
 });
@@ -110,7 +110,7 @@ router.get('/members/:id', (req, res) => {
       res.send(result.rows);
     })
     .catch((err) => {
-      console.log('User registration failed: ', err);
+      console.log('error for all employees in a company: ', err);
       res.sendStatus(500);
     });
 });
