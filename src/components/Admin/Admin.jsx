@@ -34,9 +34,9 @@ function AdminPage(args) {
         dispatch({ type: "FETCH_UNASSIGNED" });
     }
 
-    const fetchNewPartner =() => {
-       dispatch({type: "FETCH_NEW_PARTNER"})
-       console.log('NEW PARTNER', newPartners)
+    const fetchNewPartner = () => {
+        dispatch({ type: "FETCH_NEW_PARTNER" })
+        console.log('NEW PARTNER', newPartners)
     }
 
     const fetchAllCompanies = () => {
@@ -90,10 +90,12 @@ function AdminPage(args) {
                         <th> Delete </th>
                     </tr>
                     {
-                        newPartners.map((newPartner) => {
-                            return (
-                                <NewPartnerList newPartner={newPartner} />
-                            )
+                        allCompanies.map((newPartner) => {
+                            if (newPartner.partner_level === 101) {
+                                return (
+                                    <NewPartnerList newPartner={newPartner} />
+                                )
+                            }
                         })
                     }
                 </table>

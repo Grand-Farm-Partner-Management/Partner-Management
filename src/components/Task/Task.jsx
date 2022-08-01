@@ -188,7 +188,7 @@ function Task({ direction, ...args }) {
 
                             {/* end edit modal */}
 
-                            <DropdownItem onClick={() => assignProjectToggle}>Add Members</DropdownItem>
+                            {/* <DropdownItem onClick={() => assignProjectToggle()}>Add Members</DropdownItem> */}
 
 
                             <DropdownItem divider />
@@ -393,9 +393,9 @@ function Task({ direction, ...args }) {
                                     }
                                     }>Confirm</Button>
                                 </ModalFooter>
-                            </Modal>
+                            </Modal> */}
 
-                            end of assign project modal */}
+                            {/* end of assign project modal */}
 
             </div>
         </div>
