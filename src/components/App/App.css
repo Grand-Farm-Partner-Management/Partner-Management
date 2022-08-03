@@ -470,12 +470,14 @@ input {
 .selected-tab {
   color: white;
   padding: 1em 2em 1em 2em;
+  transition: color 200ms linear;
 }
 
 .tab {
   padding: 1em 2em 1em 2em;
   height: 100%;
   opacity: 30%;
+  transition: color 200ms linear;
 }
 
 .assigned {
