@@ -24,7 +24,7 @@ router.post('/' ,(req, res) => {
       console.log("should be id",response)
       const message = {
         to: "kamokamophilippe13@gmail.com",
-        from: "philippebaraka13@gmail.com",
+        from: "kamophilippephilippe13@gmail.com",
         subject:"dj",
         text: "dd",
         html:"<strong>new company was created.</strong>"
@@ -62,6 +62,22 @@ router.get('/', (req, res) => {
   pool.query(queryText, [req.user.id] )
     .then(result => {
       res.send(result.rows[0]);
+    })
+    .catch((err) => {
+      console.log('User registration failed: ', err);
+      res.sendStatus(500);
+    });
+});
+
+/**
+ * GET route for showing one company
+ */
+ router.get('/:id', (req, res) => {
+   const companyId = req.params.id;
+  const queryText = `SELECT * FROM "company" WHERE id = $1;`
+  pool.query(queryText, [companyId])
+    .then(result => {
+      res.send(result.rows);
     })
     .catch((err) => {
       console.log('User registration failed: ', err);
