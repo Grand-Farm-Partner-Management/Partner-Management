@@ -46,7 +46,7 @@ function sendReminderEmails() {
     const queryText1 = `select project.id, project.title, project.description, project.due_time, project.progression, project.completed, project.completed_time, "user".id, "user".first_name, "user".email from project
     join project_employee on project.id = project_employee.project_id
     join "user" on project_employee.employee_id = "user".id
-    where DATE_TRUNC('DAY', project.due_time) = CURRENT_DATE+interval '26days';`
+    where DATE_TRUNC('DAY', project.due_time) = CURRENT_DATE+interval '29days';`
 
     const queryText2 = `select project.id, project.title, project.description, project.due_time, project.progression, project.completed, project.completed_time, "user".id, "user".first_name, "user".email from project
     join project_employee on project.id = project_employee.project_id
@@ -56,7 +56,7 @@ function sendReminderEmails() {
     const queryText3 = `select project.id, project.title, project.description, project.due_time, project.progression, project.completed, project.completed_time, "user".id, "user".first_name, "user".email from project
     join project_employee on project.id = project_employee.project_id
     join "user" on project_employee.employee_id = "user".id
-    where DATE_TRUNC('DAY', project.due_time) = CURRENT_DATE;`
+    where DATE_TRUNC('DAY', project.due_time) <= CURRENT_DATE ;`
     pool.query(queryText1).then(result => {
 
         // console.log("result", result.rows);
@@ -74,10 +74,13 @@ function sendReminderEmails() {
 
                 const message = {
                     to: [emails.email],
-                    from: "philippebaraka13@gmail.com",
-                    subject: title,
+                    from: "kamophilippephilippe13@gmail.com",
+                    subject: "You have a month left for your project" ,first_name,
                     text: description,
-                    html: "<strong>You have a month left in your project.</strong>",
+                    html:"<strong>Hi</strong>",
+                    first_name:first_name, 
+                    // html2: "<strong>You have a month left in your project title:</strong>",
+                    // html3: title,
                 };
 
                 sendGridMail.send(message)
@@ -107,13 +110,15 @@ function sendReminderEmails() {
                 console.log("the project is completed")
             } else {
 
-
                 const message = {
                     to: [emails.email],
-                    from: "philippebaraka13@gmail.com",
+                    from: "kamophilippephilippe13@gmail.com",
                     subject: title,
                     text: description,
-                    html: "<strong>You have 3 months left in your project.</strong>",
+                    html:"<strong>Hi",
+                    html:first_name, 
+                    html: "<strong>You have 3 months left in your project title:</strong>",
+                    html: title,
                 };
 
                 sendGridMail.send(message)
@@ -144,10 +149,15 @@ function sendReminderEmails() {
 
                 const message = {
                     to: [emails.email],
-                    from: "philippebaraka13@gmail.com",
+                    from: "kamophilippephilippe13@gmail.com",
                     subject: title,
                     text: description,
-                    html: "<strong> Your project is expiring today.</strong>",
+                    html:"<strong>Hi",
+                    html:first_name, 
+                    html: "<strong> Your project title:</strong>",
+                    html: title,
+                    html: "<strong>is due today at",
+                    html: due_date,
                 };
 
                 sendGridMail.send(message)

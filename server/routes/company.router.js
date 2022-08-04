@@ -12,7 +12,7 @@ router.post('/' ,(req, res) => {
   const userId = req.user.id
   const about = req.body.companyAboutCreate;
  
-  console.log("cnjasacasbjlc", req.body);
+  console.log("user", req.body);
   const query1 = `INSERT INTO "company" (company_name, partner_level, about)
     VALUES ($1, $2, $3) RETURNING id`;
   const query2 = `UPDATE "user" SET company_id = $1
@@ -24,9 +24,9 @@ router.post('/' ,(req, res) => {
       console.log("should be id",response)
       const message = {
         to: "kamokamophilippe13@gmail.com",
-        from: "philippebaraka13@gmail.com",
-        subject:"dj",
-        text: "dd",
+        from: "kamophilippephilippe13@gmail.com",
+        subject:"company created",
+        text: "company created",
         html:"<strong>new company was created.</strong>"
        
       };
