@@ -38,7 +38,7 @@ app.use('/api/document', documentRouter);
 
 // Serve static files
 app.use(express.static('build'));
-// run every minute (* * * * *), at 9am (0 9 * * *)
+// run every minute (* * * * *), at 9am (0 9 * * *) for email
 cron.schedule('0 9 * * *', () => {
   sendReminderEmails();
 });

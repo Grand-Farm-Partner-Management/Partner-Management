@@ -5,7 +5,7 @@ const sendGridMail = require("@sendgrid/mail");
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 function sendReminderEmails() {
-
+//send an email when the project is completed
     console.log('running scheduled task: reminder email');
     const queryText = `select project.id, project.title, project.description, project.due_time, project.progression, project.completed, project.completed_time, "user".id, "user".first_name, "user".email from project
     join project_employee on project.id = project_employee.project_id
@@ -25,7 +25,7 @@ function sendReminderEmails() {
 
             const message = {
                 to: [emails.email],
-                from: "philippebaraka13@gmail.com",
+                from: "kamophilippephilippe13@gmail.com",
                 subject: title,
                 text: description,
                 html: "<strong>Your project is completed.</strong>",
@@ -60,7 +60,7 @@ function sendReminderEmails() {
     pool.query(queryText1).then(result => {
 
         // console.log("result", result.rows);
-
+//if the project is not compteted send an email 
         for (let emails of result.rows) {
             console.log(emails.email);
             let title = emails.title;
@@ -75,12 +75,11 @@ function sendReminderEmails() {
                 const message = {
                     to: [emails.email],
                     from: "kamophilippephilippe13@gmail.com",
-                    subject: "You have a month left for your project" ,first_name,
+                    subject: "You have a month left for your project",
                     text: description,
-                    html:"<strong>Hi</strong>",
-                    first_name:first_name, 
-                    // html2: "<strong>You have a month left in your project title:</strong>",
-                    // html3: title,
+                    html:"<strong>Hi, your project has a month left from the duedate</strong>",
+                    
+                    
                 };
 
                 sendGridMail.send(message)
@@ -115,10 +114,8 @@ function sendReminderEmails() {
                     from: "kamophilippephilippe13@gmail.com",
                     subject: title,
                     text: description,
-                    html:"<strong>Hi",
-                    html:first_name, 
                     html: "<strong>You have 3 months left in your project title:</strong>",
-                    html: title,
+                   
                 };
 
                 sendGridMail.send(message)
@@ -152,12 +149,7 @@ function sendReminderEmails() {
                     from: "kamophilippephilippe13@gmail.com",
                     subject: title,
                     text: description,
-                    html:"<strong>Hi",
-                    html:first_name, 
                     html: "<strong> Your project title:</strong>",
-                    html: title,
-                    html: "<strong>is due today at",
-                    html: due_date,
                 };
 
                 sendGridMail.send(message)
