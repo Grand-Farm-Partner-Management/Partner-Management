@@ -21,10 +21,14 @@ function Task({ direction, ...args }) {
     const params = useParams();
 
     const user = useSelector((store) => store.user);
-    const tasks = useSelector((store) => store.tasks);
+    const companyUser = useSelector((store) => store.members);
+
+    // Tabs for changing task list
+    const [tab, setTab] = useState('all_tasks')
 
     // All PROJECTS
     const projectDetails = useSelector((store) => store.projectDetails);
+
     // All Tasks for a project
 
     let projectId = params.projectId;
@@ -37,6 +41,9 @@ function Task({ direction, ...args }) {
     // Edit Modal
     const [modal2, setModal2] = useState(false);
     const toggle2 = () => setModal2(!modal2);
+    // assign user to project
+    const [assignProjectModal, setAssignProjectModal] = useState(false);
+    const assignProjectToggle = () => setAssignProjectModal(!assignProjectModal);
 
     // State for drop down
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -46,22 +53,28 @@ function Task({ direction, ...args }) {
     const [dropdown2Open, setDropdown2Open] = useState(false);
     const toggleDropdown2 = () => setDropdown2Open(prevState => !prevState);
 
+    // State for Assign Project drop down
+    const [projectDropdownOpen, setProjectDropdownOpen] = useState(false);
+    const toggleProjectDropdown = () => setProjectDropdownOpen(prevState => !prevState);
+
     // State for editing a project
     const [projectTitle, setProjectTitle] = useState('');
     const [projectDescription, setProjectDescription] = useState('');
     const [projectDueDate, setProjectDueDate] = useState('');
+    const [projectAssign, setProjectAssign] = useState("");
+    const [projectAssignId, setProjectAssignId] = useState(0)
     const [date, setDate] = useState(new Date());
 
     // State for progression
     const [progression, setProgression] = useState(0);
 
     const deleteProject = async () => {
-        dispatch({ type: 'DELETE_PROJECT', payload: projectId})
+        dispatch({ type: 'DELETE_PROJECT', payload: projectId })
         history.push('/projects')
     }
 
     const editProject = async (body) => {
-        dispatch({ type: 'UPDATE_PROJECT', payload: body})
+        dispatch({ type: 'UPDATE_PROJECT', payload: body })
         toggle2();
     }
 
@@ -91,16 +104,17 @@ function Task({ direction, ...args }) {
         } else {
             for (let task of tasks) {
                 if (task.completed_by) {
-                    completed ++;
+                    completed++;
                 }
             }
             return ((completed / totalTasks) * 100).toFixed(0);
         }
     }
 
-    useEffect( () => {
+    useEffect(() => {
         dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
         dispatch({ type: "FETCH_ALL_USER" });
+        console.log('CURRENT TASKS', currentProject.tasks);
         console.log('CURRENT PROJECT', currentProject);
     }, [])
 
@@ -174,7 +188,9 @@ function Task({ direction, ...args }) {
 
                             {/* end edit modal */}
 
-                            <DropdownItem onClick={() => console.log('add')}>Add Members</DropdownItem>
+                            {/* <DropdownItem onClick={() => assignProjectToggle()}>Add Members</DropdownItem> */}
+
+
                             <DropdownItem divider />
                             <DropdownItem onClick={() => {
                                 swal({
@@ -251,7 +267,7 @@ function Task({ direction, ...args }) {
                                 setProjectTitle('')
                                 toggle();
                             } else {
-                                alert ('Please enter a title, description, and date')
+                                alert('Please enter a title, description, and date')
                             }
                         }
                         }>Create</Button>
@@ -268,19 +284,119 @@ function Task({ direction, ...args }) {
                     {calculateProgression(currentProject.tasks)}%
                 </Progress>
                 <div className="sort-tabs">
-                    <h3 className='tab'>All Tasks</h3>
-                    <h3 className='tab'>My Tasks</h3>
-                    <h3 className='tab'>Completed</h3>
+                    <h3 className={tab === 'all_tasks' ? 'selected-tab' : 'tab'} onClick={() => setTab('all_tasks')}>All Tasks</h3>
+                    <h3 className={tab === 'my_tasks' ? 'selected-tab' : 'tab'} onClick={() => setTab('my_tasks')}>My Tasks</h3>
+                    <h3 className={tab === 'completed_tasks' ? 'selected-tab' : 'tab'} onClick={() => setTab('completed_tasks')}>Completed</h3>
                 </div>
                 <div className='taskHub'>
                     {
-                        currentProject.tasks.length === 0 ? <h1 className='no-tasks'>No Tasks Yet</h1> : currentProject.tasks.map((task) => {
-                            return (
-                                <TaskItem task={task} />
-                            )
-                        })
+                        currentProject.tasks.length === 0 ? <h1 className='no-tasks'>No Tasks Yet</h1>
+                            : currentProject.tasks.map((task) => {
+                                if (tab === 'all_tasks') {
+                                    return (
+                                        <TaskItem task={task} />
+                                    )
+                                }
+                                if (task.completed_by && tab === 'completed_tasks') {
+                                    return (
+                                        <TaskItem task={task} />
+                                    )
+                                }
+                                if (task.assigned_user == user.id && tab === 'my_tasks') {
+                                    return (
+                                        <TaskItem task={task} />
+                                    )
+                                }
+                            })
                     }
                 </div>
+                {/* start assign project Modal */}
+
+                {/* start assign modal */}
+
+                <Modal isOpen={assignProjectModal} toggle={assignProjectToggle} {...args}>
+                    <ModalHeader toggle={assignProjectToggle}>Assign to User</ModalHeader>
+                    <ModalBody>
+                        <label htmlFor='project-title'>Assign User to Task:</label>
+
+                        {/* start dropdown */}
+
+                        <Dropdown isOpen={projectDropdownOpen} toggle={toggleProjectDropdown} >
+                            <DropdownToggle caret color='primary'>
+                                {projectAssign}
+                            </DropdownToggle>
+                            <DropdownMenu {...args}>
+                                {companyUser.map((member) => {
+                                    return (
+                                        <DropdownItem key={member.id} onClick={() => {
+                                            setAssignedId(member.id);
+                                            setAssignedName(member.first_name + " " + member.last_name)
+                                        }}>
+                                            {member.first_name} {member.last_name}
+                                        </DropdownItem>
+                                    )
+                                })}
+                            </DropdownMenu>
+                        </Dropdown>
+
+                        {/* end dropdown */}
+
+                        <br />
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button style={{
+                            backgroundColor: 'rgb(175, 204, 54)',
+                            borderColor: 'rgb(175, 204, 54)'
+                        }} onClick={() => {
+                            assignTask({ projectId, userId: projectAssignId });
+                            AssignToggle();
+                        }
+                        }>Confirm</Button>
+                    </ModalFooter>
+                </Modal>
+
+                {/* end assign modal */}
+
+
+                {/* <Modal isOpen={assignProjectModal} toggle={assignProjectToggle} {...args}>
+                                <ModalHeader toggle={assignProjectToggle}>Assign User</ModalHeader>
+                                <ModalBody>
+                                    <label htmlFor='project-title'>Assign User to Task:</label>
+
+                                    <Dropdown isOpen={projectDropdownOpen} toggle={toggleProjectDropdown}>
+                                        <DropdownToggle caret color='primary'>
+                                             {projectAssign} 
+                                            something
+                                        </DropdownToggle>
+                                        <DropdownMenu {...args}>
+                                            {companyUser.map((member) => {
+                                                return (
+                                                    <DropdownItem key={member.id} onClick={() => {
+                                                        setProjectAssignId(member.id);
+                                                        setProjectAssign(member.first_name + " " + member.last_name)
+                                                    }}>
+                                                        {member.first_name} {member.last_name}
+                                                    </DropdownItem>
+                                                )
+                                            })}
+                                        </DropdownMenu>
+                                    </Dropdown>
+
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button style={{
+                                        backgroundColor: 'rgb(175, 204, 54)',
+                                        borderColor: 'rgb(175, 204, 54)'
+                                    }} onClick={() => {
+                                        assignTask({ projectId: projectId, userId: projectAssignId });
+                                        AssignToggle();
+                                    }
+                                    }>Confirm</Button>
+                                </ModalFooter>
+                            </Modal> */}
+
+                            {/* end of assign project modal */}
+
             </div>
         </div>
     )

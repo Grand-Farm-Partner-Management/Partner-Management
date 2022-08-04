@@ -101,6 +101,21 @@ router.put('/assign/:id', (req, res) => {
     })
 })
 
+router.put('/edit/:id', (req, res) => {
+  const title = req.body.taskTitle;
+  const description = req.body.taskDescription;
+  const dueTime = req.body.taskDueTime
+  const taskId = req.params.id
+  const queryText = `UPDATE "tasks" SET ("title", "description", "due_time") = ($1, $2, $3) WHERE id = $4;`
+  pool.query(queryText, [title, description, dueTime, taskId])
+    .then(result => {
+      res.sendStatus(204)
+    }).catch(error => {
+      res.sendStatus(503)
+      console.log(error)
+    })
+})
+
 router.put('/uncomplete/:id', (req, res) => {
   const queryText = `UPDATE tasks SET "completed_by" = null WHERE "id" = $1;`
   pool.query(queryText, [req.params.id])

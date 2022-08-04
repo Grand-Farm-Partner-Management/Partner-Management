@@ -9,6 +9,7 @@ import company from './company.reducer';
 import allUser from './allUser.reducer';
 import projectDetails from './projectDetail.reducer';
 import documents from './document.reducer';
+import allCompany from './allCompanies.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
   company,
   allUser,
   projectDetails,
-  documents
+  documents,
+  allCompany,
 });
 
 export default rootReducer;

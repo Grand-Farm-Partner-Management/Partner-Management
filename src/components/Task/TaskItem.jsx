@@ -28,17 +28,16 @@ function TaskItem(props, { direction, ...args }) {
 
     let projectId = params.projectId;
     let task = props.task;
+    let taskId = task.id;
     let taskUser = "no one yet"
 
     if (task.assigned_user === null) {
     } else {
         for (let member of companyUser) {
-            console.log("member:", member, task.assigned_user);
             if (member.id == task.assigned_user) {
                 taskUser = `${member.first_name} ${member.last_name}`;
             }
         }
-        console.log("assigned is: ", taskUser, task.id);
     }
 
     //assign user to task
@@ -47,6 +46,20 @@ function TaskItem(props, { direction, ...args }) {
         setModal1(!modal1)
         toggleDropdown2();
     };
+
+    // Edit Task Modal
+    const [modalEdit, setModalEdit] = useState(false);
+    const toggleModalEdit = () => {
+        setModalEdit(!modal1)
+    };
+
+    // Date
+    const [date, setDate] = useState(new Date());
+
+    // Local state for editing a task
+    const [taskTitle, setTaskTitle] = useState('');
+    const [taskDescription, setTaskDescription] = useState('');
+    const [taskDueTime, setTaskDueTime] = useState('');
 
     // State for drop down
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -98,7 +111,8 @@ function TaskItem(props, { direction, ...args }) {
 
     useEffect(() => {
         dispatch({ type: 'FETCH_MEMBERS', payload: user.company_id });
-        
+        console.log(taskId)
+
     }, [])
 
     return (
@@ -119,10 +133,10 @@ function TaskItem(props, { direction, ...args }) {
                             </DropdownToggle>
                             <DropdownMenu {...args}>
                                 <DropdownItem header>Task Settings</DropdownItem>
-                                <DropdownItem toggle = 'true' onClick={() => {
+                                <DropdownItem toggle='true' onClick={() => {
                                     toggle1();
-                                    }}>Assign</DropdownItem>
-                                <DropdownItem onClick={() => console.log('edit')}>Edit</DropdownItem>
+                                }}>Assign</DropdownItem>
+                                <DropdownItem onClick={() => toggleModalEdit()}>Edit</DropdownItem>
                                 <DropdownItem onClick={() => dispatch({ type: 'IMPORTANT_TASK', payload: { taskId: task.id, projectId: projectId } })}>Mark as important</DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem onClick={() => {
@@ -151,53 +165,101 @@ function TaskItem(props, { direction, ...args }) {
                         </Dropdown>
                     </div>
                 </Label>
-                                                {/* start assign modal */}
+                
+                {/* start assign modal */}
 
-                                                <Modal isOpen={modal1} toggle={() => toggle1()} {...args}>
-                                    <ModalHeader>Assign to User</ModalHeader>
-                                    <ModalBody>
-                                        <label htmlFor='project-title'>Assign User to Task:</label>
+                <Modal isOpen={modal1} toggle={() => toggle1()} {...args}>
+                    <ModalHeader>Assign to User</ModalHeader>
+                    <ModalBody>
+                        <label htmlFor='project-title'>Assign User to Task:</label>
 
-                                        {/* start dropdown */}
+                        {/* start dropdown */}
 
-                                        <Dropdown isOpen={dropdown3Open} toggle={toggleDropdown3} >
-                                            <DropdownToggle caret color='primary' style={{
-                                                marginTop: '1em'
-                                            }}>
-                                                {assignedName}
-                                            </DropdownToggle>
-                                            <DropdownMenu {...args}>
-                                                {companyUser.map((member) => {
-                                                    return (
-                                                        <DropdownItem key={member.id} onClick={() => {
-                                                            setAssignedId(member.id);
-                                                            setAssignedName(member.first_name + " " + member.last_name)
-                                                        }}>
-                                                            {member.first_name} {member.last_name}
-                                                        </DropdownItem>
-                                                    )
-                                                })}
-                                            </DropdownMenu>
-                                        </Dropdown>
+                        <Dropdown isOpen={dropdown3Open} toggle={toggleDropdown3} >
+                            <DropdownToggle caret color='primary' style={{
+                                marginTop: '1em'
+                            }}>
+                                {assignedName}
+                            </DropdownToggle>
+                            <DropdownMenu {...args}>
+                                {companyUser.map((member) => {
+                                    return (
+                                        <DropdownItem key={member.id} onClick={() => {
+                                            setAssignedId(member.id);
+                                            setAssignedName(member.first_name + " " + member.last_name)
+                                        }}>
+                                            {member.first_name} {member.last_name}
+                                        </DropdownItem>
+                                    )
+                                })}
+                            </DropdownMenu>
+                        </Dropdown>
 
-                                        {/* end dropdown */}
+                        {/* end dropdown */}
 
-                                        <br />
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <Button style={{
-                                            backgroundColor: 'rgb(175, 204, 54)',
-                                            borderColor: 'rgb(175, 204, 54)'
-                                        }} onClick={() => {
-                                            assignTask({ taskId: task.id, userId: assignedId });
-                                            dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
-                                            toggle1();
-                                        }
-                                        }>Confirm</Button>
-                                    </ModalFooter>
-                                </Modal>
+                        <br />
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button style={{
+                            backgroundColor: 'rgb(175, 204, 54)',
+                            borderColor: 'rgb(175, 204, 54)'
+                        }} onClick={() => {
+                            assignTask({ taskId: task.id, userId: assignedId });
+                            dispatch({ type: 'FETCH_PROJECT_DETAILS', payload: projectId })
+                            toggle1();
+                        }
+                        }>Confirm</Button>
+                    </ModalFooter>
+                </Modal>
 
-                                {/* end assign modal */}
+                {/* end assign modal */}
+
+                {/* start EDIT modal */}
+
+                <Modal isOpen={modalEdit} toggle={() => toggleModalEdit()} {...args}>
+                <ModalHeader toggle={toggleModalEdit}>Edit Task</ModalHeader>
+                    <ModalBody>
+                        <label htmlFor='task-title'>Task Title:</label>
+                        <input onChange={(e) => setTaskTitle(e.target.value)} id='task-title' />
+                        <br />
+                        <label htmlFor='task-description'>Task Description:</label>
+                        <input onChange={(e) => setTaskDescription(e.target.value)} id='task-description' />
+                        <br />
+                        <label htmlFor='task-due-date'>Task Due-Date: </label>
+                        <br />
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DatePicker
+                                id='project-due-date'
+                                value={date}
+                                onChange={(newDate) => {
+                                    setTaskDueTime(newDate);
+                                    setDate(newDate);
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button style={{
+                            backgroundColor: 'rgb(175, 204, 54)',
+                            borderColor: 'rgb(175, 204, 54)'
+                        }} onClick={() => {
+                            if (taskTitle, taskDescription, taskDueTime) {
+                                dispatch({type: 'EDIT_TASK', payload: {taskTitle, taskDescription, taskDueTime, taskId, projectId} })
+                                setTaskTitle('')
+                                setTaskDescription('');
+                                setTaskDueTime('')
+                                setModalEdit(false);
+                            } else {
+                                alert ('Please enter a title, description, and date')
+                            }
+                        }
+                        }>Create</Button>
+                    </ModalFooter>
+                </Modal>
+
+                {/* end EDIT modal */}
+
                 <h6 className='project-description'>{getFormattedDate(task.due_time)}</h6>
                 <h6 className='assigned'><i>{task.assigned_user ? `Assigned to ${taskUser}` : ''}</i></h6>
                 <h6>{task.description}</h6>

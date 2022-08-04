@@ -17,7 +17,7 @@ function AdminPage(args) {
     const dispatch = useDispatch();
     const unassigned = useSelector((store) => store.unassigned);
     const newPartners = useSelector((store) => store.newPartner);
-    const allCompanies = useSelector((store) => store.company);
+    const allCompanies = useSelector((store) => store.allCompany);
     const allUsers = useSelector((store) => store.allUser);
 
     const [isOpen1, setIsOpen1] = useState(false);
@@ -30,33 +30,28 @@ function AdminPage(args) {
     const toggle3 = () => setIsOpen3(!isOpen3);
     const toggle4 = () => setIsOpen4(!isOpen4);
 
-    console.log('unassigned are:', unassigned);
-    console.log('new partners are: ', newPartners);
-    console.log("all users are: ", allUsers);
-
     const fetchUnassigned = () => {
         dispatch({ type: "FETCH_UNASSIGNED" });
     }
 
-    const fetchNewPartner = async () => {
-        await axios.get(`/api/company/newPartner`)
-            .then(res => {
-                dispatch({ type: `NEW_PARTNER`, payload: res.data });
-            })
+    const fetchNewPartner = () => {
+        dispatch({ type: "FETCH_NEW_PARTNER" })
+        console.log('NEW PARTNER', newPartners)
     }
 
     const fetchAllCompanies = () => {
-        dispatch({ type: "FETCH_ALL_COMPANIES" });
+        dispatch({ type: "FETCH_ALL_COMPANIES" });//
     }
 
     const fetchAllEmployees = () => {
-        dispatch({ type: "FETCH_ALL_USER" });
+        dispatch({ type: "FETCH_ALL_USER" }); //
     }
 
     if (unassigned.company_id === null || newPartners.partner_level === null || allCompanies === null || allUsers === null) {
         console.log(unassigned, newPartners);
         return;
     }
+
     useEffect(() => {
         fetchUnassigned();
         fetchNewPartner();
@@ -95,10 +90,12 @@ function AdminPage(args) {
                         <th> Delete </th>
                     </tr>
                     {
-                        newPartners.map((newPartner) => {
-                            return (
-                                <NewPartnerList newPartner={newPartner} />
-                            )
+                        allCompanies.map((newPartner) => {
+                            if (newPartner.partner_level === 101) {
+                                return (
+                                    <NewPartnerList newPartner={newPartner} />
+                                )
+                            }
                         })
                     }
                 </table>
