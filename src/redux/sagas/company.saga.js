@@ -56,8 +56,9 @@ function* fetchNewCompany(action) {
 function* postCompany(action) {
     console.log('in post company saga', action);
     try {
-        yield axios.post(`api/company`, action.payload);
-        yield put({ type: 'FETCH_COMPANY' })
+        const response = yield axios.post(`api/company`, action.payload);
+        console.log('saga respone', response.data)
+        yield put({ type: 'FETCH_COMPANY', payload: response.data})
     } catch {
         console.log('error in post company saga.');
     }

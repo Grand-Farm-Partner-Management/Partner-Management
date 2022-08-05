@@ -9,38 +9,23 @@ sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 router.post('/' ,(req, res) => {
   const name = req.body.companyNameCreate;
-  const userId = req.user.id
   const about = req.body.companyAboutCreate;
- 
-  console.log("cnjasacasbjlc", req.body);
-  const query1 = `INSERT INTO "company" (company_name, partner_level, about)
+  const userId = req.body.id
+   const query1 = `INSERT INTO "company" (company_name, partner_level, about)
     VALUES ($1, $2, $3) RETURNING id`;
   const query2 = `UPDATE "user" SET company_id = $1
   WHERE "user".id =$2;`
 
-   pool.query(query1, [name,101, about] )
+   pool.query(query1, [name, 101, about] )
     .then((result) => {
       const response = result.rows[0].id
-      console.log("should be id",response)
-      const message = {
-        to: "kamokamophilippe13@gmail.com",
-        from: "philippebaraka13@gmail.com",
-        subject:"dj",
-        text: "dd",
-        html:"<strong>new company was created.</strong>"
-       
-      };
-
-      sendGridMail.send(message)
       pool.query(query2, [response, userId])
         .then((result) => {
-          res.send(result.rows);
-          console.log("Email sent")
+          res.send('RESPONSE', response);
         })
         .catch((error) => {
           console.log(error);
         })
-
     })
     .catch((err) => {
       console.log('error in adding new company: ', err);

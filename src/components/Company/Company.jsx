@@ -47,10 +47,9 @@ function Company(args) {
     const [linkTitle, setLinkTitle] = useState('');
 
     const addCompany = (event) => {
-        event.preventDefault();
         dispatch({
             type: 'ADD_COMPANY',
-            payload: { companyNameCreate: companyNameCreate, companyAboutCreate: companyAboutCreate }
+            payload: { companyNameCreate: companyNameCreate, companyAboutCreate: companyAboutCreate, id: user.id }
         });
         setCompanyNameCreate('');
         setCompanyAboutCreate('');
@@ -85,10 +84,10 @@ function Company(args) {
                 <ModalHeader toggle={toggleModalCompany}>Create Company</ModalHeader>
                 <ModalBody>
                     <label htmlFor='company-name'>Company Name:</label>
-                    <input id='company-name' value={companyName} onChange={(event) => setCompanyName(event.target.value)} />
+                    <input id='company-name' value={companyNameCreate} onChange={(event) => setCompanyNameCreate(event.target.value)} />
                     <br></br>
                     <label htmlFor='company-about'>About:</label>
-                    <input id='company-about' value={companyAbout} onChange={(event) => setCompanyAbout(event.target.value)} />
+                    <input id='company-about' value={companyAboutCreate} onChange={(event) => setCompanyAboutCreate(event.target.value)} />
                 </ModalBody>
 
                 <ModalFooter>
@@ -96,10 +95,15 @@ function Company(args) {
                         backgroundColor: 'rgb(175, 204, 54)',
                         borderColor: 'rgb(175, 204, 54)'
                     }} onClick={() => {
-                        addCompany({
-                            companyNameCreate: companyNameCreate,
-                            companyAboutCreate: companyAboutCreate
+                        dispatch({
+                            type: 'ADD_COMPANY',
+                            payload: { companyNameCreate: companyNameCreate, companyAboutCreate: companyAboutCreate, id: user.id }
                         });
+                        setCompanyNameCreate('');
+                        setCompanyAboutCreate('');
+
+                        // Modal Close
+
                         toggleModalCompany();
                     }
                     }>Confirm</Button>
